@@ -1,4 +1,5 @@
-## Objectifs du système à modéliser
+## Objectifs du système à modéliser A MODIFIER
+
 
 On propose de modéliser un système de réservation (master) de tickets pouvant supporter plusieurs vendeurs (vendor). Le système master gère les salles, les concerts, les différents artistes se produisant dans les concerts et la réservation des tickets alors que les vendeurs assurent la vente de billets. Chaque vendeur a un quota pour un concert donné, qui peut évoluer avec le temps.
 En cas d'annulation de concert, le système de réservation informe les vendors qui doivent contacter les clients (customers). Le master propose des services de validation de l'authenticité des tickets à l'entrée des concerts.
@@ -48,14 +49,18 @@ end
 
 ## Exigences fonctionnelles
 
-* le vendor NE DOIT proposer que les concerts pour lesquels il a un quota disponible, transmis par le master.
-* le vendor DOIT pouvoir effectuer les opérations de booking et ticketing
-* le master DOIT permettre à l'artiste d'annuler son concert.
-* le master DOIT informer le vendor en cas d'annulation de concert
-* le vendor DOIT informer les clients de l'annulation du concert par mail
-* le master DOIT proposer un service de validation de la clé du ticket, pour les contrôles aux entées.
+* l'intermédiaire DOIT recevoir la demande de l'entrepeneur 
+* l'intermédiaire DOIT diffuser le deck aux pool d'investisseurs
+* l'investisseur intéressé DOIT contacter l'intermédiaire
+* l'intermediaire DOIT rendre compte de son intéret
+* l'intermediaire DOIT mettre en relation l'entreprise et l'investisseur
+* L'entrepeneur et l'investisseur DOIVENT trouver un accord (signer NDA, autrement back to 4. )
+* l'investisseur DOIT effectuer la transaction
+* ll'investisseur DOIT enregistrer les documents (data, transac, parts )
+* l'entreprise et l'investisseur NE DOIVENTPAs entrer en contact sauf lorsque l'intermediaire le permet
 
 ## Exigences non fonctionnelles
 
-* le booking et le ticketing, bien qu'étant des opérations synchrones, DOIVENT être fiables et donc utiliser le messaging
-* Lors de l'annulation de tickets, le master DOIT informer tous les vendors de l'annulation, de façon fiable.
+*les communiations et échanges de données DOIVENT être fiable et utiliser le messaging
+*lors d'une annulation d'un accord, l'intermediaire  DOIT informer chaques acteurs du deal de facon fiable
+*Aucune données ne DOIT passer par un destinataire non souhaités  / externes
