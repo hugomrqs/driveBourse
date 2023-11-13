@@ -1,7 +1,7 @@
 ## Objectifs du système à modéliser A MODIFIER
 
 
-On propose de modéliser un système de réservation (master) de tickets pouvant supporter plusieurs vendeurs (vendor). Le système master gère les salles, les concerts, les différents artistes se produisant dans les concerts et la réservation des tickets alors que les vendeurs assurent la vente de billets. Chaque vendeur a un quota pour un concert donné, qui peut évoluer avec le temps.
+On propose de modéliser un système de gestion de documents automatiser. Le système s, les concerts, les différents artistes se produisant dans les concerts et la réservation des tickets alors que les vendeurs assurent la vente de billets. Chaque vendeur a un quota pour un concert donné, qui peut évoluer avec le temps.
 En cas d'annulation de concert, le système de réservation informe les vendors qui doivent contacter les clients (customers). Le master propose des services de validation de l'authenticité des tickets à l'entrée des concerts.
 
 Lors de la réservation de ticket, on a 2 phases:
@@ -46,8 +46,18 @@ end
 ## Schéma relationnel
 
 ![](EER.png)
+gerer securite d'acces au vault 
+
+critere de partage
+investisseurs doivent s'inscrire
+
+parser et réorganiser
+
+pop.imap je recupere les PJ
+
 
 ## Exigences fonctionnelles
+
 
 * l'intermédiaire DOIT recevoir la demande de l'entrepeneur 
 * l'intermédiaire DOIT diffuser le deck aux pool d'investisseurs
@@ -57,10 +67,12 @@ end
 * L'entrepeneur et l'investisseur DOIVENT trouver un accord (signer NDA, autrement back to 4. )
 * l'investisseur DOIT effectuer la transaction
 * ll'investisseur DOIT enregistrer les documents (data, transac, parts )
-* l'entreprise et l'investisseur NE DOIVENTPAs entrer en contact sauf lorsque l'intermediaire le permet
+* l'entreprise et l'investisseur NE DOIVENT PAS
+*  entrer en contact sauf lorsque l'intermediaire le permet
 
 ## Exigences non fonctionnelles
 
 *les communiations et échanges de données DOIVENT être fiable et utiliser le messaging
 *lors d'une annulation d'un accord, l'intermediaire  DOIT informer chaques acteurs du deal de facon fiable
 *Aucune données ne DOIT passer par un destinataire non souhaités  / externes
+*L'entreprise et l'investisseur ne doivent jamais rentré en contact sauf lorsque l'intermediaire le permet
