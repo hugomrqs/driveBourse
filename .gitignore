@@ -38,5 +38,4 @@ nb-configuration.xml
 .jbang
 .sdkmanrc
 .envrc
-ticket-vendor/src/main/resources/application.properties
-ticket-master/src/main/resources/application.properties
+application.properties
