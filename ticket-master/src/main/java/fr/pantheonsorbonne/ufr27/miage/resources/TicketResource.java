@@ -10,8 +10,6 @@ import jakarta.ws.rs.core.Response;
 
 @Path("ticket")
 public class TicketResource {
-
-
     @Inject
     TicketingService ticketingService;
 

@@ -4,6 +4,6 @@ public record BusinessPlan(
         ExpertiseJuridique expertiseJuridique,
         ExpertiseFinanciere expertiseFinancière,
         String siretEntreprise,
-        Organigramme organigramme,
+        int organigramme,
         String siteWeb) {
 }
