@@ -10,7 +10,7 @@ public class ContratJuridiqueOnePagerPourBP {
     @Column(name = "ContratJuridiqueBM")
     private Integer contratJuridiqueBM;
 
-    @Column(name = "TASVEE")
+    @Column(name = "tasvee")
     private Boolean tasvee;
 
     @Column(name = "fonds")
@@ -38,7 +38,6 @@ public class ContratJuridiqueOnePagerPourBP {
         this.idOnPager = idOnPager;
     }
 
-    // Getters
     public Integer getContratJuridiqueBM() {
         return contratJuridiqueBM;
     }

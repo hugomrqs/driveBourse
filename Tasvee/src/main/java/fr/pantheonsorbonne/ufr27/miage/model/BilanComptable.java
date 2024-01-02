@@ -26,6 +26,17 @@ public class BilanComptable {
     public BilanComptable() {
     }
 
+    public BilanComptable(
+            Integer emplois,
+            Integer ressources,
+            Integer venteDeMarchandise,
+            Integer coutDeMarchandise) {
+        this.emplois=emplois;
+        this.ressources=ressources;
+        this.venteDeMarchandise=venteDeMarchandise;
+        this.coutDeMarchandise=coutDeMarchandise;
+    }
+
     public int getIdBilanComptable() {
         return idBilanComptable;
     }

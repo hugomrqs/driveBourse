@@ -19,12 +19,11 @@ public class BusinessModel {
     public BusinessModel() {
     }
 
-    public BusinessModel(Integer argentLeveeXpTasvee, Integer partCedeeXpTasvee) {
+    public BusinessModel(Integer argentLeveeXpTasvee,
+                         Integer partCedeeXpTasvee) {
         this.argentLeveeXpTasvee = argentLeveeXpTasvee;
         this.partCedeeXpTasvee = partCedeeXpTasvee;
     }
-
-    // Getters et Setters
 
     public Integer getIdBusinessModel() {
         return idBusinessModel;

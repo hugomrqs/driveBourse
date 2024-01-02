@@ -26,7 +26,6 @@ public class BusinessPlan {
         this.idOnePager = idOnePager;
     }
 
-    // Getters
     public Integer getIdBusinessPlan() {
         return idBusinessPlan;
     }

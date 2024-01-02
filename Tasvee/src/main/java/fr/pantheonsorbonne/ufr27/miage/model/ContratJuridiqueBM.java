@@ -33,7 +33,12 @@ public class ContratJuridiqueBM {
     public ContratJuridiqueBM() {
     }
 
-    public ContratJuridiqueBM(Boolean tasvee, Boolean startUp, Integer pourcentageComissionTasvee, String siretTasvee, StartUp siretStartUp, BusinessModel idBusinessModel) {
+    public ContratJuridiqueBM(Boolean tasvee,
+                              Boolean startUp,
+                              Integer pourcentageComissionTasvee,
+                              String siretTasvee,
+                              StartUp siretStartUp,
+                              BusinessModel idBusinessModel) {
         this.tasvee = tasvee;
         this.startUp = startUp;
         this.pourcentageComissionTasvee = pourcentageComissionTasvee;
@@ -42,7 +47,6 @@ public class ContratJuridiqueBM {
         this.idBusinessModel = idBusinessModel;
     }
 
-    // Getters
     public Integer getContratJuridiqueBM() {
         return contratJuridiqueBM;
     }
@@ -71,7 +75,6 @@ public class ContratJuridiqueBM {
         return idBusinessModel;
     }
 
-    // Setters
     public void setContratJuridiqueBM(Integer contratJuridiqueBM) {
         this.contratJuridiqueBM = contratJuridiqueBM;
     }

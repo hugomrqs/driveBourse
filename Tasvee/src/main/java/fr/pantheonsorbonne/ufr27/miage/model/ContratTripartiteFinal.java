@@ -7,10 +7,10 @@ public class ContratTripartiteFinal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ContratJuridiqueBM")
+    @Column(name = "IDContratTripartiteFinal")
     private Integer contratJuridiqueBM;
 
-    @Column(name = "TASVEE")
+    @Column(name = "tasvee")
     private Boolean tasvee;
 
     @Column(name = "fonds")
@@ -34,8 +34,7 @@ public class ContratTripartiteFinal {
         this.propositionFinale = propositionFinale;
     }
 
-    // Getters et Setters
-
+//Ajouter les Sirets pou pouvoir faire des jointure dessus
     public Integer getContratJuridiqueBM() {
         return contratJuridiqueBM;
     }

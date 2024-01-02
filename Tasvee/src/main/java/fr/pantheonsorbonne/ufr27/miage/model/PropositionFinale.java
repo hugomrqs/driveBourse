@@ -30,8 +30,6 @@ public class PropositionFinale {
         this.fond = fond;
     }
 
-    // Getters et Setters
-
     public Integer getContratJuridiqueBM() {
         return contratJuridiqueBM;
     }

@@ -60,7 +60,22 @@ public class StartUp {
     public StartUp() {
     }
 
-    public StartUp(String siretStartUp, Integer nombreDePersonne, String lienSiteWeb, LocalDateTime dateOfferForm, String mail, String secteur, Integer numeroDeLevee, String iban, Integer argentLevee, Integer partCede, BilanComptable idBilanComptable, Statut idStatuts, CVDirigeant idCVDirigeant, BusinessModel idBusinessModel, OnePager idOnePager) {
+    public StartUp(String siretStartUp,
+                   Integer nombreDePersonne,
+                   String lienSiteWeb,
+                   LocalDateTime dateOfferForm,
+                   String mail,
+                   String secteur,
+                   Integer numeroDeLevee,
+                   String iban,
+                   Integer argentLevee,
+                   Integer partCede,
+                   BilanComptable idBilanComptable,
+                   Statut idStatuts,
+                   CVDirigeant idCVDirigeant,
+                   BusinessModel idBusinessModel,
+                   OnePager idOnePager) {
+
         this.siretStartUp = siretStartUp;
         this.nombreDePersonne = nombreDePersonne;
         this.lienSiteWeb = lienSiteWeb;
