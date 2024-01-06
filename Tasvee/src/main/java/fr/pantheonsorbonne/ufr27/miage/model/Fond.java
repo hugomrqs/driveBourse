@@ -7,7 +7,7 @@ public class Fond {
 
     @Id
     @Column(name = "SiretFonds")
-    private String siretFonds;
+    private Integer siretFonds;
 
     @Column(name = "mail")
     private String mail;
@@ -20,7 +20,7 @@ public class Fond {
     public Fond() {
     }
 
-    public Fond(String siretFonds, String mail, String iban,boolean isInterested) {
+    public Fond(Integer siretFonds, String mail, String iban,boolean isInterested) {
         this.siretFonds = siretFonds;
         this.mail = mail;
         this.iban = iban;
@@ -29,11 +29,11 @@ public class Fond {
 
     // Getters et Setters
 
-    public String getSiretFonds() {
+    public Integer getSiretFonds() {
         return siretFonds;
     }
 
-    public void setSiretFonds(String siretFonds) {
+    public void setSiretFonds(Integer siretFonds) {
         this.siretFonds = siretFonds;
     }
 

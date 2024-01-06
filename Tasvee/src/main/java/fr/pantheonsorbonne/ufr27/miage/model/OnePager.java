@@ -12,7 +12,7 @@ public class OnePager {
 
     @ManyToOne
     @JoinColumn(name = "SiretStartUP", referencedColumnName = "SiretStartUP")
-    private StartUp siretStartUp;
+    private StartUpEntity siretStartUp;
 
     @ManyToOne
     @JoinColumn(name = "IDExpertiseJuridique", referencedColumnName = "IDExpertiseJuridique")
@@ -25,7 +25,7 @@ public class OnePager {
     public OnePager() {
     }
 
-    public OnePager(StartUp siretStartUp, ExpertiseJuridique idExpertiseJuridique, ExpertiseFinanciere idExpertiseFinanciere) {
+    public OnePager(StartUpEntity siretStartUp, ExpertiseJuridique idExpertiseJuridique, ExpertiseFinanciere idExpertiseFinanciere) {
         this.siretStartUp = siretStartUp;
         this.idExpertiseJuridique = idExpertiseJuridique;
         this.idExpertiseFinanciere = idExpertiseFinanciere;
@@ -36,7 +36,7 @@ public class OnePager {
         return idOnePager;
     }
 
-    public StartUp getSiretStartUp() {
+    public StartUpEntity getSiretStartUp() {
         return siretStartUp;
     }
 
@@ -53,7 +53,7 @@ public class OnePager {
         this.idOnePager = idOnePager;
     }
 
-    public void setSiretStartUp(StartUp siretStartUp) {
+    public void setSiretStartUp(StartUpEntity siretStartUp) {
         this.siretStartUp = siretStartUp;
     }
 

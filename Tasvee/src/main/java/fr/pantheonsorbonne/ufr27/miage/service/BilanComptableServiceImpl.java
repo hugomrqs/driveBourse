@@ -7,7 +7,7 @@ import fr.pantheonsorbonne.ufr27.miage.model.BilanComptableEntity;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
-public class BilanComptableServiceImpl {
+public class BilanComptableServiceImpl implements BilanComptableService {
 
     @Inject
     private EntityManager em;

@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "CVDirigeant")
-public class CVDirigeant {
+public class CVDirigeantEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,10 +22,10 @@ public class CVDirigeant {
     @Column(name = "engagement")
     private Boolean engagement;
 
-    public CVDirigeant() {
+    public CVDirigeantEntity() {
     }
 
-    public CVDirigeant(String ecole, String mainExperience, String lienLinkedin, Boolean engagement) {
+    public CVDirigeantEntity(String ecole, String mainExperience, String lienLinkedin, Boolean engagement) {
         this.ecole = ecole;
         this.mainExperience = mainExperience;
         this.lienLinkedin = lienLinkedin;

@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "BilanComptable")
-public class BilanComptable {
+public class BilanComptableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +23,10 @@ public class BilanComptable {
     private Integer coutDeMarchandise;
 
 
-    public BilanComptable() {
+    public BilanComptableEntity() {
     }
 
-    public BilanComptable(
+    public BilanComptableEntity(
             Integer emplois,
             Integer ressources,
             Integer venteDeMarchandise,

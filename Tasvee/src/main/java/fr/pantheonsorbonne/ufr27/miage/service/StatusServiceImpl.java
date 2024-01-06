@@ -7,7 +7,7 @@ import fr.pantheonsorbonne.ufr27.miage.model.StatusEntity;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
-public class StatusServiceImpl {
+public class StatusServiceImpl implements StatusService {
 
     @Inject
     private EntityManager em;

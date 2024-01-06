@@ -12,7 +12,7 @@ public class BusinessPlan {
 
     @ManyToOne
     @JoinColumn(name = "SiretStartUP", referencedColumnName = "SiretStartUP")
-    private StartUp siretStartUp;
+    private StartUpEntity siretStartUp;
 
     @ManyToOne
     @JoinColumn(name = "IDOnePager", referencedColumnName = "IDOnePager")
@@ -20,7 +20,7 @@ public class BusinessPlan {
 
     public BusinessPlan() {
     }
-    public BusinessPlan(StartUp siretStartUp, OnePager idOnePager) {
+    public BusinessPlan(StartUpEntity siretStartUp, OnePager idOnePager) {
         this.siretStartUp = siretStartUp;
         this.idOnePager = idOnePager;
     }
@@ -29,7 +29,7 @@ public class BusinessPlan {
         return idBusinessPlan;
     }
 
-    public StartUp getSiretStartUp() {
+    public StartUpEntity getSiretStartUp() {
         return siretStartUp;
     }
 
@@ -42,7 +42,7 @@ public class BusinessPlan {
         this.idBusinessPlan = idBusinessPlan;
     }
 
-    public void setSiretStartUp(StartUp siretStartUp) {
+    public void setSiretStartUp(StartUpEntity siretStartUp) {
         this.siretStartUp = siretStartUp;
     }
 

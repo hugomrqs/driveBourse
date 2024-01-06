@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Statut")
-public class Statut {
+public class StatutEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,10 +16,10 @@ public class Statut {
     @Column(name = "prixPartActuel")
     private Integer prixPartActuel;
 
-    public Statut() {
+    public StatutEntity() {
     }
 
-    public Statut( Integer nombrePart, Integer prixPartActuel) {
+    public StatutEntity(Integer nombrePart, Integer prixPartActuel) {
         this.nombrePart = nombrePart;
         this.prixPartActuel = prixPartActuel;
     }
