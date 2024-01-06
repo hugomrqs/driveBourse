@@ -21,11 +21,7 @@ public class OfferFormDAOImpl implements OfferFormDAO {
     EntityManager em;
     @Override
     @Transactional
-    public void saveOfferForm(OfferForm offerForm) {
-        registerStartUpEntity(offerForm) ;
-    }
-
-    private void registerStartUpEntity(OfferForm offerForm) {
+    public void registerStartUpEntity(OfferForm offerForm) {
         StartUpEntity startupEntity = new StartUpEntity();
         startupEntity.setSiretStartUp(offerForm.siretStartup());
         startupEntity.setNombreDePersonne(offerForm.organigramme());

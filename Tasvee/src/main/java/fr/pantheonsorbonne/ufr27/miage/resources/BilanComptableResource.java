@@ -10,7 +10,7 @@ import jakarta.ws.rs.core.MediaType;
 public class BilanComptableResource {
 
     @Inject
-    private BilanComptableService bilanComptableService;
+    BilanComptableService bilanComptableService;
 
 
     @Path("{idBilanComptable}")

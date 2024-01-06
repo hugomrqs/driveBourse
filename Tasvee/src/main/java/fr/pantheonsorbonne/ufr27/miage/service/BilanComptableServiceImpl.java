@@ -4,9 +4,11 @@ import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
 //TODO : Besoin que le model JPA BilanComptable soit implémenté
 import fr.pantheonsorbonne.ufr27.miage.model.BilanComptableEntity;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
+@ApplicationScoped
 public class BilanComptableServiceImpl implements BilanComptableService {
 
     @Inject

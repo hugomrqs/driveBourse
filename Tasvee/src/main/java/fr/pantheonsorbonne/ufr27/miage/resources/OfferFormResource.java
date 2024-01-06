@@ -14,8 +14,6 @@ public class OfferFormResource {
 
     @Inject
     OfferFormService offerFormService;
-    @Inject
-    OfferFormDAO offerFormDAO;
 
     //@Inject
     //BusinessModelService businessModelService;
@@ -28,7 +26,7 @@ public class OfferFormResource {
         boolean isAccepted = offerFormService.isOfferAccepted(offerForm);
 
         if (isAccepted) {
-            offerFormDAO.saveOfferForm(offerForm);
+            offerFormService.saveOfferForm(offerForm);
             //businessModelService.isFormAccepted() ; //pour trigger le service BM : trigger la composition du BM puis son envoi par SMTP
             return Response.ok("L'offre a été acceptée, le business model sera constitué puis vous sera envoyé à l'adresse mail : " + offerForm.mail()).build();
         } else {
