@@ -1,32 +1,24 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
+import fr.pantheonsorbonne.ufr27.miage.dao.BilanComptableDAO;
 import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
-//TODO : Besoin que le model JPA BilanComptable soit implémenté
 import fr.pantheonsorbonne.ufr27.miage.model.BilanComptableEntity;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.persistence.EntityManager;
 
 @ApplicationScoped
 public class BilanComptableServiceImpl implements BilanComptableService {
 
     @Inject
-    private EntityManager em;
+    BilanComptableDAO bilanComptableDAO ;
 
+    @Override
     public BilanComptable getBilanComptable(int idBilanComptable) {
-        BilanComptableEntity bilanComptableEntity = em.find(BilanComptableEntity.class, idBilanComptable);
-
-        if (bilanComptableEntity != null) {
-            return convertToDTO(bilanComptableEntity);
-        } else {
-            // Gérer le cas où le bilan comptable n'est pas trouvé
-            return null;
-        }
+        return convertToDTO(bilanComptableDAO.getBilanComptable(idBilanComptable)) ;
     }
 
     private BilanComptable convertToDTO(BilanComptableEntity entity) {
-        BilanComptable dto = new BilanComptable(entity.getEmplois(), entity.getRessources(), entity.getVenteDeMarchandise(), entity.CoutDeMarchandise());
+        BilanComptable dto = new BilanComptable(entity.getEmplois(), entity.getRessources(), entity.getVenteDeMarchandise(), entity.getCoutDeMarchandise());
         return dto;
     }
 }

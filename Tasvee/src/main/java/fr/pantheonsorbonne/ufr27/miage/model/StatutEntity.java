@@ -7,14 +7,17 @@ public class StatutEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IDStatuts")
-    private Integer idStatuts;
+    @Column(name = "IdStatut")
+    private Integer idStatut;
 
     @Column(name = "nombrePart")
     private Integer nombrePart;
 
     @Column(name = "prixPartActuel")
     private Integer prixPartActuel;
+
+    @Column(name = "strategieEntrepreneur")
+    private Integer strategieEntrepreneur;
 
     public StatutEntity() {
     }
@@ -24,12 +27,12 @@ public class StatutEntity {
         this.prixPartActuel = prixPartActuel;
     }
 
-    public int getIdStatuts() {
-        return idStatuts;
+    public Integer getIdStatut() {
+        return idStatut;
     }
 
-    public void setIdStatuts(int idStatuts) {
-        this.idStatuts = idStatuts;
+    public void setIdStatut(int idStatut) {
+        this.idStatut = idStatut;
     }
 
     public Integer getNombrePart() {
@@ -47,4 +50,10 @@ public class StatutEntity {
     public void setPrixPartActuel(Integer prixPartActuel) {
         this.prixPartActuel = prixPartActuel;
     }
+
+    public Integer getStrategieEntrepreneur() {
+        return strategieEntrepreneur;
+    }
+
+    public void setStrategieEntrepreneur(Integer strategieEntrepreneur) { this.strategieEntrepreneur = strategieEntrepreneur; }
 }

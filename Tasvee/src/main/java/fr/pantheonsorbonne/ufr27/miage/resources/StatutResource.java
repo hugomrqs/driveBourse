@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.resources;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
-import fr.pantheonsorbonne.ufr27.miage.service.StatusService;
+import fr.pantheonsorbonne.ufr27.miage.service.StatutService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -10,17 +10,17 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 
 
-@Path("status")
-public class StatusResource {
+@Path("statut")
+public class StatutResource {
 
     @Inject
-    private StatusService statusService;
+    private StatutService statutService;
 
-    @Path("{idStatus}")
+    @Path("{idStatut}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Statut getStatus(@PathParam("idStatus") int idStatus) {
-        return statusService.getStatus(idStatus);
+    public Statut getStatus(@PathParam("idStatut") int idStatut) {
+        return statutService.getStatut(idStatut);
     }
 }
 
