@@ -1,8 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.DAO;
 
-import fr.pantheonsorbonne.ufr27.miage.camel.CamelRoutes;
 import fr.pantheonsorbonne.ufr27.miage.camel.smtpGateway;
-import fr.pantheonsorbonne.ufr27.miage.dto.OfferForm;
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -15,8 +13,6 @@ public class BusinessModelDAOImpl implements BusinessModelDAO {
     @PersistenceContext(name = "mysql")
     EntityManager em;
 
-    @Inject
-    smtpGateway smtp;
 
     @Transactional
     public List listAllBusinessModels() {
@@ -34,12 +30,8 @@ public class BusinessModelDAOImpl implements BusinessModelDAO {
 
     @Override
     @Transactional
-    public void addBusinessModel(OfferForm of) {
-        BusinessModel bm = new BusinessModel();
-        bm.setArgentLeveeXpTasvee((int) (of.objectLevee()*1.2));
-        bm.setPartCedeeXpTasvee(30);
+    public void addBusinessModel(BusinessModel bm) {
         em.persist(bm);
-        smtp.replyToOffer(bm,"hugo.albert.marques@gmail.com","hugo.albert.marques@gmail.com");
     }
 
 

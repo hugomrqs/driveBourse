@@ -1,18 +1,25 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
+import jakarta.activation.DataHandler;
+import jakarta.activation.FileDataSource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
+import org.apache.camel.attachment.AttachmentMessage;
 import org.apache.camel.builder.RouteBuilder;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import java.io.File;
 import java.util.HashMap;
 
 @ApplicationScoped
 public class CamelRoutes extends RouteBuilder {
+
+    @ConfigProperty(name = "camel.routes.enabled", defaultValue = "true")
+    boolean isRouteEnabled;
 
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.user")
     String smtpUser;
@@ -36,8 +43,22 @@ public class CamelRoutes extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
-        from("jms:queue:"+jmsPrefix+"replyOffer")
+
+        camelContext.setTracing(true);
+
+        from("jms:queue:"+jmsPrefix+"smtpToStartUp")
+                .autoStartup(isRouteEnabled)
+                .log("testttt")
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
+                        exchange.getMessage().setBody("Bonjour, vous trouverez ci après en pièce jointe votre BusinessModel");
+                        //AttachmentMessage attMsg = exchange.getIn(AttachmentMessage.class);
+                       // attMsg.addAttachment("BusinessModel.pdf", new DataHandler(new FileDataSource(new File("chemin/vers/votre/package/file/BusinessModel.pdf"))));
+                    }
+                })
                 .to("smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword + "&contentType=");
+
     }
 
 }

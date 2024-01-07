@@ -9,7 +9,8 @@ import jakarta.inject.Inject;
 @ApplicationScoped
     public class OfferServiceImpl implements OfferService {
 
-        BusinessModelDAO bmDAO;
+
+        BusinessModelService bmService;
 
         @Override
         public void saveOfferForm(OfferForm offerForm) {
@@ -20,7 +21,7 @@ import jakarta.inject.Inject;
         @Override
         public boolean isOfferAccepted(OfferForm offerForm) {
             //offerService
-            bmDAO.addBusinessModel(offerForm);
+            bmService.useOfferForm(offerForm);
             // Logique métier pour déterminer si l'offre est acceptée ou non
             // Exemple de logique : Si le montant de la levée est supérieur à un certain seuil, elle est acceptée
             return offerForm.objectLevee() > 100000; // À ajuster en fonction de notre logique métier

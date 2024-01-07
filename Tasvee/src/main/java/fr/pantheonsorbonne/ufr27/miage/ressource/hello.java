@@ -19,6 +19,7 @@ public class hello {
             BusinessModel bm = new BusinessModel();
             bm.setPartCedeeXpTasvee(1);
             bm.setArgentLeveeXpTasvee(30);
-            smtp.replyToOffer(bm,"hugo.marques@etu.univ-paris1","hugo.albert.gmail.com");
+            bm.setsiretStartUp(null);
+            smtp.replyToOffer(bm,"hugo.marques@etu.univ-paris1");
         }
 }
