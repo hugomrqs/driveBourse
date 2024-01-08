@@ -8,7 +8,7 @@ public class StartUpEntity {
 
     @Id
     @Column(name = "SiretStartUp")
-    private int siretStartUp;
+    private Integer siretStartUp;
 
     @Column(name = "nombreDePersonne")
     private Integer nombreDePersonne;
@@ -42,8 +42,8 @@ public class StartUpEntity {
     private BilanComptableEntity idBilanComptable;
 
     @ManyToOne
-    @JoinColumn(name = "IDStatuts", referencedColumnName = "IDStatuts")
-    private StatutEntity idStatuts;
+    @JoinColumn(name = "IDStatut", referencedColumnName = "IDStatut")
+    private StatutEntity idStatut;
 
     @ManyToOne
     @JoinColumn(name = "IDCVDirigeant", referencedColumnName = "IDCVDirigeant")
@@ -71,7 +71,7 @@ public class StartUpEntity {
                          Integer argentLevee,
                          Integer partCede,
                          BilanComptableEntity idBilanComptable,
-                         StatutEntity idStatuts,
+                         StatutEntity idStatut,
                          CVDirigeantEntity idCVDirigeant,
                          BusinessModel idBusinessModel,
                          OnePager idOnePager) {
@@ -87,7 +87,7 @@ public class StartUpEntity {
         this.argentLevee = argentLevee;
         this.partCede = partCede;
         this.idBilanComptable = idBilanComptable;
-        this.idStatuts = idStatuts;
+        this.idStatut = idStatut;
         this.idCVDirigeant = idCVDirigeant;
         this.idBusinessModel = idBusinessModel;
         this.idOnePager = idOnePager;
@@ -139,7 +139,7 @@ public class StartUpEntity {
     }
 
     public StatutEntity getIdStatuts() {
-        return idStatuts;
+        return idStatut;
     }
 
     public CVDirigeantEntity getIdCVDirigeant() {
@@ -199,8 +199,8 @@ public class StartUpEntity {
         this.idBilanComptable = idBilanComptable;
     }
 
-    public void setIdStatuts(StatutEntity idStatuts) {
-        this.idStatuts = idStatuts;
+    public void setIdStatuts(StatutEntity idStatut) {
+        this.idStatut = idStatut;
     }
 
     public void setIdCVDirigeant(CVDirigeantEntity idCVDirigeant) {

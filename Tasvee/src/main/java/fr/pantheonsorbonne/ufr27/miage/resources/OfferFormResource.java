@@ -23,6 +23,7 @@ public class OfferFormResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response receiveNewOffer(OfferForm offerForm) {
 
+        System.out.println("OfferForm reçu : " + offerForm);
         boolean isAccepted = offerFormService.isOfferAccepted(offerForm);
 
         if (isAccepted) {
