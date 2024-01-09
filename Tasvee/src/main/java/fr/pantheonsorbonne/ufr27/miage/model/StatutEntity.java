@@ -27,6 +27,13 @@ public class StatutEntity {
         this.prixPartActuel = prixPartActuel;
     }
 
+    public StatutEntity(int i, int i1, int i2) {
+        this.nombrePart = i;
+        this.prixPartActuel = i1;
+        this.strategieEntrepreneur = i2 ;
+
+    }
+
     public Integer getIdStatut() {
         return idStatut;
     }

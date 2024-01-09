@@ -31,7 +31,7 @@ public class OfferFormResource {
             //businessModelService.isFormAccepted() ; //pour trigger le service BM : trigger la composition du BM puis son envoi par SMTP
             return Response.ok("L'offre a été acceptée, le business model sera constitué puis vous sera envoyé à l'adresse mail : " + offerForm.mail()).build();
         } else {
-            return Response.ok("L'offre a été reçu, cependant elle est refusée.").build();
+            return Response.ok("L'offre a été reçue, cependant elle est refusée.").build();
         }
     }
 }
