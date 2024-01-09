@@ -29,6 +29,10 @@
             <version>4.1.0</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>jakarta.enterprise</groupId>
+            <artifactId>jakarta.enterprise.cdi-api</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.DAO;
 
 import fr.pantheonsorbonne.ufr27.miage.camel.smtpGateway;
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -9,6 +10,7 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 
+@RequestScoped
 public class BusinessModelDAOImpl implements BusinessModelDAO {
     @PersistenceContext(name = "mysql")
     EntityManager em;

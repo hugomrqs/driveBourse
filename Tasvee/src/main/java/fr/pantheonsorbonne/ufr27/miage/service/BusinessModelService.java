@@ -16,7 +16,9 @@ public interface BusinessModelService {
     BusinessModel CreateBusinessModel(int argentLeveeXpTasvee, int partCedeeXpTasvee, StartUp startUp);
 
     // Méthode pour envoyer le modèle d'affaires
-    public void SendBusinessModel(BusinessModel businessModel, StartUp startUp);
+  //  public void SendBusinessModel(BusinessModel businessModel, StartUp startUp);
+     void SendBusinessModel(BusinessModel businessModel);
+
 
     void useOfferForm(OfferForm offerForm);
 

@@ -32,8 +32,7 @@ public class CamelRoutes extends RouteBuilder {
 
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.port")
     String smtpPort;
-    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.from")
-    String smtpFrom;
+
 
     @Inject
     CamelContext camelContext;
@@ -46,13 +45,17 @@ public class CamelRoutes extends RouteBuilder {
 
         camelContext.setTracing(true);
 
-        from("jms:queue:"+jmsPrefix+"smtpToStartUp")
+        from("direct:smtpToStartUp")
                 .autoStartup(isRouteEnabled)
                 .log("testttt")
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
-                        exchange.getMessage().setBody("Bonjour, vous trouverez ci après en pièce jointe votre BusinessModel");
+                        exchange.getMessage().setHeader("from",smtpPort);
+                        exchange.getMessage().setHeader("contentType", "text/html");
+                        exchange.getMessage().setHeader("subject", "cancellation notice for venue");
+                        exchange.getMessage().setBody("Dear Customer,\n\n Venue for your ticket  has been cancelled.\n\n Contact vendor for refund");
+
                         //AttachmentMessage attMsg = exchange.getIn(AttachmentMessage.class);
                        // attMsg.addAttachment("BusinessModel.pdf", new DataHandler(new FileDataSource(new File("chemin/vers/votre/package/file/BusinessModel.pdf"))));
                     }

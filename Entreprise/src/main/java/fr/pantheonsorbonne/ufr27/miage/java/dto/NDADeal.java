@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.ufr27.miage.dto;
+package fr.pantheonsorbonne.ufr27.miage.java.dto;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.common.NDA;
 
