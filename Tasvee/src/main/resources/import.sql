@@ -23,8 +23,8 @@ INSERT INTO ExpertiseFinanciere (BFRExpert, margeBrutExpert, SiretPrestataireFin
 VALUES (5000, 7000, 1234567890);
 
 -- Inserting into ExpertiseJuridique
-INSERT INTO ExpertiseJuridique (nombrePartExpertise, SiretPrestataireJuridique)
-VALUES (20, 98765432109876);
+INSERT INTO ExpertiseJuridique (nombrePartExpertise,prixPartExpertise, SiretPrestataireJuridique)
+VALUES (20,20, 98765432109876);
 
 -- Inserting into StartUp (assuming IDBilanComptable, IDCVDirigeant, IDStatut are 1)
 INSERT INTO StartUp (IDBilanComptable, IDCVDirigeant, IDStatut, argentLevee, nombreDePersonne, numeroDeLevee, partCede, dateOfferForm, IBAN, SiretStartUP, lienSiteWeb, mail, secteur)

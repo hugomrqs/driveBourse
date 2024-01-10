@@ -11,5 +11,5 @@ public interface OnePagerService {
     void CreateOnePager(
             int siretEntreprise) throws StartUpNotFoundException;
 
-    OnePager sendOnePager(int siretEntreprise) throws OnePagerNotFoundException, StartUpNotFoundException;
+    void sendOnePager(int siretEntreprise) throws OnePagerNotFoundException, StartUpNotFoundException;
 }

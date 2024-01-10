@@ -20,11 +20,7 @@ public class FundsInterestedGatewayImpl implements FundsInterestedGateway {
 
     @Override
     public void distribute(ExpertiseFinanciere expertiseFinanciere, ExpertiseJuridique expertiseJuridique, Character c) throws BadDataException {
-        try (ProducerTemplate producer = context.createProducerTemplate()) {
-            producer.sendBody("direct:cli", new OnePager(expertiseJuridique, expertiseFinanciere, c));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 
 }

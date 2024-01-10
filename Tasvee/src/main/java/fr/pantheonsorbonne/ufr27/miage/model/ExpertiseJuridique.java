@@ -13,7 +13,7 @@ public class ExpertiseJuridique {
     @Column(name = "nombrePartExpertise")
     private Integer nombrePartExpertise;
 
-    @Column(name = "prixPart")
+    @Column(name = "prixPartExpertise")
     private Integer prixPartExpertise;
 
     @ManyToOne
@@ -23,8 +23,9 @@ public class ExpertiseJuridique {
     public ExpertiseJuridique() {
     }
 
-    public ExpertiseJuridique(Integer nombrePartExpertise, PrestataireJuridique prestataireJuridique) {
+    public ExpertiseJuridique(Integer nombrePartExpertise,Integer prixPartExpertise, PrestataireJuridique prestataireJuridique) {
         this.nombrePartExpertise = nombrePartExpertise;
+        this.prixPartExpertise = prixPartExpertise;
         this.prestataireJuridique = prestataireJuridique;
     }
 

@@ -4,7 +4,7 @@ import fr.pantheonsorbonne.ufr27.miage.exception.StartUpNotFoundException;
 import fr.pantheonsorbonne.ufr27.miage.model.ExpertiseFinanciere;
 import fr.pantheonsorbonne.ufr27.miage.model.ExpertiseJuridique;
 import fr.pantheonsorbonne.ufr27.miage.model.OnePager;
-import fr.pantheonsorbonne.ufr27.miage.model.StartUp;
+import fr.pantheonsorbonne.ufr27.miage.model.StartUpEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -23,9 +23,9 @@ public class OnePagerDAOImpl implements OnePagerDAO{
 
     @Override
     @Transactional
-    public void createOnePager(StartUp startUp,
-                                   ExpertiseJuridique expertiseJuridique,
-                                   ExpertiseFinanciere expertiseFinanciere)
+    public void createOnePager(StartUpEntity startUp,
+                               ExpertiseJuridique expertiseJuridique,
+                               ExpertiseFinanciere expertiseFinanciere)
             throws StartUpNotFoundException {
         OnePager onePager = new OnePager(startUp,expertiseJuridique,expertiseFinanciere);
         em.persist(onePager);
@@ -35,8 +35,8 @@ public class OnePagerDAOImpl implements OnePagerDAO{
     public OnePager selectOnePagerByIdStartUp(int siretStartup) throws OnePagerNotFoundException {
         try {
             OnePager onePager = (OnePager) em.createQuery(
-                            "SELECT c FROM OnePager c WHERE c.siretStartUp = :siretStartup")
-                    .setParameter("siretStartup", siretStartup)
+                            "SELECT c FROM OnePager c WHERE c.siretStartUp.siretStartUp = :siretStartup")
+                    .setParameter("siretStartup",siretStartup)
                     .getSingleResult();
             return onePager;
         } catch (NoResultException e) {
