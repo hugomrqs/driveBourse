@@ -28,7 +28,7 @@ public class ContratJuridiqueBM {
 
     @ManyToOne
     @JoinColumn(name = "IDBusinessModel", referencedColumnName = "IDBusinessModel")
-    private BusinessModel idBusinessModel;
+    private BusinessModelEntity idBusinessModel;
 
     public ContratJuridiqueBM() {
     }
@@ -38,7 +38,7 @@ public class ContratJuridiqueBM {
                               Integer pourcentageComissionTasvee,
                               String siretTasvee,
                               StartUpEntity siretStartUp,
-                              BusinessModel idBusinessModel) {
+                              BusinessModelEntity idBusinessModel) {
         this.tasvee = tasvee;
         this.startUp = startUp;
         this.pourcentageComissionTasvee = pourcentageComissionTasvee;
@@ -71,7 +71,7 @@ public class ContratJuridiqueBM {
         return siretStartUp;
     }
 
-    public BusinessModel getIdBusinessModel() {
+    public BusinessModelEntity getIdBusinessModel() {
         return idBusinessModel;
     }
 
@@ -99,7 +99,7 @@ public class ContratJuridiqueBM {
         this.siretStartUp = siretStartUp;
     }
 
-    public void setIdBusinessModel(BusinessModel idBusinessModel) {
+    public void setIdBusinessModel(BusinessModelEntity idBusinessModel) {
         this.idBusinessModel = idBusinessModel;
     }
 }

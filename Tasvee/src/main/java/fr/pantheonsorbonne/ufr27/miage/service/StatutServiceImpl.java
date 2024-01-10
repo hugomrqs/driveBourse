@@ -14,6 +14,7 @@ public class StatutServiceImpl implements StatutService {
 
     @Override
     public Statut getStatut(int idStatut) {
+        System.out.println("Récupération du Statut " + idStatut + " en cours.");
         return convertToDTO(statutDAO.getStatut(idStatut)) ;
     }
 

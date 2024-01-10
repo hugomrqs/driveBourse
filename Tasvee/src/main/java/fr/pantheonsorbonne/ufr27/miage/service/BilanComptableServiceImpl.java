@@ -14,6 +14,7 @@ public class BilanComptableServiceImpl implements BilanComptableService {
 
     @Override
     public BilanComptable getBilanComptable(int idBilanComptable) {
+        System.out.println("Récupération du Bilan Comptable " + idBilanComptable + " en cours.");
         return convertToDTO(bilanComptableDAO.getBilanComptable(idBilanComptable)) ;
     }
 

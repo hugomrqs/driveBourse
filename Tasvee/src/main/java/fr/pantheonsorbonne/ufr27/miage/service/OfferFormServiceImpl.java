@@ -17,11 +17,13 @@ public class OfferFormServiceImpl implements OfferFormService {
     public boolean isOfferAccepted(OfferForm offerForm) {
         // Logique métier pour déterminer si l'offre est acceptée ou non
         // Exemple de logique : Si le montant de la levée est supérieur à un certain seuil, elle est acceptée
-        return offerForm.objectLevee() > 100000; // À ajuster en fonction de notre logique métier
+        System.out.println("vérification de l'offerForm en cours.");
+        return offerForm.objectLevee() > 100000;
     }
 
     @Override
     public void saveOfferForm(OfferForm offerForm) {
         offerFormDAO.registerStartUpEntity(offerForm);
+        System.out.println("Suite à l'offerForm, une Startup, son Bilan comptable, son Statut, et son Cv dirigeant ont bien été ajoutée dans la DB avec succès.");
     }
 }
