@@ -1,0 +1,30 @@
+package fr.pantheonsorbonne.ufr27.miage.camel;
+
+import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciere;
+import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridique;
+import fr.pantheonsorbonne.ufr27.miage.dto.OnePager;
+import fr.pantheonsorbonne.ufr27.miage.exception.BadDataException;
+import fr.pantheonsorbonne.ufr27.miage.service.OnePagerService;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import org.apache.camel.CamelContext;
+import org.apache.camel.ProducerTemplate;
+import java.io.IOException;
+
+@ApplicationScoped
+public class FundsInterestedGatewayImpl implements FundsInterestedGateway {
+    @Inject
+    OnePagerService onePagerService;
+    @Inject
+    CamelContext context;
+
+    @Override
+    public void distribute(ExpertiseFinanciere expertiseFinanciere, ExpertiseJuridique expertiseJuridique, Character c) throws BadDataException {
+        try (ProducerTemplate producer = context.createProducerTemplate()) {
+            producer.sendBody("direct:cli", new OnePager(expertiseJuridique, expertiseFinanciere, c));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
