@@ -81,12 +81,16 @@ public class CamelRoutes extends RouteBuilder {
                         exchange.getMessage().setHeaders(new HashMap<>());
                         exchange.getMessage().setHeader("to",smtpUser);
                         exchange.getMessage().setHeader("from",smtpUser);
-                        exchange.getMessage().setHeader("contentType", "application/pdf");
+                        exchange.getMessage().setHeader("contentType", "text/html");
                         exchange.getMessage().setHeader("subject", "Contrat Juridique");
+                        exchange.getMessage().setBody("Bonjour,\n\n Suite à votre prise de contact sur notre site via l'offerForm " +
+                                "\n Tasvee à le plaisir de vous annocer notre collaboration" +
+                                " \n Veuillez trouver ci joint votre Business plan ");
+
+
                     }
                 })
-                //.to("sjms2:" + jmsPrefix + "ticket");
-                .to("sjms2:topic:" + jmsPrefix + "-reply");
+                .to("smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword + "&contentType=");
 
     }
 
