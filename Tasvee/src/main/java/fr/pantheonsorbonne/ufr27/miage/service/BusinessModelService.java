@@ -5,6 +5,7 @@ import fr.pantheonsorbonne.ufr27.miage.dto.OfferForm;
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
 import fr.pantheonsorbonne.ufr27.miage.model.StartUp;
 import fr.pantheonsorbonne.ufr27.miage.model.Statut;
+import jakarta.transaction.Transactional;
 
 public interface BusinessModelService {
 
@@ -13,12 +14,15 @@ public interface BusinessModelService {
     int quantificationParts(Statut statuts, int partCedee);
 
 
-    BusinessModel CreateBusinessModel(int argentLeveeXpTasvee, int partCedeeXpTasvee, StartUp startUp);
 
     // Méthode pour envoyer le modèle d'affaires
   //  public void SendBusinessModel(BusinessModel businessModel, StartUp startUp);
-     void SendBusinessModel(BusinessModel businessModel);
 
+
+    BusinessModel CreateBusinessModel(BusinessModel bm,int argentLeveeXpTasvee, int partCedeeXpTasvee);
+
+    @Transactional
+    void SendBusinessModel(BusinessModel businessModel, int argentLeveeXpTasvee, int partCedeeXpTasvee);
 
     void useOfferForm(OfferForm offerForm);
 

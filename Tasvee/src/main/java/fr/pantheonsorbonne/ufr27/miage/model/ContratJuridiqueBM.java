@@ -22,9 +22,8 @@ public class ContratJuridiqueBM {
     @Column(name = "SiretTasvee")
     private String siretTasvee;
 
-    @ManyToOne
     @JoinColumn(name = "SiretStartUP", referencedColumnName = "SiretStartUP")
-    private StartUp siretStartUp;
+    private String siretStartUp;
 
     @ManyToOne
     @JoinColumn(name = "IDBusinessModel", referencedColumnName = "IDBusinessModel")
@@ -37,7 +36,7 @@ public class ContratJuridiqueBM {
                               Boolean startUp,
                               Integer pourcentageComissionTasvee,
                               String siretTasvee,
-                              StartUp siretStartUp,
+                              String siretStartUp,
                               BusinessModel idBusinessModel) {
         this.tasvee = tasvee;
         this.startUp = startUp;
@@ -67,7 +66,7 @@ public class ContratJuridiqueBM {
         return siretTasvee;
     }
 
-    public StartUp getSiretStartUp() {
+    public String getSiretStartUp() {
         return siretStartUp;
     }
 
@@ -95,7 +94,7 @@ public class ContratJuridiqueBM {
         this.siretTasvee = siretTasvee;
     }
 
-    public void setSiretStartUp(StartUp siretStartUp) {
+    public void setSiretStartUp(String siretStartUp) {
         this.siretStartUp = siretStartUp;
     }
 

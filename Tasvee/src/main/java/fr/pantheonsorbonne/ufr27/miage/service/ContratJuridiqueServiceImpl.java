@@ -20,7 +20,7 @@ public class ContratJuridiqueServiceImpl implements ContratJuridiqueService {
     private BusinessModelService businessModelService;
 
     @Override
-    public ContratJuridiqueBM createContratJuridiqueBM(String siretTasvee, StartUp siretStartUp, BusinessModel idBusinessModel,
+    public ContratJuridiqueBM createContratJuridiqueBM(String siretTasvee, String siretStartUp, BusinessModel idBusinessModel,
                                                        boolean tasvee, boolean startUp, int pourcentageComissionTasvee) {
         ContratJuridiqueBM contratJuridiqueBM = new ContratJuridiqueBM();
         contratJuridiqueBM.setTasvee(tasvee);
@@ -38,7 +38,7 @@ public class ContratJuridiqueServiceImpl implements ContratJuridiqueService {
         // Vous pouvez implémenter la logique pour envoyer le contrat juridique à la startup, par exemple, via Camel SMTP
         // Ici, j'ai assumé que vous avez une méthode sendContratJuridiqueBMtoStartUp dans votre classe smtpGateway
         // qui prend le contratJuridiqueBM et l'adresse e-mail de la startup
-        smtp.sendContratJuridiqueBMtoStartUp(contratJuridiqueBM, contratJuridiqueBM.getSiretStartUp().getMail());
+        smtp.sendContratJuridiqueBMtoStartUp(contratJuridiqueBM, contratJuridiqueBM.getSiretStartUp());
     }
 
     @Override

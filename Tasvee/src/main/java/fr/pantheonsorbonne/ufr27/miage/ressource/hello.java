@@ -15,25 +15,11 @@ public class hello {
     BusinessModelService bmS;
 
 
-        @Path("/test")
-        @POST
-        public void proposal() {
-            System.out.println("test");
-            BusinessModel bm = new BusinessModel();
-            bm.setPartCedeeXpTasvee(1);
-            bm.setArgentLeveeXpTasvee(30);
-            bm.setsiretStartUp(null);
-            bmS.SendBusinessModel(bm);
-        }
-
     @POST
     @Path("/{param}")
     public Response testMethod(@PathParam("param") int param) {
         BusinessModel bm = new BusinessModel();
-        bm.setPartCedeeXpTasvee(1);
-        bm.setArgentLeveeXpTasvee(30);
-        bm.setsiretStartUp(null);
-        bmS.SendBusinessModel(bm);
+        bmS.SendBusinessModel(bm,30,30);
         String output = "Paramètre reçu : " + param;
         return Response.status(200).entity(output).build();
     }

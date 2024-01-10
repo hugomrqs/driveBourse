@@ -5,7 +5,6 @@ import fr.pantheonsorbonne.ufr27.miage.camel.smtpGateway;
 import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
 import fr.pantheonsorbonne.ufr27.miage.dto.OfferForm;
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
-import fr.pantheonsorbonne.ufr27.miage.model.StartUp;
 import fr.pantheonsorbonne.ufr27.miage.model.Statut;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
@@ -24,30 +23,43 @@ public class BusinessModelServiceImpl implements  BusinessModelService {
     @Override
     public int quantificationLeveeDeFonds(BilanComptable bilanComptable, int argentLevee) {
 
-        int argentLeveeXpTasvee = 0;
+        int argentLeveeXpTasvee = 20;
         return argentLeveeXpTasvee;
     }
 
     @Override
     public int quantificationParts(Statut statuts, int partCedee) {
-        int partCedeeXpTasvee = 0;
+        int partCedeeXpTasvee = 80;
         return partCedeeXpTasvee;
     }
 
+
+
     @Override
-    public BusinessModel CreateBusinessModel(int argentLeveeXpTasvee, int partCedeeXpTasvee, StartUp startUp) {
-        BusinessModel bm = new BusinessModel();
-        bm.setArgentLeveeXpTasvee(1);
-        bm.setPartCedeeXpTasvee(4);
-        bm.setsiretStartUp(null);
-       // SendBusinessModel(bm,startUp);
+    public BusinessModel CreateBusinessModel(BusinessModel bm,int argentLeveeXpTasvee, int partCedeeXpTasvee) {
+        bm.setArgentLeveeXpTasvee(5);
+        bm.setPartCedeeXpTasvee(9);
+        bm.setsiretStartUp("te");
+
+        //bm.setArgentLeveeXpTasvee(quantificationLeveeDeFonds());
+        //bm.setPartCedeeXpTasvee(quanntificationParts());
+       // bm.setsiretStartUp(startUp.getSiretStartUp());
         return bm;
     }
+
+
     @Transactional
     @Override
-    public void SendBusinessModel(BusinessModel businessModel) {
-        bmDAO.addBusinessModel(businessModel);
-        smtp.replyToOffer(businessModel,"hugo.albert.marques@gmail.com");
+    public void SendBusinessModel(BusinessModel businessModel, int argentLeveeXpTasvee, int partCedeeXpTasvee) {
+        //allerChercher en base Statut
+        //BilanCOmptable
+        try {
+            bmDAO.addBusinessModel( CreateBusinessModel(businessModel,argentLeveeXpTasvee,partCedeeXpTasvee));
+
+        }catch (Exception e){
+            throw new RuntimeException();
+        }
+        smtp.replyToOffer(businessModel);
     }
 
     @Override

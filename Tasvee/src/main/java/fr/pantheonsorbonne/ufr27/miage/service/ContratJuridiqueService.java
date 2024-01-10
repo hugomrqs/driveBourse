@@ -5,8 +5,7 @@ import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueBM;
 import fr.pantheonsorbonne.ufr27.miage.model.StartUp;
 
 public interface ContratJuridiqueService {
-    ContratJuridiqueBM createContratJuridiqueBM(String siretTasvee, StartUp siretStartUp, BusinessModel idBusinessModel,
-                                                boolean tasvee, boolean startUp, int pourcentageComissionTasvee);
+    ContratJuridiqueBM createContratJuridiqueBM(String siretTasvee, String siretStartUp, BusinessModel idBusinessModel, boolean tasvee, boolean startUp, int pourcentageComissionTasvee);
 
 
     void sendContratJuridiqueBMtoStartUp(ContratJuridiqueBM contratJuridiqueBM);

@@ -1,5 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
+import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
 import jakarta.activation.DataHandler;
 import jakarta.activation.FileDataSource;
@@ -10,8 +11,13 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.attachment.AttachmentMessage;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.HashMap;
 
@@ -45,22 +51,42 @@ public class CamelRoutes extends RouteBuilder {
 
         camelContext.setTracing(true);
 
-        from("direct:smtpToStartUp")
+        from("sjms2:topic:" + jmsPrefix + "-SMTP")
                 .autoStartup(isRouteEnabled)
-                .log("testttt")
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
-                        exchange.getMessage().setHeader("from",smtpPort);
-                        exchange.getMessage().setHeader("contentType", "text/html");
-                        exchange.getMessage().setHeader("subject", "cancellation notice for venue");
-                        exchange.getMessage().setBody("Dear Customer,\n\n Venue for your ticket  has been cancelled.\n\n Contact vendor for refund");
+                        // Créer un nouveau document PDF
+//                        PDDocument document = new PDDocument();
+//                        PDPage page = new PDPage();
+//                        document.addPage(page);
+//
+//                        // Ajouter du contenu au PDF
+//                        PDPageContentStream contentStream = new PDPageContentStream(document, page);
+//                        contentStream.beginText();
+//                        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
+//                        contentStream.showText("Contenu du PDF");
+//                        contentStream.endText();
+//                        contentStream.close();
+//
+//                        // Convertir le PDF en byte array
+//                        ByteArrayOutputStream out = new ByteArrayOutputStream();
+//                        document.save(out);
+//                        document.close();
+//
+//                        // Définir le byte array comme corps du message
+//                        exchange.getMessage().setBody(out.toByteArray());
 
-                        //AttachmentMessage attMsg = exchange.getIn(AttachmentMessage.class);
-                       // attMsg.addAttachment("BusinessModel.pdf", new DataHandler(new FileDataSource(new File("chemin/vers/votre/package/file/BusinessModel.pdf"))));
+                        // Définir les en-têtes
+                        exchange.getMessage().setHeaders(new HashMap<>());
+                        exchange.getMessage().setHeader("to",smtpUser);
+                        exchange.getMessage().setHeader("from",smtpUser);
+                        exchange.getMessage().setHeader("contentType", "application/pdf");
+                        exchange.getMessage().setHeader("subject", "Contrat Juridique");
                     }
                 })
-                .to("smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword + "&contentType=");
+                //.to("sjms2:" + jmsPrefix + "ticket");
+                .to("sjms2:topic:" + jmsPrefix + "-reply");
 
     }
 
