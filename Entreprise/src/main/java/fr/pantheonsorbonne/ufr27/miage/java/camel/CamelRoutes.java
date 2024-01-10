@@ -1,6 +1,12 @@
 package fr.pantheonsorbonne.ufr27.miage.java.camel;
 
+import fr.pantheonsorbonne.ufr27.miage.java.DAO.BusinessModelDAO;
+import fr.pantheonsorbonne.ufr27.miage.java.dto.BusinessModelDTO;
+import fr.pantheonsorbonne.ufr27.miage.java.model.BusinessModel;
+import fr.pantheonsorbonne.ufr27.miage.java.service.ReplyService;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
@@ -10,6 +16,10 @@ import java.util.HashMap;
 
 @ApplicationScoped
 public class CamelRoutes extends RouteBuilder {
+    @ConfigProperty(name = "camel.routes.enabled", defaultValue = "true")
+    boolean isRouteEnabled;
+
+
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.jmsPrefix")
     String jmsPrefix;
 
@@ -17,36 +27,28 @@ public class CamelRoutes extends RouteBuilder {
     String smtpUser;
 
 
+    @Inject
+    CamelContext camelContext;
+
+    ReplyService reply;
+
     @Override
     public void configure() throws Exception {
-        System.out.println("test");
+
+        camelContext.setTracing(true);
+
+
         from("sjms2:topic:" + jmsPrefix + "reply")
-                .log("yeyeye")
+                .autoStartup(isRouteEnabled)
+                .log("BusinessPlan reçu par Tasvee")
+                //unmarshal().json()
+                .unmarshal().json(BusinessModel.class)
+                .bean(reply, "addBm").marshal().json();
+
+        from("sjms2:topic:" + jmsPrefix + "reply")
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
-                        // Créer un nouveau document PDF
-//                        PDDocument document = new PDDocument();
-//                        PDPage page = new PDPage();
-//                        document.addPage(page);
-//
-//                        // Ajouter du contenu au PDF
-//                        PDPageContentStream contentStream = new PDPageContentStream(document, page);
-//                        contentStream.beginText();
-//                        contentStream.setFont(PDType1Font.HELVETICA_BOLD, 12);
-//                        contentStream.showText("Contenu du PDF");
-//                        contentStream.endText();
-//                        contentStream.close();
-//
-//                        // Convertir le PDF en byte array
-//                        ByteArrayOutputStream out = new ByteArrayOutputStream();
-//                        document.save(out);
-//                        document.close();
-//
-//                        // Définir le byte array comme corps du message
-//                        exchange.getMessage().setBody(out.toByteArray());
-
-                        // Définir les en-têtes
                         exchange.getMessage().setHeaders(new HashMap<>());
                         exchange.getMessage().setHeader("to",smtpUser);
                         exchange.getMessage().setHeader("from",smtpUser);

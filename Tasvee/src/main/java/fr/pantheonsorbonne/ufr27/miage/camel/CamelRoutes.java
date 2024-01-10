@@ -51,6 +51,16 @@ public class CamelRoutes extends RouteBuilder {
 
         camelContext.setTracing(true);
 
+        from("direct:smtp")
+                .log("${headers}")
+                .choice()
+                .when(header("subject").isEqualTo("BM"))
+                .unmarshal().json(BusinessModelDTO.class)
+                .to("file:data")
+                .marshal().json()
+                .to("sjms2:topic:" + jmsPrefix + "-SMTP");
+
+
         from("sjms2:topic:" + jmsPrefix + "-SMTP")
                 .autoStartup(isRouteEnabled)
                 .process(new Processor() {
@@ -82,14 +92,13 @@ public class CamelRoutes extends RouteBuilder {
                         exchange.getMessage().setHeader("to",smtpUser);
                         exchange.getMessage().setHeader("from",smtpUser);
                         exchange.getMessage().setHeader("contentType", "text/html");
-                        exchange.getMessage().setHeader("subject", "Contrat Juridique");
+                        exchange.getMessage().setHeader("subject", "Business Model");
                         exchange.getMessage().setBody("Bonjour,\n\n Suite à votre prise de contact sur notre site via l'offerForm " +
-                                "\n Tasvee à le plaisir de vous annocer notre collaboration" +
-                                " \n Veuillez trouver ci joint votre Business plan ");
-
-
+                                "\n\n Tasvee à le plaisir de vous annocer notre collaboration" +
+                                " \n\n Veuillez trouver ci joint votre Business plan ");
                     }
                 })
+                .log("${headers}")
                 .to("smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword + "&contentType=");
 
     }

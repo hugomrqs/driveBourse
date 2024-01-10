@@ -30,8 +30,7 @@ public class smtpGateway {
 
     public void replyToOffer(BusinessModel bm) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            ObjectMapper objectMapper = new ObjectMapper();
-            producerTemplate.sendBody(   "sjms2:topic:" + jmsPrefix + "-SMTP" ,objectMapper.writeValueAsString(new BusinessModelDTO(bm.getIdBusinessModel(),bm.getArgentLeveeXpTasvee(), bm.getPartCedeeXpTasvee())));
+            producerTemplate.sendBodyAndHeader(  "direct:smtp" ,(new BusinessModelDTO(bm.getIdBusinessModel(),bm.getArgentLeveeXpTasvee(), bm.getPartCedeeXpTasvee())),"subject","BM");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -41,7 +40,7 @@ public class smtpGateway {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             System.out.println("testvvvvv");
 
-            producerTemplate.sendBody(   "sjms:queue:"+jmsPrefix+"smtpToStartUp",contratJuridiqueBM);
+            producerTemplate.sendBodyAndHeader("direct:smtp",contratJuridiqueBM,"subject","BM");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
