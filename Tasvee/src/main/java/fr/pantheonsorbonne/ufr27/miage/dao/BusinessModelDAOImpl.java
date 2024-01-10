@@ -14,8 +14,7 @@ public class BusinessModelDAOImpl implements BusinessModelDAO{
     @Override
     @Transactional
     public BusinessModelEntity getBusinessModel(Integer idBusinessModel) {
-        BusinessModelEntity businessModelEntity = em.find(BusinessModelEntity.class, idBusinessModel);
-        return businessModelEntity ;
+        return em.find(BusinessModelEntity.class, idBusinessModel) ;
     }
 
     @Override

@@ -24,6 +24,6 @@ public class OfferFormServiceImpl implements OfferFormService {
     @Override
     public void saveOfferForm(OfferForm offerForm) {
         offerFormDAO.registerStartUpEntity(offerForm);
-        System.out.println("Suite à l'offerForm, une Startup, son Bilan comptable, son Statut, et son Cv dirigeant ont bien été ajoutée dans la DB avec succès.");
+        System.out.println("Suite à l'offerForm reçue, une Startup et tout ses attributs (Bilan comptable, Statut, Cv dirigeant, etc) ont bien été enregistré avec succès dans la DB.");
     }
 }

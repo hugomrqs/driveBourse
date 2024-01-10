@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ContratJuridiqueBM")
-public class ContratJuridiqueBM {
+public class ContratJuridiqueBMEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +20,7 @@ public class ContratJuridiqueBM {
     private Integer pourcentageComissionTasvee;
 
     @Column(name = "SiretTasvee")
-    private String siretTasvee;
+    private Integer siretTasvee;
 
     @ManyToOne
     @JoinColumn(name = "SiretStartUP", referencedColumnName = "SiretStartUP")
@@ -30,15 +30,15 @@ public class ContratJuridiqueBM {
     @JoinColumn(name = "IDBusinessModel", referencedColumnName = "IDBusinessModel")
     private BusinessModelEntity idBusinessModel;
 
-    public ContratJuridiqueBM() {
+    public ContratJuridiqueBMEntity() {
     }
 
-    public ContratJuridiqueBM(Boolean tasvee,
-                              Boolean startUp,
-                              Integer pourcentageComissionTasvee,
-                              String siretTasvee,
-                              StartUpEntity siretStartUp,
-                              BusinessModelEntity idBusinessModel) {
+    public ContratJuridiqueBMEntity(Boolean tasvee,
+                                    Boolean startUp,
+                                    Integer pourcentageComissionTasvee,
+                                    Integer siretTasvee,
+                                    StartUpEntity siretStartUp,
+                                    BusinessModelEntity idBusinessModel) {
         this.tasvee = tasvee;
         this.startUp = startUp;
         this.pourcentageComissionTasvee = pourcentageComissionTasvee;
@@ -63,7 +63,7 @@ public class ContratJuridiqueBM {
         return pourcentageComissionTasvee;
     }
 
-    public String getSiretTasvee() {
+    public Integer getSiretTasvee() {
         return siretTasvee;
     }
 
@@ -91,7 +91,7 @@ public class ContratJuridiqueBM {
         this.pourcentageComissionTasvee = pourcentageComissionTasvee;
     }
 
-    public void setSiretTasvee(String siretTasvee) {
+    public void setSiretTasvee(Integer siretTasvee) {
         this.siretTasvee = siretTasvee;
     }
 
