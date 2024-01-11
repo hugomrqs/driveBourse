@@ -18,6 +18,13 @@ public class BusinessModelServiceImpl implements BusinessModelService{
 
     //@Inject
     //smtpGateway smtp;
+
+    @Inject
+    PrestaFinancierService prestaFinancierService;
+
+    @Inject
+    PrestaJuridiqueService prestaJuridiqueService;
+
     @Override
     public void isFormAccepted(Integer siretStartup) {
         BusinessModelEntity businessModelEntity = businessModelDAO.createBusinessModel(siretStartup, quantificationLeveeDeFonds(), quantificationParts()) ;
@@ -50,6 +57,8 @@ public class BusinessModelServiceImpl implements BusinessModelService{
     public void contratJuridiqueBMSigned(ContratJuridiqueBMEntity contratJuridiqueBMEntity) {
         businessModelDAO.addSignature(contratJuridiqueBMEntity) ;
         System.out.println("Le contrat juridique " + contratJuridiqueBMEntity.getContratJuridiqueBM() + " du business model signé à été receptionné, la signature à été enregistrée avec succès en DB.");
+        prestaFinancierService.requestForFinanceExpertise(contratJuridiqueBMEntity.getSiretStartUp().getIdBilanComptable().getIdBilanComptable()) ; // est-ce ok ou bien passage par dao ?
+        prestaJuridiqueService.requestForLegalExpertise(contratJuridiqueBMEntity.getSiretStartUp().getIdStatuts().getIdStatut()) ;
     }
 
 }
