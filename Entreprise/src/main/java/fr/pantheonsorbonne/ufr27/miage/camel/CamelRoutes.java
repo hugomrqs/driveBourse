@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBMDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModelEntity;
+import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueBMEntity;
 import fr.pantheonsorbonne.ufr27.miage.service.BusinessModelService;
 import org.apache.camel.builder.RouteBuilder;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
@@ -50,7 +51,7 @@ public class CamelRoutes extends RouteBuilder {
                 .marshal().json();
 
                 from("sjms2:topic:"+jmsPrefix+"CJ")
-                .unmarshal().json(ContratJuridiqueBMDTO.class)
+                .unmarshal().json(ContratJuridiqueBMEntity.class)
                 .bean(reply,"registerContratJuridiqueBM ")
                 .marshal().json()
                         .to("sjms2:topic:"+jmsPrefix+"-SMTP");
