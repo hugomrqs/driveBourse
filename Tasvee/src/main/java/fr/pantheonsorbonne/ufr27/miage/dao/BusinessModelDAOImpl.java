@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModelEntity;
+import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueBMEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.StartUpEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -26,5 +27,12 @@ public class BusinessModelDAOImpl implements BusinessModelDAO{
         businessModelEntity.setsiretStartUp(em.find(StartUpEntity.class, idSiretStartup));
         em.persist(businessModelEntity);
         return businessModelEntity;
+    }
+
+    @Override
+    public void addSignature(ContratJuridiqueBMEntity contratJuridiqueBMEntity) {
+        ContratJuridiqueBMEntity existingEntity = em.find(ContratJuridiqueBMEntity.class, contratJuridiqueBMEntity);
+        existingEntity.setStartUp(true);
+        em.merge(existingEntity);
     }
 }

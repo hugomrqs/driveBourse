@@ -37,7 +37,7 @@ public class BusinessModelServiceImpl implements BusinessModelService{
     }
 
     /*private void SendBusinessModel(BusinessModelEntity businessModelEntity, Integer siretStartup) {
-        smtp.replyToOffer(businessModelEntity); //donner un DTO pas une entity --> donc convert en DTO avant
+        smtp.replyToOffer(businessModelEntity);
         System.out.println("Le business model de la startup " + siretStartup + " à été envoyé par mail avec succès") ;
     }*/
 
@@ -45,5 +45,11 @@ public class BusinessModelServiceImpl implements BusinessModelService{
         smtp.sendContratJuridiqueBMtoStartUp(ContratJuridiqueBMEntity);
         System.out.println("Le contrat juridique pour le Business Model de la startup " + siretStartup + " à été envoyé par mail avec succès") ;
     }*/
+
+    @Override
+    public void contratJuridiqueBMSigned(ContratJuridiqueBMEntity contratJuridiqueBMEntity) {
+        businessModelDAO.addSignature(contratJuridiqueBMEntity) ;
+        System.out.println("Le contrat juridique " + contratJuridiqueBMEntity.getContratJuridiqueBM() + " du business model signé à été receptionné, la signature à été enregistrée avec succès en DB.");
+    }
 
 }
