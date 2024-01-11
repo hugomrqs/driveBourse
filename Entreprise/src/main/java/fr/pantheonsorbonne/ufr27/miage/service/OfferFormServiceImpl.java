@@ -33,7 +33,7 @@ public class OfferFormServiceImpl implements OfferFormService {
 
             // Envoyer le JSON à l'API
             sendJsonToApi(jsonOfferForm);
-            System.out.println("json envoyé sur le endpoint de Tasvee : " + jsonOfferForm);
+            System.out.println("L'offerForm à été envoyé avec succès (au format json) sur le endpoint de Tasvee : " + jsonOfferForm);
         } catch (IOException e) {
             LOGGER.error("Erreur lors de la conversion en JSON", e);
         }
