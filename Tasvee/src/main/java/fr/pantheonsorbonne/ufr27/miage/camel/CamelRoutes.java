@@ -46,14 +46,14 @@ public class CamelRoutes extends RouteBuilder {
                 .completionTimeout(10000)
                 .to("direct:processInteretOnePager");
 
-        from("direct:processInteretOnePager")
-                .bean(OnePagerInteretService)
-                .bean(ContratJuridiqueService)
-                // Créer le contrat en base de données
-                .bean(contratJuridiqueService, "createContratJuridiqueOnePagerPourBPDatabase")
-                // Créer le DTO
-//                contratJuridiqueService, "createContratJuridiqueOnePagerPourBPDTO")
-                // Envelopper le DTO dans un message Camel et préparer pour l'envoi
-                .bean(ContratJuridiqueGateway, "sendContratJuridiqueOnePagerPourBP()");//"contratJuridiqueService, \"createContratJuridiqueOnePagerPourBPDTO\""
+//  @TODO      from("direct:processInteretOnePager")
+//                .bean(OnePagerInteretService)
+//                .bean(ContratJuridiqueService)
+//                // Créer le contrat en base de données
+//                .bean(contratJuridiqueService, "createContratJuridiqueOnePagerPourBPDatabase")
+//                // Créer le DTO
+//               contratJuridiqueService, "createContratJuridiqueOnePagerPourBPDTO")
+//                // Envelopper le DTO dans un message Camel et préparer pour l'envoi
+//                .bean(ContratJuridiqueGateway, "sendContratJuridiqueOnePagerPourBP()");//"contratJuridiqueService, \"createContratJuridiqueOnePagerPourBPDTO\""
     }
 }
