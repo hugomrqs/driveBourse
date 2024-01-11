@@ -45,8 +45,7 @@ public class BusinessModel {
         this.siretStartUp = siretStartUp;
     }
 
-    public Integer
-    getArgentLeveeXpTasvee() {
+    public Integer getArgentLeveeXpTasvee() {
         return argentLeveeXpTasvee;
     }
 

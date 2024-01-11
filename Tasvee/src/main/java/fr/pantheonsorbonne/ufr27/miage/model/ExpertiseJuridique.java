@@ -13,6 +13,9 @@ public class ExpertiseJuridique {
     @Column(name = "nombrePartExpertise")
     private Integer nombrePartExpertise;
 
+    @Column(name = "prixPartExpertise")
+    private Integer prixPartExpertise;
+
     @ManyToOne
     @JoinColumn(name = "SiretPrestataireJuridique", referencedColumnName = "SiretPrestataireJuridique")
     private PrestataireJuridique prestataireJuridique;
@@ -20,8 +23,9 @@ public class ExpertiseJuridique {
     public ExpertiseJuridique() {
     }
 
-    public ExpertiseJuridique(Integer nombrePartExpertise, PrestataireJuridique prestataireJuridique) {
+    public ExpertiseJuridique(Integer nombrePartExpertise,Integer prixPartExpertise, PrestataireJuridique prestataireJuridique) {
         this.nombrePartExpertise = nombrePartExpertise;
+        this.prixPartExpertise = prixPartExpertise;
         this.prestataireJuridique = prestataireJuridique;
     }
 
@@ -41,6 +45,14 @@ public class ExpertiseJuridique {
 
     public void setNombrePartExpertise(Integer nombrePartExpertise) {
         this.nombrePartExpertise = nombrePartExpertise;
+    }
+
+    public Integer getPrixPartExpertise() {
+        return prixPartExpertise;
+    }
+
+    public void setPrixPartExpertise(Integer prixPartExpertise) {
+        this.prixPartExpertise = prixPartExpertise;
     }
 
     public PrestataireJuridique getPrestataireJuridique() {

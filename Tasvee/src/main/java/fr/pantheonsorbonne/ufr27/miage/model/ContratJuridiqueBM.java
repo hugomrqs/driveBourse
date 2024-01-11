@@ -22,6 +22,7 @@ public class ContratJuridiqueBM {
     @Column(name = "SiretTasvee")
     private String siretTasvee;
 
+    @ManyToOne
     @JoinColumn(name = "SiretStartUP", referencedColumnName = "SiretStartUP")
     private String siretStartUp;
 

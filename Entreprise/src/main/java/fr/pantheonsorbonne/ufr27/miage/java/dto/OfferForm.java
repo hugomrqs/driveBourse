@@ -4,9 +4,13 @@ public record OfferForm(
         BilanComptable bilanComptable,
         Statut statut,
         int objectLevee,
-        String siretEntreprise,
+        Integer siretStartup,
         int organigramme,
         CvDirigeant cvDirigeant,
-        String siteWeb) {
+        String siteWeb,
+        String mail,
+        String secteur) {
 }
+
+
 

@@ -4,11 +4,11 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "StartUp")
-public class StartUp {
+public class StartUpEntity {
 
     @Id
-    @Column(name = "SiretStartUP")
-    private String siretStartUp;
+    @Column(name = "SiretStartUp")
+    private Integer siretStartUp;
 
     @Column(name = "nombreDePersonne")
     private Integer nombreDePersonne;
@@ -39,15 +39,15 @@ public class StartUp {
 
     @ManyToOne
     @JoinColumn(name = "IDBilanComptable", referencedColumnName = "IDBilanComptable")
-    private BilanComptable idBilanComptable;
+    private BilanComptableEntity idBilanComptable;
 
     @ManyToOne
-    @JoinColumn(name = "IDStatuts", referencedColumnName = "IDStatuts")
-    private Statut idStatuts;
+    @JoinColumn(name = "IDStatut", referencedColumnName = "IDStatut")
+    private StatutEntity idStatut;
 
     @ManyToOne
     @JoinColumn(name = "IDCVDirigeant", referencedColumnName = "IDCVDirigeant")
-    private CVDirigeant idCVDirigeant;
+    private CVDirigeantEntity idCVDirigeant;
 
     @ManyToOne
     @JoinColumn(name = "IDBusinessModel", referencedColumnName = "IDBusinessModel")
@@ -57,24 +57,24 @@ public class StartUp {
     @JoinColumn(name = "IDOnePager", referencedColumnName = "IDOnePager")
     private OnePager idOnePager;
 
-    public StartUp() {
+    public StartUpEntity() {
     }
 
-    public StartUp(String siretStartUp,
-                   Integer nombreDePersonne,
-                   String lienSiteWeb,
-                   LocalDateTime dateOfferForm,
-                   String mail,
-                   String secteur,
-                   Integer numeroDeLevee,
-                   String iban,
-                   Integer argentLevee,
-                   Integer partCede,
-                   BilanComptable idBilanComptable,
-                   Statut idStatuts,
-                   CVDirigeant idCVDirigeant,
-                   BusinessModel idBusinessModel,
-                   OnePager idOnePager) {
+    public StartUpEntity(Integer siretStartUp,
+                         Integer nombreDePersonne,
+                         String lienSiteWeb,
+                         LocalDateTime dateOfferForm,
+                         String mail,
+                         String secteur,
+                         Integer numeroDeLevee,
+                         String iban,
+                         Integer argentLevee,
+                         Integer partCede,
+                         BilanComptableEntity idBilanComptable,
+                         StatutEntity idStatut,
+                         CVDirigeantEntity idCVDirigeant,
+                         BusinessModel idBusinessModel,
+                         OnePager idOnePager) {
 
         this.siretStartUp = siretStartUp;
         this.nombreDePersonne = nombreDePersonne;
@@ -87,14 +87,14 @@ public class StartUp {
         this.argentLevee = argentLevee;
         this.partCede = partCede;
         this.idBilanComptable = idBilanComptable;
-        this.idStatuts = idStatuts;
+        this.idStatut = idStatut;
         this.idCVDirigeant = idCVDirigeant;
         this.idBusinessModel = idBusinessModel;
         this.idOnePager = idOnePager;
     }
 
     // Getters
-    public String getSiretStartUp() {
+    public Integer getSiretStartUp() {
         return siretStartUp;
     }
 
@@ -134,15 +134,15 @@ public class StartUp {
         return partCede;
     }
 
-    public BilanComptable getIdBilanComptable() {
+    public BilanComptableEntity getIdBilanComptable() {
         return idBilanComptable;
     }
 
-    public Statut getIdStatuts() {
-        return idStatuts;
+    public StatutEntity getIdStatuts() {
+        return idStatut;
     }
 
-    public CVDirigeant getIdCVDirigeant() {
+    public CVDirigeantEntity getIdCVDirigeant() {
         return idCVDirigeant;
     }
 
@@ -155,7 +155,7 @@ public class StartUp {
     }
 
     // Setters
-    public void setSiretStartUp(String siretStartUp) {
+    public void setSiretStartUp(Integer siretStartUp) {
         this.siretStartUp = siretStartUp;
     }
 
@@ -195,15 +195,15 @@ public class StartUp {
         this.partCede = partCede;
     }
 
-    public void setIdBilanComptable(BilanComptable idBilanComptable) {
+    public void setIdBilanComptable(BilanComptableEntity idBilanComptable) {
         this.idBilanComptable = idBilanComptable;
     }
 
-    public void setIdStatuts(Statut idStatuts) {
-        this.idStatuts = idStatuts;
+    public void setIdStatuts(StatutEntity idStatut) {
+        this.idStatut = idStatut;
     }
 
-    public void setIdCVDirigeant(CVDirigeant idCVDirigeant) {
+    public void setIdCVDirigeant(CVDirigeantEntity idCVDirigeant) {
         this.idCVDirigeant = idCVDirigeant;
     }
 

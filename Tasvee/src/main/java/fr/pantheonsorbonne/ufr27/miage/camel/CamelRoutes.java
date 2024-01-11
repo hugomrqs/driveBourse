@@ -1,16 +1,22 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
+import fr.pantheonsorbonne.ufr27.miage.dto.Interet;
+import fr.pantheonsorbonne.ufr27.miage.service.InteretService;
 import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
 import jakarta.activation.DataHandler;
 import jakarta.activation.FileDataSource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.inject.Inject;
 import org.apache.camel.CamelContext;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.attachment.AttachmentMessage;
 import org.apache.camel.builder.RouteBuilder;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
@@ -23,6 +29,16 @@ import java.util.HashMap;
 
 @ApplicationScoped
 public class CamelRoutes extends RouteBuilder {
+    @ConfigProperty(name = "camel.routes.enabled", defaultValue = "true")
+    boolean isRouteEnabled;
+
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.jmsPrefix")
+    String jmsPrefix;
+    @Inject
+    InteretService interetService;
+    @Inject
+    FundsInterestedGateway fundsInterestedGateway;
+
 
     @ConfigProperty(name = "camel.routes.enabled", defaultValue = "true")
     boolean isRouteEnabled;
@@ -101,6 +117,30 @@ public class CamelRoutes extends RouteBuilder {
                 .log("${headers}")
                 .to("smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword + "&contentType=");
 
-    }
+        from("direct:OnePager")
+                .autoStartup(isRouteEnabled)
+                .log("OnePager : Secteur = ${in.headers}")
+                .marshal().json()
+                .choice()
+                    .when(header("Secteur").in("Tech", "b", "c", "d", "e"))
+                        .toD("sjms2:topic:" + jmsPrefix + "${in.headers.Secteur}")
+                        .log("sjms2:topic:" + jmsPrefix + "${in.headers.Secteur}")
+                    .otherwise()
+                        .log("Domaine non pris en charge");
 
+        from("sjms2:topic:"+ jmsPrefix +"Tech")
+                .log("Received message on Topic: " + jmsPrefix + "${in.headers.Secteur}")
+                .log("Message Content: ${body}");
+
+        from("sjms2:" + jmsPrefix + "queue:interestedIn")
+                .unmarshal().json(Interet.class)
+                .aggregate(header("idOnePager"), new InteretAgregationStrategy())
+                .completionSize(2)
+                .completionTimeout(10000)
+                .to("direct:processInteretOnePager");
+
+//        from("direct:processInteretOnePager")
+//                .bean(interetService, "traiterReponses");
+
+    }
 }
