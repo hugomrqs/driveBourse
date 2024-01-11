@@ -1,12 +1,12 @@
 package fr.pantheonsorbonne.ufr27.miage.dto;
 
-public record OfferForm(
-        BilanComptable bilanComptable,
-        Statut statut,
+public record OfferFormDTO(
+        BilanComptableDTO bilanComptableDTO,
+        StatutDTO statutDTO,
         int objectLevee,
         String siretEntreprise,
         int organigramme,
-        CvDirigeant cvDirigeant,
+        CvDirigeantDTO cvDirigeant,
         String siteWeb) {
 }
 

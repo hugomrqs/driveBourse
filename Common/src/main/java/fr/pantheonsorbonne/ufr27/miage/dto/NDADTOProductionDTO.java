@@ -1,10 +1,10 @@
 package fr.pantheonsorbonne.ufr27.miage.dto;
 
-public class NDAProduction extends NDA<OnePager> {
+public class NDADTOProductionDTO extends NDADTO<OnePagerDTO> {
     private boolean signatureFonds;
 
-    public NDAProduction(OnePager onePager, boolean signatureTasvee, boolean signatureFonds) {
-        super(onePager, signatureTasvee);
+    public NDADTOProductionDTO(OnePagerDTO onePagerDTO, boolean signatureTasvee, boolean signatureFonds) {
+        super(onePagerDTO, signatureTasvee);
         this.signatureFonds = signatureFonds;
     }
 

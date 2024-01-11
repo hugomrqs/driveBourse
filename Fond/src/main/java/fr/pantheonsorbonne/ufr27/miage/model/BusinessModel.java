@@ -1,16 +1,14 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+@Entity
 public class BusinessModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IDBusinessModel", nullable = false)
-    private Integer ContratJuridiqueBM;
+    private Integer contratJuridiqueBM;
 
     @Column(name = "argentLeveeXpTasvee", nullable = false, length = 45)
     private Integer argentLeveeXpTasvee;
@@ -18,5 +16,27 @@ public class BusinessModel {
     @Column(name = "partCedeeXpTasvee", nullable = false, length = 45)
     private Integer partCedeeXpTasvee;
 
+    public Integer getContratJuridiqueBM() {
+        return contratJuridiqueBM;
+    }
 
+    public void setContratJuridiqueBM(Integer contratJuridiqueBM) {
+        this.contratJuridiqueBM = contratJuridiqueBM;
+    }
+
+    public Integer getArgentLeveeXpTasvee() {
+        return argentLeveeXpTasvee;
+    }
+
+    public void setArgentLeveeXpTasvee(Integer argentLeveeXpTasvee) {
+        this.argentLeveeXpTasvee = argentLeveeXpTasvee;
+    }
+
+    public Integer getPartCedeeXpTasvee() {
+        return partCedeeXpTasvee;
+    }
+
+    public void setPartCedeeXpTasvee(Integer partCedeeXpTasvee) {
+        this.partCedeeXpTasvee = partCedeeXpTasvee;
+    }
 }

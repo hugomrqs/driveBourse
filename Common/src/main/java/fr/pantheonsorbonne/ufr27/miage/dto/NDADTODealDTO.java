@@ -1,10 +1,10 @@
 package fr.pantheonsorbonne.ufr27.miage.dto;
 
-public class NDADeal extends NDA<BusinessModel> {
+public class NDADTODealDTO extends NDADTO<BusinessModelDTO> {
     private boolean signatureEntreprise;
 
-    public NDADeal(BusinessModel businessModel, boolean signatureTasvee, boolean signatureEntreprise) {
-        super(businessModel, signatureTasvee);
+    public NDADTODealDTO(BusinessModelDTO businessModelDTO, boolean signatureTasvee, boolean signatureEntreprise) {
+        super(businessModelDTO, signatureTasvee);
         this.signatureEntreprise = signatureEntreprise;
     }
     public boolean isSignatureEntreprise() {

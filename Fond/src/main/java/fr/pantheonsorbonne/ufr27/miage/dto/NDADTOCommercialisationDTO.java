@@ -1,8 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.dto;
 
 
-import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
-
 public class NDADTOCommercialisationDTO extends NDADTO<PropositionDTO> {
     private boolean signatureFonds;
     private boolean signatureEntreprise;

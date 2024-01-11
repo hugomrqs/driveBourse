@@ -1,9 +1,9 @@
 package fr.pantheonsorbonne.ufr27.miage.dto;
 
-public record DemandeExpertiseFinanciere(
+public record DemandeExpertiseFinanciereDTO(
         String formuledepolitesse,
         String destinaire,
-        BilanComptable bilanComptable)
+        BilanComptableDTO bilanComptableDTO)
 {
 
 }

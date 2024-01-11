@@ -1,10 +1,8 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+@Entity
 public class BilanComptable {
 
     @Id
@@ -20,5 +18,4 @@ public class BilanComptable {
     private String venteDeMarchandise;
     @Column(name = "coutDeMarchandise", nullable = false, length = 45)
     private String coutDeMarchandise;
-
 }

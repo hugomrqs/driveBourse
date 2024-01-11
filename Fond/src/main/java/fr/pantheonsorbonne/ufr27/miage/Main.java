@@ -1,19 +1,25 @@
 package fr.pantheonsorbonne.ufr27.miage;
 
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
+
+import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
+import fr.pantheonsorbonne.ufr27.miage.model.Proposition;
+
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        // Press Alt+Entrée with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Scanner sc = new Scanner(System.in);
 
-        // Press Ctrl+F5 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        System.out.print("Entrez le montant de votre levée de fond que vous voulez offrir ?");
+        int leveeFond = sc.nextInt();
 
-            // Press Alt+F5 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing F9.
-            System.out.println("i = " + i);
-        }
+
+        System.out.print("Entrez la quantité de part que vous désirez proposez ?");
+        int qtePart = sc.nextInt();
+
+
+
+        sc.close();
+
     }
 }

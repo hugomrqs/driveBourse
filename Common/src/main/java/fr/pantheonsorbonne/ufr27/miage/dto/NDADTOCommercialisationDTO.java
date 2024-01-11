@@ -1,16 +1,20 @@
 package fr.pantheonsorbonne.ufr27.miage.dto;
 
 
-import fr.pantheonsorbonne.ufr27.miage.dto.common.Proposition;
+import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
 
-public class NDACommercialisation extends NDA<fr.pantheonsorbonne.ufr27.miage.dto.common.Proposition> {
+public class NDADTOCommercialisationDTO extends NDADTO<PropositionDTO> {
     private boolean signatureFonds;
     private boolean signatureEntreprise;
 
-    public NDACommercialisation(Proposition proposition, boolean signatureTasvee, boolean signatureFonds, boolean signatureEntreprise) {
-        super(proposition, signatureTasvee);
-        this.signatureFonds = signatureFonds;
-        this.signatureEntreprise = signatureEntreprise;
+    public NDADTOCommercialisationDTO(PropositionDTO propositionDTO,
+                                      boolean signatureTasvee,
+                                      boolean signatureFonds,
+                                      boolean signatureEntreprise) {
+
+    super(propositionDTO, signatureTasvee);
+    this.signatureFonds = signatureFonds;
+    this.signatureEntreprise = signatureEntreprise;
     }
 
     public boolean isSignatureFonds() {

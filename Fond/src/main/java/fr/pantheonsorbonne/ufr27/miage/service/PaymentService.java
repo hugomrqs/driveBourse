@@ -1,2 +1,11 @@
-package fr.pantheonsorbonne.ufr27.miage.service;public interface PaymentService {
+package fr.pantheonsorbonne.ufr27.miage.service;
+
+import fr.pantheonsorbonne.ufr27.miage.dto.NDADTOCommercialisationDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.RIBDTO;
+
+public interface PaymentService {
+
+    void signNDACom(NDADTOCommercialisationDTO nda);
+
+    void sendMoney(RIBDTO rib, String sender);
 }

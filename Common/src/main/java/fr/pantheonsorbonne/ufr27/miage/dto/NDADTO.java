@@ -1,10 +1,10 @@
 package fr.pantheonsorbonne.ufr27.miage.dto;
 
-public abstract class NDA<T> {
+public abstract class NDADTO<T> {
     private T sujet;
     private boolean signatureTasvee;
 
-    public NDA( T sujet, boolean signatureTasvee) {
+    public NDADTO(T sujet, boolean signatureTasvee) {
         this.sujet = sujet;
         this.signatureTasvee = signatureTasvee;
     }

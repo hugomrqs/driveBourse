@@ -1,10 +1,10 @@
 package fr.pantheonsorbonne.ufr27.miage.dto;
 
-public class NDANegociation extends NDA<Proposition> {
+public class NDADTONegociationDTO extends NDADTO<PropositionDTO> {
     private boolean signatureFonds;
 
-    public NDANegociation(Proposition proposition, boolean signatureTasvee, boolean signatureFonds) {
-        super(proposition, signatureTasvee);
+    public NDADTONegociationDTO(PropositionDTO propositionDTO, boolean signatureTasvee, boolean signatureFonds) {
+        super(propositionDTO, signatureTasvee);
         this.signatureFonds = signatureFonds;
     }
 

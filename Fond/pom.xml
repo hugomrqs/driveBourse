@@ -141,7 +141,7 @@
             <version>3.6.0</version>
             <scope>test</scope>
         </dependency>
-    </dependencies>²
+    </dependencies>
     <build>
         <plugins>
             <plugin>

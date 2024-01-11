@@ -2,12 +2,12 @@ package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.BusinessPlanDTO;
-import fr.pantheonsorbonne.ufr27.miage.model.Proposition;
+import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
 
-public interface BusinessPlanService {
+public interface BusinessService {
 
     /* Renvoie true si la proposition est accepté et false sinon */
-    public BusinessModelDTO createBMfromBP(BusinessPlanDTO bm);
+    public void createPropfromBP(BusinessPlanDTO bm);
 
 
 }
