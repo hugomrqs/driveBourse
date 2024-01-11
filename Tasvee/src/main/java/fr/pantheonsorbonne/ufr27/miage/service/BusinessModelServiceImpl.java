@@ -1,11 +1,11 @@
-package fr.pantheonsorbonne.ufr27.miage.service.smtpToStartUp;
+package fr.pantheonsorbonne.ufr27.miage.service;
 
-import fr.pantheonsorbonne.ufr27.miage.DAO.BusinessModelDAO;
-import fr.pantheonsorbonne.ufr27.miage.camel.Gateway.smtpGateway;
+import fr.pantheonsorbonne.ufr27.miage.camel.smtpGateway;
+import fr.pantheonsorbonne.ufr27.miage.dao.BusinessModel.BusinessModelDAO;
 import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
 import fr.pantheonsorbonne.ufr27.miage.dto.OfferForm;
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
-import fr.pantheonsorbonne.ufr27.miage.model.Statut;
+import fr.pantheonsorbonne.ufr27.miage.model.StatutEntity;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -28,7 +28,7 @@ public class BusinessModelServiceImpl implements BusinessModelService {
     }
 
     @Override
-    public int quantificationParts(Statut statuts, int partCedee) {
+    public int quantificationParts(StatutEntity statuts, int partCedee) {
         int partCedeeXpTasvee = 80;
         return partCedeeXpTasvee;
     }
@@ -59,7 +59,7 @@ public class BusinessModelServiceImpl implements BusinessModelService {
         }catch (Exception e){
             throw new RuntimeException();
         }
-        smtp.replyToOffer(businessModel);
+        smtp.sendBusinessModelToStartUp(businessModel);
     }
 
     @Override

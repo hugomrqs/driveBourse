@@ -7,7 +7,7 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 
-public class CJOnePagerBPDAOImpl implements fr.pantheonsorbonne.ufr27.miage.DAO.CJOnePagerBPDAO {
+public class CJOnePagerBPDAOImpl implements fr.pantheonsorbonne.ufr27.miage.dao.ContratJuridique.CJOnePagerBPDAO {
     @PersistenceContext
     private EntityManager em;
 

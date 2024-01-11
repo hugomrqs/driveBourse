@@ -1,9 +1,10 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
+
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "BusinessModel")
-public class BusinessModel {
+public class BusinessModelEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,15 +17,14 @@ public class BusinessModel {
     @Column(name = "argentLeveeXpTasvee")
     private Integer argentLeveeXpTasvee;
 
-    @Column(name = "partCedeeXpTasvee")
     private Integer partCedeeXpTasvee;
 
-    public BusinessModel() {
+    public BusinessModelEntity() {
     }
 
-    public BusinessModel(Integer argentLeveeXpTasvee,
-                         Integer partCedeeXpTasvee,
-                         String siretStartUp) {
+    public BusinessModelEntity(Integer argentLeveeXpTasvee,
+                               Integer partCedeeXpTasvee,
+                               String siretStartUp) {
         this.argentLeveeXpTasvee = argentLeveeXpTasvee;
         this.partCedeeXpTasvee = partCedeeXpTasvee;
         this.siretStartUp = siretStartUp;

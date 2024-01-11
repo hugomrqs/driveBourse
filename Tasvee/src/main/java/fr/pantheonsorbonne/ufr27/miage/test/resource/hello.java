@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.ufr27.miage.ressource;
+package fr.pantheonsorbonne.ufr27.miage.test.resource;
 
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
 import fr.pantheonsorbonne.ufr27.miage.service.BusinessModelService;

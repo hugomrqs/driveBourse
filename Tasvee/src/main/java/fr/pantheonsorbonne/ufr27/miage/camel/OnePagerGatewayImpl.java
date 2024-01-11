@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.ufr27.miage.camel.Gateway;
+package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.OnePager;
 import jakarta.enterprise.context.ApplicationScoped;

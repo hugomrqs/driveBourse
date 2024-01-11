@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.ufr27.miage.service.smtpToStartUp;
+package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueOnePagerPourBP;
 import fr.pantheonsorbonne.ufr27.miage.model.Fond;
@@ -10,7 +10,7 @@ public interface CJOnePagerBPService {
         return null;
     }
 
-    public default void SendContratJuridiqueOnePagerPourBP() {
+    public default void SendContratJuridiqueOnePagerPourBP(ContratJuridiqueOnePagerPourBP cjbp) {
         // Implémentez la logique ici
     }
 

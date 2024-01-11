@@ -1,16 +1,16 @@
-package fr.pantheonsorbonne.ufr27.miage.service.smtpToStartUp;
+package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
 import fr.pantheonsorbonne.ufr27.miage.dto.OfferForm;
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
-import fr.pantheonsorbonne.ufr27.miage.model.Statut;
+import fr.pantheonsorbonne.ufr27.miage.model.StatutEntity;
 import jakarta.transaction.Transactional;
 
 public interface BusinessModelService {
 
     int quantificationLeveeDeFonds(BilanComptable bilanComptable, int argentLevee);
 
-    int quantificationParts(Statut statuts, int partCedee);
+    int quantificationParts(StatutEntity statuts, int partCedee);
 
 
 

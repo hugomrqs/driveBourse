@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.ufr27.miage.camel.Gateway;
+package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciere;
 import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridique;

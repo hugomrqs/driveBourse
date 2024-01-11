@@ -1,6 +1,7 @@
-package fr.pantheonsorbonne.ufr27.miage.camel.Gateway;
+package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueOnePagerPourBPRecordDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
 import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueBM;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -10,6 +11,7 @@ import org.apache.camel.ProducerTemplate;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.io.IOException;
+import java.util.Map;
 
 @ApplicationScoped
 public class smtpGateway {
@@ -17,25 +19,74 @@ public class smtpGateway {
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.jmsPrefix")
     String jmsPrefix;
 
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.user")
+    String smtpUser;
+
     @Inject
     CamelContext camelContext;
 
-
-    public void replyToOffer(BusinessModel bm) {
+    /////////////////////
+    ////Start UP
+    /////////////////////
+    public void sendBusinessModelToStartUp(BusinessModel bm) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBodyAndHeader(  "direct:smtp" ,(new BusinessModelDTO(bm.getIdBusinessModel(),bm.getArgentLeveeXpTasvee(), bm.getPartCedeeXpTasvee())),"subject","BM");
+            producerTemplate.sendBodyAndHeaders(  "direct:smtp" ,new BusinessModelDTO(bm.getIdBusinessModel(),bm.getArgentLeveeXpTasvee(), bm.getPartCedeeXpTasvee()),
+                    Map.of("subject","BM",
+                            "bmID",bm.getIdBusinessModel()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public void sendContratJuridiqueBMtoStartUp(ContratJuridiqueBM contratJuridiqueBM, String mail) {
+    public void sendContratJuridiqueBMtoStartUp(ContratJuridiqueBM contratJuridiqueBM) {
+        try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
+            producerTemplate.sendBodyAndHeaders("direct:smtp",contratJuridiqueBM,
+                    Map.of("subject","CJ",
+                            "cjbmID",contratJuridiqueBM.getContratJuridiqueBMID()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /////////////////////
+    ////Presta Fin
+    /////////////////////
+
+    public void askExpertFin() {
+        try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
+            producerTemplate.sendBodyAndHeader("direct:smtp","subject","EF");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /////////////////////
+    //// Presta Juridique
+    /////////////////////
+
+    public void askExpertJur(ContratJuridiqueOnePagerPourBPRecordDTO cjbp) {
+        try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
+            producerTemplate.sendBodyAndHeaders("direct:smtp", cjbp,  Map.of("subject","CJ",
+                    "cjbmID",cjbp.contratJuridiqueBM(),
+                    "from",smtpUser));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    /////////////////////
+    //// Investisseur
+    /////////////////////
+
+    public void sendCJOnePagerPourBP() {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             System.out.println("testvvvvv");
 
-            producerTemplate.sendBodyAndHeader("direct:smtp",contratJuridiqueBM,"subject","BM");
+            producerTemplate.sendBodyAndHeader("direct:smtp","subject","Contrat Juridique");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
+
+
 }

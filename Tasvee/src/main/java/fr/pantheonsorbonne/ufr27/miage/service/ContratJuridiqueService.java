@@ -1,4 +1,4 @@
-package fr.pantheonsorbonne.ufr27.miage.service.smtpToStartUp;
+package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
 import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueBM;

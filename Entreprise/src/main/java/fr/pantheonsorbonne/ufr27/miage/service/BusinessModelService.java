@@ -1,2 +1,9 @@
-package fr.pantheonsorbonne.ufr27.miage.service;public interface BusinessModelService {
+package fr.pantheonsorbonne.ufr27.miage.service;
+
+import fr.pantheonsorbonne.ufr27.miage.model.BusinessModelEntity;
+import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueBMEntity;
+
+public interface BusinessModelService {
+    void registerBusinessModel(BusinessModelEntity bm);
+    void registerContratJuridiqueBM(ContratJuridiqueBMEntity cj);
 }

@@ -1,7 +1,5 @@
 package fr.pantheonsorbonne.ufr27.miage.resources;
 
-import fr.pantheonsorbonne.ufr27.miage.dao.OfferFormDAO;
-import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

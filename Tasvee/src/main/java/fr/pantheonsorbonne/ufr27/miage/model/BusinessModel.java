@@ -10,9 +10,8 @@ public class BusinessModel {
     @Column(name = "IDBusinessModel")
     private Integer idBusinessModel;
 
-    @ManyToOne
     @JoinColumn(name = "SiretStartUP", referencedColumnName = "SiretStartUP")
-    private StartUpEntity siretStartUp;
+    private String siretStartUp;
 
     @Column(name = "argentLeveeXpTasvee")
     private Integer argentLeveeXpTasvee;
@@ -25,7 +24,7 @@ public class BusinessModel {
 
     public BusinessModel(Integer argentLeveeXpTasvee,
                          Integer partCedeeXpTasvee,
-                         StartUpEntity siretStartUp) {
+                         String siretStartUp) {
         this.argentLeveeXpTasvee = argentLeveeXpTasvee;
         this.partCedeeXpTasvee = partCedeeXpTasvee;
         this.siretStartUp = siretStartUp;
@@ -38,11 +37,11 @@ public class BusinessModel {
     public void setIdBusinessModel(Integer idBusinessModel) {
         this.idBusinessModel = idBusinessModel;
     }
-    public StartUpEntity getsiretStartUp() {
+    public String getsiretStartUp() {
         return siretStartUp;
     }
 
-    public void setsiretStartUp(StartUpEntity siretStartUp) {
+    public void setsiretStartUp(String siretStartUp) {
         this.siretStartUp = siretStartUp;
     }
 

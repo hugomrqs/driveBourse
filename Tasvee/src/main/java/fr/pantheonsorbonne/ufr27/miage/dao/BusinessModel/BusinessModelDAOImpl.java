@@ -9,7 +9,7 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 
 @RequestScoped
-public class BusinessModelDAOImpl implements fr.pantheonsorbonne.ufr27.miage.DAO.BusinessModelDAO {
+public class BusinessModelDAOImpl implements BusinessModelDAO {
     @PersistenceContext(name = "mysql")
     EntityManager em;
 

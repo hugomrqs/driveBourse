@@ -7,7 +7,7 @@ import jakarta.transaction.Transactional;
 
 import java.util.List;
 
-public class ContraJuridiqueDAOImpl implements fr.pantheonsorbonne.ufr27.miage.DAO.ContratJuridiqueDAO {
+public class ContraJuridiqueDAOImpl implements fr.pantheonsorbonne.ufr27.miage.dao.ContratJuridique.ContratJuridiqueDAO {
     @PersistenceContext(name = "mysql")
     private EntityManager em;
 
