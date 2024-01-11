@@ -17,7 +17,6 @@ public class FundsInterestedGatewayImpl implements FundsInterestedGateway {
     OnePagerService onePagerService;
     @Inject
     CamelContext context;
-
     @Override
     public void distribute(ExpertiseFinanciere expertiseFinanciere, ExpertiseJuridique expertiseJuridique, Character c) throws BadDataException {
 
