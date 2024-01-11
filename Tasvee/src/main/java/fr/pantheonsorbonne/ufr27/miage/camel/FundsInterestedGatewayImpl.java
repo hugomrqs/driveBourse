@@ -1,15 +1,12 @@
-package fr.pantheonsorbonne.ufr27.miage.camel;
+package fr.pantheonsorbonne.ufr27.miage.camel.Gateway;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciere;
 import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridique;
-import fr.pantheonsorbonne.ufr27.miage.dto.OnePager;
 import fr.pantheonsorbonne.ufr27.miage.exception.BadDataException;
 import fr.pantheonsorbonne.ufr27.miage.service.OnePagerService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.camel.CamelContext;
-import org.apache.camel.ProducerTemplate;
-import java.io.IOException;
 
 @ApplicationScoped
 public class FundsInterestedGatewayImpl implements FundsInterestedGateway {

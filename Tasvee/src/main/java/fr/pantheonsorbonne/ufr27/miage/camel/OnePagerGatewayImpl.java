@@ -1,9 +1,6 @@
-package fr.pantheonsorbonne.ufr27.miage.camel;
+package fr.pantheonsorbonne.ufr27.miage.camel.Gateway;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.OnePager;
-import fr.pantheonsorbonne.ufr27.miage.exception.OnePagerNotFoundException;
-import fr.pantheonsorbonne.ufr27.miage.exception.StartUpNotFoundException;
-import fr.pantheonsorbonne.ufr27.miage.service.OnePagerService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.camel.CamelContext;
