@@ -3,18 +3,25 @@ package fr.pantheonsorbonne.ufr27.miage.camel;
 import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBMDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.Interet;
+import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
 import fr.pantheonsorbonne.ufr27.miage.service.InteretService;
 import jakarta.activation.DataHandler;
 import jakarta.activation.FileDataSource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.mail.util.ByteArrayDataSource;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.attachment.AttachmentMessage;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.model.dataformat.JsonLibrary;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.Objects;
 
 
 @ApplicationScoped
@@ -87,52 +94,32 @@ public class CamelRoutes extends RouteBuilder {
         ///// Hugo SMTP
         ////////////////////////////////////////////
 
+        String destinaire = "smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword;
         //recois du smtp gateway
+
         from("direct:smtp")
                 .autoStartup(isRouteEnabled)
+                .marshal().json()
                 .choice()
                 //oriente selon le header
                 .when(header("subject").in("BM", "CJ", "EF", "EJ", "CJOPBP"))
-                .marshal().json()
-                //.to("pdf:create")
-                .to("file:target/data?fileName=bmID-${in.headers.bmID}.json")
+                .to("sjms2:topic:" + jmsPrefix + "${in.headers.subject}")
                 .otherwise()
                 .log("Domaine non pris en charge");
 
 
+    from("sjms2:topic:" + jmsPrefix + "sender")
+            .to(destinaire);
+
         /////////////////////
-        //// Presta Juridique
+        //// Business Model PDF de préférence
         /////////////////////
+
 
         from("sjms2:topic:" + jmsPrefix + "BM")
                 .autoStartup(isRouteEnabled)
                 .log("${body}")
-                .unmarshal().json(BusinessModelDTO.class)
-                .process(new Processor() {
-                    @Override
-                    public void process(Exchange exchange) throws Exception {
-
-                        BusinessModelDTO notice = exchange.getMessage().getBody(BusinessModelDTO.class);
-                        exchange.getMessage().setBody("Bonjour," +
-                                "\n\n Suite à votre prise de contact sur notre site via l'offerForm numéro :  " + notice.idBusinessModel() +
-                                "\n\n Tasvee à le plaisir de vous annocer notre collaboration et vous propose une levéee à " +  notice.objectifLeveeExperienceTasvee() +
-                                " \n\n Veuillez trouver ci joint votre Business plan plus détaillé" +
-                                "\n\n En vous remerciant par avance" +
-                                "\n\n Tasvee");
-
-                        AttachmentMessage attMsg = exchange.getIn(AttachmentMessage.class);
-
-                    }
-                })
-                .to("smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword + "&contentType=");
-
-        /////////////////////
-        //// Business Model
-        /////////////////////
-
-        from("file:target/data")
-                .autoStartup(isRouteEnabled)
-                .log("${body}")
+                .marshal().json()
                 .unmarshal().json(BusinessModelDTO.class)
                 .process(new Processor() {
                     @Override
@@ -141,7 +128,117 @@ public class CamelRoutes extends RouteBuilder {
                         BusinessModelDTO notice = exchange.getMessage().getBody(BusinessModelDTO.class);
                         exchange.getMessage().setHeaders(new HashMap<>());
                         exchange.getMessage().setHeader("from",smtpUser);
-                        exchange.getMessage().setHeader("contentType", "text/HTML");
+                        exchange.getMessage().setHeader("to",smtpUser);
+                        exchange.getMessage().setHeader("contentType", "text/html");
+                        exchange.getMessage().setHeader("subject", "cancellation notice for venue");
+                        exchange.getMessage().setBody("Bonjour," +
+                                "\n\n Suite à votre prise de contact sur notre site via l'offerForm" + notice.idBusinessModel() +
+                                "\n\n Tasvee à le plaisir de vous annocer notre collaboration et vous propose une levéee à " +  notice.objectifLeveeExperienceTasvee() +
+                                " \n\n Veuillez trouver ci joint votre Business plan plus détaillé" +
+                                "\n\n En vous remerciant par avance" +
+                                "\n\n Tasvee");
+                    }
+                })
+                .to("smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword );
+
+
+
+        //////////////////////////////////////////////////
+//                .autoStartup(isRouteEnabled)
+//                .marshal().json(JsonLibrary.Jackson)
+//                //.to("pdf:create?pageSize=A4")
+//                .to("file:data/?fileName=bmID-${in.headers.bmID}-ca.json");
+//
+//        from("file:data/")
+//        from("sjms2:topic:" + jmsPrefix + "BM")
+//                .autoStartup(isRouteEnabled)
+//                .marshal().json(JsonLibrary.Jackson)
+//                .to("pdf:create?pageSize=A4")
+//                .to("file:target/data?fileName=bmID-ca.json")
+//                .unmarshal().json();
+//        from("file:target/data")
+//       from("sjms2:topic:" + jmsPrefix + "BM")
+
+        //                from("imap:" + imapHost + ":" + imapPort + "?username=" + smtpUser + "&password=" + smtpPassword +"&unseen=true&delay=6")
+//                        .to("direct:reply")
+//                        .onException(Exception.class)
+//                        .log("Exception during IMAP polling: ${exception.message}")
+//                        .handled(true)
+//                        .end();
+//
+//                from("direct:reply")
+//                        .log("ererrere")
+//                                .end();
+
+
+        /////////////////////
+        //// Contrat Juridique pièce jointe JSON besoins de signer
+        /////////////////////
+
+
+
+        from("sjms2:topic:" + jmsPrefix + "CJ")
+                .autoStartup(isRouteEnabled)
+                .log("${body}")
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
+
+                        exchange.getMessage().setHeaders(new HashMap<>());
+                        exchange.getMessage().setHeader("from",smtpUser);
+                        exchange.getMessage().setHeader("to",smtpUser);
+                        exchange.getMessage().setHeader("cc",smtpUser);
+                        exchange.getMessage().setHeader("subject","JSON");
+                        exchange.getMessage().setHeader("contentType", "application/JSON");
+                    }
+                })
+                .to(destinaire);
+
+
+
+        //////////////////////////////////////////////////
+
+
+        /////////////////////
+        //// Presta Juridique message
+        /////////////////////
+
+        from("sjms2:topic:" + jmsPrefix + "EJ")
+                .autoStartup(isRouteEnabled)
+                .log("${body}")
+                .unmarshal().json(Statut.class)
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
+
+                        Statut notice = exchange.getMessage().getBody(Statut.class);
+                        exchange.getMessage().setBody("Bonjour," +
+                                "\n\n Nous osuhaitons  :  " + notice.nombrePart() + " de parts" +
+                                "\n\n Le prix des parts actuel est de  " +  notice.prixPartActuel() +
+                                " \n\n La stratégie que nous voulons aborder est " + notice.strategieEntrepreneur() +
+                                "\n\n En vous remerciant par avance" +
+                                "\n\n Tasvee");
+
+                        AttachmentMessage attMsg = exchange.getIn(AttachmentMessage.class);
+
+                    }
+                })
+                .to(destinaire);
+
+        ///////////////////////
+
+        /////////////////////
+        //// Presta Juridique message
+        /////////////////////
+
+        from("sjms2:topic:" + jmsPrefix + "EF")
+                .autoStartup(isRouteEnabled)
+                .unmarshal().json(BusinessModelDTO.class)
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
+
+                        BusinessModelDTO notice = exchange.getMessage().getBody(BusinessModelDTO.class);
                         exchange.getMessage().setBody("Bonjour," +
                                 "\n\n Suite à votre prise de contact sur notre site via l'offerForm numéro :  " + notice.idBusinessModel() +
                                 "\n\n Tasvee à le plaisir de vous annocer notre collaboration et vous propose une levéee à " +  notice.objectifLeveeExperienceTasvee() +
@@ -149,48 +246,32 @@ public class CamelRoutes extends RouteBuilder {
                                 "\n\n En vous remerciant par avance" +
                                 "\n\n Tasvee");
 
-                        AttachmentMessage attMsg = exchange.getIn(AttachmentMessage.class);
-                       attMsg.addAttachment("bmID-"+notice.idBusinessModel().toString()+".json", new DataHandler(new FileDataSource("target/data")));
-
-
-
                     }
                 })
-                .to("smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword + "&contentType=");
+                .to(destinaire);
 
-
-
-        //////////////////////////////////////////////////
+        ///////////////////////
 
         /////////////////////
-        //// CjBM
+        //// CjBM  json il doivent signer
         /////////////////////
 
-        from("file:data999")
+        from("sjms2:topic:" + jmsPrefix + "CJOPBP")
                 .autoStartup(isRouteEnabled)
                 .log("${body}")
-                .unmarshal().json(ContratJuridiqueBMDTO.class)
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
 
-                        ContratJuridiqueBMDTO notice = exchange.getMessage().getBody(ContratJuridiqueBMDTO.class);
-                        exchange.getMessage().setBody("Bonjour," +
-                                "\n\n Si vous recevez ce mail c'est ce que vous avez recu un BusinessModel :  " + notice.idBusinessModel() +
-                                "\n\n Vous trouverez ci-joint un Contrat Juridique pour la société  X : " + notice.siretTasvee() +
-                                " \n\n "+
-                                "\n\n Ce contrat stipule que la société Tasvee :" + notice.siretTasvee() + "s'engage avec vous à condition de  "+ notice.pourcentageComissionTasvee()+"% de commissions réalisée" +
-                                "\n\n En vous remerciant par avance" +
-                                "\n\n Tasvee");
-
-                        AttachmentMessage attMsg = exchange.getIn(AttachmentMessage.class);
-                      //  attMsg.addAttachment("bmID-"+notice.idBusinessModel().toString()+".json", new DataHandler(new FileDataSource(new File("data"))));
-
-
-
+                        exchange.getMessage().setHeaders(new HashMap<>());
+                        exchange.getMessage().setHeader("from",smtpUser);
+                        exchange.getMessage().setHeader("to",smtpUser);
+                        exchange.getMessage().setHeader("cc",smtpUser);
+                        exchange.getMessage().setHeader("subject","JSON");
+                        exchange.getMessage().setHeader("contentType", "application/JSON");
                     }
                 })
-                .to("smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword + "&contentType=");
+                .to(destinaire );
 
 
 

@@ -30,9 +30,9 @@ public class smtpGateway {
     /////////////////////
     public void sendBusinessModelToStartUp(BusinessModel bm) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBodyAndHeaders(  "direct:smtp" ,new BusinessModelDTO(bm.getIdBusinessModel(),bm.getArgentLeveeXpTasvee(), bm.getPartCedeeXpTasvee()),
+            producerTemplate.sendBodyAndHeaders(  "direct:smtp-BM" ,new BusinessModelDTO(bm.getIdBusinessModel(),bm.getArgentLeveeXpTasvee(), bm.getPartCedeeXpTasvee()),
                     Map.of("subject","BM",
-                            "bmID",bm.getIdBusinessModel()));
+                            "ID",bm.getIdBusinessModel()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -42,7 +42,7 @@ public class smtpGateway {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             producerTemplate.sendBodyAndHeaders("direct:smtp",contratJuridiqueBM,
                     Map.of("subject","CJ",
-                            "cjbmID",contratJuridiqueBM.getContratJuridiqueBMID()));
+                            "ID",contratJuridiqueBM.getContratJuridiqueBMID()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -67,7 +67,7 @@ public class smtpGateway {
     public void askExpertJur(ContratJuridiqueOnePagerPourBPRecordDTO cjbp) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             producerTemplate.sendBodyAndHeaders("direct:smtp", cjbp,  Map.of("subject","CJ",
-                    "cjbmID",cjbp.contratJuridiqueBM(),
+                    "ID",cjbp.contratJuridiqueBM(),
                     "from",smtpUser));
         } catch (IOException e) {
             throw new RuntimeException(e);
