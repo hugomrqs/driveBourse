@@ -1,9 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
-import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBMDTO;
-import fr.pantheonsorbonne.ufr27.miage.dto.Interet;
-import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
+import fr.pantheonsorbonne.ufr27.miage.dto.*;
 import fr.pantheonsorbonne.ufr27.miage.service.InteretService;
 import jakarta.activation.DataHandler;
 import jakarta.activation.FileDataSource;
@@ -184,7 +181,7 @@ public class CamelRoutes extends RouteBuilder {
                         exchange.getMessage().setHeader("from",smtpUser);
                         exchange.getMessage().setHeader("to",smtpUser);
                         exchange.getMessage().setHeader("cc",smtpUser);
-                        exchange.getMessage().setHeader("subject","JSON");
+                        exchange.getMessage().setHeader("subject","Contrat Juridique");
                         exchange.getMessage().setHeader("contentType", "application/JSON");
                     }
                 })
@@ -225,17 +222,15 @@ public class CamelRoutes extends RouteBuilder {
 
         from("sjms2:topic:" + jmsPrefix + "-Tasvee-EF")
                 .autoStartup(isRouteEnabled)
-                .unmarshal().json(BusinessModelDTO.class)
+                .unmarshal().json(BilanComptable.class)
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
 
-                        BusinessModelDTO notice = exchange.getMessage().getBody(BusinessModelDTO.class);
+                        BilanComptable notice = exchange.getMessage().getBody(BilanComptable.class);
                         exchange.getMessage().setBody("Bonjour," +
-                                "\n\n Suite à votre prise de contact sur notre site via l'offerForm numéro :  " + notice.idBusinessModel() +
-                                "\n\n Tasvee à le plaisir de vous annocer notre collaboration et vous propose une levéee à " +  notice.objectifLeveeExperienceTasvee() +
-                                " \n\n Veuillez trouver ci joint votre Business plan plus détaillé" +
-                                "\n\n En vous remerciant par avance" +
+                                "\n\n :  " + notice.emplois() + notice.ressources()+
+
                                 "\n\n Tasvee");
 
                     }
