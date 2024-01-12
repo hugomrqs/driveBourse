@@ -30,7 +30,7 @@ public class smtpGateway {
     /////////////////////
     public void sendBusinessModelToStartUp(BusinessModel bm) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBodyAndHeaders(  "direct:smtp-BM" ,new BusinessModelDTO(bm.getIdBusinessModel(),bm.getArgentLeveeXpTasvee(), bm.getPartCedeeXpTasvee()),
+            producerTemplate.sendBodyAndHeaders(  "direct:smtp" ,new BusinessModelDTO(bm.getIdBusinessModel(),bm.getArgentLeveeXpTasvee(), bm.getPartCedeeXpTasvee()),
                     Map.of("subject","BM",
                             "ID",bm.getIdBusinessModel()));
         } catch (IOException e) {

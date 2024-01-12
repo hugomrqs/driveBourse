@@ -1,6 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
+import fr.pantheonsorbonne.ufr27.miage.model.BusinessModelEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.camel.CamelContext;
@@ -24,13 +25,13 @@ public class smtpGateway {
     /////////////////////
     ////Start UP
     /////////////////////
-//    public void sendBusinessModelToStartUp(BusinessModel bm) {
-//        try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-//            producerTemplate.sendBodyAndHeaders(  "direct:smtp" ,new BusinessModelDTO(bm.getIdBusinessModel(),bm.getArgentLeveeXpTasvee(), bm.getPartCedeeXpTasvee()),
-//                    Map.of("subject","BM",
-//                            "bmID",bm.getIdBusinessModel()));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
+    public void sendSignedCJ(BusinessModelEntity bm) {
+        try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
+            producerTemplate.sendBodyAndHeaders(  "direct:startup-smtp" ,bm,
+                    Map.of("subject","BM",
+                            "bmID",bm.getIdBusinessModel()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
