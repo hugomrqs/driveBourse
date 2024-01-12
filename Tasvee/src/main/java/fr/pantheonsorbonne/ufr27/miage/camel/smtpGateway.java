@@ -1,7 +1,9 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
+import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
 import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueOnePagerPourBPRecordDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.PrestataireJuridique.Statut;
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
 import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueBM;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -52,9 +54,11 @@ public class smtpGateway {
     ////Presta Fin
     /////////////////////
 
-    public void askExpertFin() {
+    public void askExpertFin(BilanComptable bc) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBodyAndHeader("direct:smtp","subject","EF");
+            producerTemplate.sendBodyAndHeaders("direct:smtp",      bc,
+                    Map.of("subject","EF",
+                    "ID","xxxx"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -64,11 +68,10 @@ public class smtpGateway {
     //// Presta Juridique
     /////////////////////
 
-    public void askExpertJur(ContratJuridiqueOnePagerPourBPRecordDTO cjbp) {
+    public void askExpertJur(Statut statut) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBodyAndHeaders("direct:smtp", cjbp,  Map.of("subject","CJ",
-                    "ID",cjbp.contratJuridiqueBM(),
-                    "from",smtpUser));
+            producerTemplate.sendBodyAndHeaders("direct:smtp", statut,  Map.of("subject","CJ",
+                    "ID","statutID"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -77,11 +80,12 @@ public class smtpGateway {
     //// Investisseur
     /////////////////////
 
-    public void sendCJOnePagerPourBP() {
+    public void sendCJOnePagerPourBP(ContratJuridiqueOnePagerPourBPRecordDTO cjbp) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             System.out.println("testvvvvv");
 
-            producerTemplate.sendBodyAndHeader("direct:smtp","subject","Contrat Juridique");
+            producerTemplate.sendBodyAndHeader("direct:smtp","subject", Map.of("subject","CJOPBP",
+                    "ID","xxxx"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
