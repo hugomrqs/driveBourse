@@ -16,16 +16,16 @@ public class OnePager {
 
     @ManyToOne
     @JoinColumn(name = "IDExpertiseJuridique", referencedColumnName = "IDExpertiseJuridique")
-    private ExpertiseJuridique idExpertiseJuridique;
+    private ExpertiseJuridiqueEntity idExpertiseJuridique;
 
     @ManyToOne
     @JoinColumn(name = "IDExpertiseFinanciere", referencedColumnName = "IDExpertiseFinanciere")
-    private ExpertiseFinanciere idExpertiseFinanciere;
+    private ExpertiseFinanciereEntity idExpertiseFinanciere;
 
     public OnePager() {
     }
 
-    public OnePager(StartUpEntity siretStartUp, ExpertiseJuridique idExpertiseJuridique, ExpertiseFinanciere idExpertiseFinanciere) {
+    public OnePager(StartUpEntity siretStartUp, ExpertiseJuridiqueEntity idExpertiseJuridique, ExpertiseFinanciereEntity idExpertiseFinanciere) {
         this.siretStartUp = siretStartUp;
         this.idExpertiseJuridique = idExpertiseJuridique;
         this.idExpertiseFinanciere = idExpertiseFinanciere;
@@ -40,11 +40,11 @@ public class OnePager {
         return siretStartUp;
     }
 
-    public ExpertiseJuridique getIdExpertiseJuridique() {
+    public ExpertiseJuridiqueEntity getIdExpertiseJuridique() {
         return idExpertiseJuridique;
     }
 
-    public ExpertiseFinanciere getIdExpertiseFinanciere() {
+    public ExpertiseFinanciereEntity getIdExpertiseFinanciere() {
         return idExpertiseFinanciere;
     }
 
@@ -57,11 +57,11 @@ public class OnePager {
         this.siretStartUp = siretStartUp;
     }
 
-    public void setIdExpertiseJuridique(ExpertiseJuridique idExpertiseJuridique) {
+    public void setIdExpertiseJuridique(ExpertiseJuridiqueEntity idExpertiseJuridique) {
         this.idExpertiseJuridique = idExpertiseJuridique;
     }
 
-    public void setIdExpertiseFinanciere(ExpertiseFinanciere idExpertiseFinanciere) {
+    public void setIdExpertiseFinanciere(ExpertiseFinanciereEntity idExpertiseFinanciere) {
         this.idExpertiseFinanciere = idExpertiseFinanciere;
     }
 }

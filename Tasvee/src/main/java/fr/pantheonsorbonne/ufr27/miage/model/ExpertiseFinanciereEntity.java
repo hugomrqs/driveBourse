@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ExpertiseFinanciere")
-public class ExpertiseFinanciere {
+public class ExpertiseFinanciereEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,19 +11,19 @@ public class ExpertiseFinanciere {
     private Integer idExpertiseFinanciere;
 
     @Column(name = "BFRExpert")
-    private Integer bfrExpert;
+    private Double bfrExpert;
 
     @Column(name = "margeBrutExpert")
-    private Integer margeBrutExpert;
+    private Double margeBrutExpert;
 
     @ManyToOne
     @JoinColumn(name = "SiretPrestataireFinancier", referencedColumnName = "SiretPrestataireFinancier")
     private PrestataireFinancier prestataireFinancier;
 
-    public ExpertiseFinanciere() {
+    public ExpertiseFinanciereEntity() {
     }
 
-    public ExpertiseFinanciere(Integer bfrExpert, Integer margeBrutExpert, PrestataireFinancier prestataireFinancier) {
+    public ExpertiseFinanciereEntity(Double bfrExpert, Double margeBrutExpert, PrestataireFinancier prestataireFinancier) {
         this.bfrExpert = bfrExpert;
         this.margeBrutExpert = margeBrutExpert;
         this.prestataireFinancier = prestataireFinancier;
@@ -37,19 +37,19 @@ public class ExpertiseFinanciere {
         this.idExpertiseFinanciere = idExpertiseFinanciere;
     }
 
-    public Integer getBFRExpert() {
+    public Double getBFRExpert() {
         return bfrExpert;
     }
 
-    public void setBFRExpert(Integer bfrExpert) {
+    public void setBFRExpert(Double bfrExpert) {
         this.bfrExpert = bfrExpert;
     }
 
-    public Integer getMargeBrutExpert() {
+    public Double getMargeBrutExpert() {
         return margeBrutExpert;
     }
 
-    public void setMargeBrutExpert(Integer margeBrutExpert) {
+    public void setMargeBrutExpert(Double margeBrutExpert) {
         this.margeBrutExpert = margeBrutExpert;
     }
 

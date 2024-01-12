@@ -7,7 +7,7 @@ public class PrestataireFinancier {
 
     @Id
     @Column(name = "SiretPrestataireFinancier")
-    private String siretPrestataireFinancier;
+    private Integer siretPrestataireFinancier;
 
     @Column(name = "mail")
     private String mail;
@@ -15,18 +15,18 @@ public class PrestataireFinancier {
     public PrestataireFinancier() {
     }
 
-    public PrestataireFinancier(String siretPrestataireFinancier, String mail) {
+    public PrestataireFinancier(Integer siretPrestataireFinancier, String mail) {
         this.siretPrestataireFinancier = siretPrestataireFinancier;
         this.mail = mail;
     }
 
     // Getters et Setters
 
-    public String getSiretPrestataireFinancier() {
+    public Integer getSiretPrestataireFinancier() {
         return siretPrestataireFinancier;
     }
 
-    public void setSiretPrestataireFinancier(String siretPrestataireFinancier) {
+    public void setSiretPrestataireFinancier(Integer siretPrestataireFinancier) {
         this.siretPrestataireFinancier = siretPrestataireFinancier;
     }
 

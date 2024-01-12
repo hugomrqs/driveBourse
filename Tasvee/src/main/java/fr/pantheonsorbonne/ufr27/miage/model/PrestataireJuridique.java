@@ -7,7 +7,7 @@ public class PrestataireJuridique {
 
     @Id
     @Column(name = "SiretPrestataireJuridique")
-    private String siretPrestataireJuridique;
+    private Integer siretPrestataireJuridique;
 
     @Column(name = "email")
     private String email;
@@ -15,16 +15,16 @@ public class PrestataireJuridique {
     public PrestataireJuridique() {
     }
 
-    public PrestataireJuridique(String siretPrestataireJuridique, String email) {
+    public PrestataireJuridique(Integer siretPrestataireJuridique, String email) {
         this.siretPrestataireJuridique = siretPrestataireJuridique;
         this.email = email;
     }
 
-    public String getSiretPrestataireJuridique() {
+    public Integer getSiretPrestataireJuridique() {
         return siretPrestataireJuridique;
     }
 
-    public void setSiretPrestataireJuridique(String siretPrestataireJuridique) {
+    public void setSiretPrestataireJuridique(Integer siretPrestataireJuridique) {
         this.siretPrestataireJuridique = siretPrestataireJuridique;
     }
 

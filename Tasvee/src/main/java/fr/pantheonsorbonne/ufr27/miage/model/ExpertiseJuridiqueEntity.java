@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ExpertiseJuridique")
-public class ExpertiseJuridique {
+public class ExpertiseJuridiqueEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,14 +13,17 @@ public class ExpertiseJuridique {
     @Column(name = "nombrePartExpertise")
     private Integer nombrePartExpertise;
 
+    @Column(name = "prixActuelPartExpertise")
+    private Integer prixActuelPartExpertise;
+
     @ManyToOne
     @JoinColumn(name = "SiretPrestataireJuridique", referencedColumnName = "SiretPrestataireJuridique")
     private PrestataireJuridique prestataireJuridique;
 
-    public ExpertiseJuridique() {
+    public ExpertiseJuridiqueEntity() {
     }
 
-    public ExpertiseJuridique(Integer nombrePartExpertise, PrestataireJuridique prestataireJuridique) {
+    public ExpertiseJuridiqueEntity(Integer nombrePartExpertise, PrestataireJuridique prestataireJuridique) {
         this.nombrePartExpertise = nombrePartExpertise;
         this.prestataireJuridique = prestataireJuridique;
     }
@@ -41,6 +44,14 @@ public class ExpertiseJuridique {
 
     public void setNombrePartExpertise(Integer nombrePartExpertise) {
         this.nombrePartExpertise = nombrePartExpertise;
+    }
+
+    public Integer getPrixActuelPartExpertise() {
+        return prixActuelPartExpertise;
+    }
+
+    public void setPrixActuelPartExpertise(Integer prixActuelPartExpertise) {
+        this.prixActuelPartExpertise = prixActuelPartExpertise;
     }
 
     public PrestataireJuridique getPrestataireJuridique() {

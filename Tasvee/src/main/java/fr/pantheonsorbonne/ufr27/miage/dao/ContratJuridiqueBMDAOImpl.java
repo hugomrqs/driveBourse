@@ -12,6 +12,7 @@ import jakarta.transaction.Transactional;
 public class ContratJuridiqueBMDAOImpl implements ContratJuridiqueBMDAO {
     @Inject
     EntityManager em;
+
     @Override
     @Transactional
     public ContratJuridiqueBMEntity getContratJuridiqueBM(Integer idContratJuridiqueBM) {
