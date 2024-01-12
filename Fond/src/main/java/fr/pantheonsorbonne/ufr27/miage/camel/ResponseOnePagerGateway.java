@@ -31,7 +31,6 @@ public class ResponseOnePagerGateway {
                     "IsInterested",
                     onePagerResponse.isInterested()
             );
-
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

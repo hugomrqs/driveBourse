@@ -9,11 +9,9 @@ public class OnePager {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IDOnePager")
     private Integer idOnePager;
-
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "SiretStartUP", referencedColumnName = "SiretStartUP")
     private StartUpEntity siretStartUp;
-
     @ManyToOne
     @JoinColumn(name = "IDExpertiseJuridique", referencedColumnName = "IDExpertiseJuridique")
     private ExpertiseJuridique idExpertiseJuridique;

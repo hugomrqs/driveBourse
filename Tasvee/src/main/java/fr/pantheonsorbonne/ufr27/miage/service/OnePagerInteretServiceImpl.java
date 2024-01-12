@@ -8,5 +8,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class OnePagerInteretServiceImpl implements OnePagerInteretService{
     @Override
     public void traiterReponses(Interet interet) {
+        //@TODO Update fond => fond isInterested
     }
 }

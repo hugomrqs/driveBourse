@@ -10,7 +10,6 @@ import fr.pantheonsorbonne.ufr27.miage.model.StartUpEntity;
 public interface OnePagerDAO {
     void createOnePager(StartUpEntity startUp,
                         ExpertiseJuridique expertiseJuridique,
-                        ExpertiseFinanciere expertiseFinanciere)
-            throws StartUpNotFoundException;
+                        ExpertiseFinanciere expertiseFinanciere);
     OnePager selectOnePagerByIdStartUp(int siretStartUp) throws OnePagerNotFoundException;
 }

@@ -13,20 +13,15 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
 @ApplicationScoped
-
 public class OnePagerDAOImpl implements OnePagerDAO{
     @PersistenceContext(name ="mysql")
     EntityManager em;
-
-    @Inject
-    private StartUpDAO startUpDAO;
 
     @Override
     @Transactional
     public void createOnePager(StartUpEntity startUp,
                                ExpertiseJuridique expertiseJuridique,
-                               ExpertiseFinanciere expertiseFinanciere)
-            throws StartUpNotFoundException {
+                               ExpertiseFinanciere expertiseFinanciere) {
         OnePager onePager = new OnePager(startUp,expertiseJuridique,expertiseFinanciere);
         em.persist(onePager);
     }

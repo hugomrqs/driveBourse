@@ -6,10 +6,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class TraitementOnePagerServiceImpl implements TraitementOnePagerService {
 
     // Hypothetical maximum values for normalization
-    private static final int MAX_PART_EXPERTISE = 20;
-    private static final int MAX_PRIX_PAR_PART = 100;
-    private static final double MAX_BFR = 20000.0;
-    private static final double MAX_MARGE_BRUT = 50.0;
+    private static final int MAX_PART_EXPERTISE = 1000;
+    private static final int MAX_PRIX_PAR_PART = 50000;
+    private static final double MAX_BFR = 200;//M;
+    private static final double MAX_MARGE_BRUT = 100;//M;
     private static final double WEIGHT_PART_EXPERTISE = 0.25;
     private static final double WEIGHT_PRIX_PAR_PART = 0.25;
     private static final double WEIGHT_BFR = 0.25;

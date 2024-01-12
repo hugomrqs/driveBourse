@@ -53,7 +53,7 @@ public class StartUpEntity {
     @JoinColumn(name = "IDBusinessModel", referencedColumnName = "IDBusinessModel")
     private BusinessModel idBusinessModel;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "IDOnePager", referencedColumnName = "IDOnePager")
     private OnePager idOnePager;
 

@@ -47,13 +47,12 @@ public class CamelRoutes extends RouteBuilder {
                 .to("direct:processInteretOnePager");
 
 //  @TODO      from("direct:processInteretOnePager")
-//                .bean(OnePagerInteretService)
-//                .bean(ContratJuridiqueService)
 //                // Créer le contrat en base de données
 //                .bean(contratJuridiqueService, "createContratJuridiqueOnePagerPourBPDatabase")
 //                // Créer le DTO
 //               contratJuridiqueService, "createContratJuridiqueOnePagerPourBPDTO")
 //                // Envelopper le DTO dans un message Camel et préparer pour l'envoi
-//                .bean(ContratJuridiqueGateway, "sendContratJuridiqueOnePagerPourBP()");//"contratJuridiqueService, \"createContratJuridiqueOnePagerPourBPDTO\""
+//                .bean(ContratJuridiqueGateway, "sendContratJuridiqueOnePagerPourBP()");
+//                "contratJuridiqueService,"createContratJuridiqueOnePagerPourBPDTO\""
     }
 }
