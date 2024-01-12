@@ -18,37 +18,39 @@ public class PropositionServiceImpl implements PropositionService {
     MessagingGateway mg;
 
 
-    public boolean challengeProposal(PropositionDTO prop){
+    public void challengeProposal(PropositionDTO prop){
         try {
-            Proposition propo = new Proposition();
-            propo.setLeveeDeFonds(prop.leveeDeFondsFinale());
-            propo.setPourcentagePart(prop.pourcentagePartFinale());
-            propo.setEtatProposition(false);
             if(prop.pourcentagePartFinale() > 20 || prop.leveeDeFondsFinale() < 100 ){
                 System.out.println("PROPOSITION REFUSÉ");
-
-                return false;
+                Integer newLeveeDeFond = prop.leveeDeFondsFinale();
+                Integer newPourcPart = prop.pourcentagePartFinale();
+                PropositionDTO response = new PropositionDTO(prop.idProposition(),
+                                                            newLeveeDeFond,
+                                                            newPourcPart,
+                                                            prop.siretFond(),
+                                                            false );
+                mg.sendProposal(response);
+                propositionDao.createNewProposition(prop);
             }else{
                 System.out.println("PROPOSITION ACCEPTÉ");
-                return true;
+                PropositionDTO response = new PropositionDTO(prop.idProposition(),
+                        prop.leveeDeFondsFinale(),
+                        prop.pourcentagePartFinale(),
+                        prop.siretFond(),
+                        true );
+                mg.sendProposal(response);
+                propositionDao.createNewProposition(prop);
             }
+
         }catch (Exception e){
             System.out.println(e);
-            return false;
         }
     };
 
     public void addLastProposal(PropositionDTO prop){
         try {
-            Proposition propo = new Proposition();
-            propo.setIDProposition(prop.idProposition());
-            propo.setSiretFonds(prop.siretFond());
-            propo.setLeveeDeFonds(prop.leveeDeFondsFinale());
-            propo.setPourcentagePart(prop.pourcentagePartFinale());
-            propo.setEtatProposition(true);
-
+            propositionDao.createAcceptedProposition(prop);
             System.out.println("PropositionAccepté");
-
         }catch (Exception e){
             System.out.println(e);
         }

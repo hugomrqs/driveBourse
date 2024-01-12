@@ -20,7 +20,7 @@ public class CamelRoutes extends RouteBuilder {
     boolean isRouteEnabled;
 
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.jmsPrefix")
-    String jmsPrefix;
+    String  jmsPrefix;
 
     @Inject
     SMTPGateway smtp;
@@ -44,25 +44,27 @@ public class CamelRoutes extends RouteBuilder {
     public void configure() throws Exception {
 
 
-        from("sjms2:topic:" + jmsPrefix + "proposalForFond")
-                .autoStartup(isRouteEnabled)
-                .log("Proposition reçu par Tasvee")
-                .choice()
-                .when(simple("${header.etatProp} == 'Accepter'"))
-                .log("Proposition accepté par Tasveee")
-                .bean(propositionService, "addLastProposal")
-                .when(simple("${header.etatProp} == 'Refuser'"))
-                .log("Proposition refuser par Tasvee")
-                .unmarshal().json(PropositionDTO.class)
-                .bean(propositionService, "challengeProposal").marshal().json()
-                .end();
-
 
         from("sjms2:topic:" + jmsPrefix + "businessPlanForFond")
                 .autoStartup(isRouteEnabled)
-                .log("BusinessPlan reçu par Tasvee")
+                .log("BusinessPlan de Tasvee  reçu")
                 .unmarshal().json(BusinessPlanDTO.class)
                 .bean(businessService, "createPropfromBP").marshal().json();
+
+
+
+        from("sjms2:topic:" + jmsPrefix + "proposalForFond")
+                .autoStartup(isRouteEnabled)
+                .log("Proposition  de Tasvee  reçu")
+                .choice()
+                .when(simple("${header.etatProp} == 'Accepter'"))
+                .log("Proposition  de Tasvee  reçu accepté")
+                .bean(propositionService, "addLastProposal")
+                .when(simple("${header.etatProp} == 'Refuser'"))
+                .log("Proposition de Tasvee  reçu refusé")
+                .unmarshal().json(PropositionDTO.class)
+                .bean(propositionService, "challengeProposal").marshal().json()
+                .end();
 
 
         from("direct:sendProposal")
@@ -72,25 +74,18 @@ public class CamelRoutes extends RouteBuilder {
                 .to("sjms2:topic:" + jmsPrefix + "proposalForTasvee");
 
 
-        from("direct:proposalAccepted")
+        from("sjms2:topic:" + jmsPrefix + "NDACommercialForFond")
                 .autoStartup(isRouteEnabled)
-                .log("proposal accepted by Fond")
-                .marshal().json()
-                .to("sjms2:topic:" + jmsPrefix + "proposalForTasvee");
+                .log("NDA commercialisation reçu par Fond")
+                .marshal().json(NDADTOCommercialisationDTO.class)
+                .bean(paymentService, "signNDACom").marshal().json();
 
 
         from("direct:signedNDA")
                 .autoStartup(isRouteEnabled)
                 .log("NDA commercialisation signed")
                 .marshal().json()
-                .to("sjms2:topic:" + jmsPrefix + "signedNDA");
-
-
-        from("sjms2:topic:" + jmsPrefix + "NDACommercialForFond")
-                .autoStartup(isRouteEnabled)
-                .log("NDA commercialisation reçu par Fond")
-                .marshal().json(NDADTOCommercialisationDTO.class)
-                .bean(paymentService, "signNDACom").marshal().json();
+                .to("sjms2:topic:" + jmsPrefix + "signedNDAForTasvee");
 
 
         from("sjms2:topic:" + jmsPrefix + "ribOfTasvee")
@@ -120,12 +115,6 @@ public class CamelRoutes extends RouteBuilder {
                 .marshal().json()
                 .to("sjms2:topic:" + jmsPrefix + "moneyForEntrepreneur");
 
-
-        from("direct:testEnvoiBP")
-                .autoStartup(isRouteEnabled)
-                .log("LE BUISNESS PLAN")
-                .marshal().json()
-                .to("sjms2:topic:" + jmsPrefix + "businessPlanForFond");
 
 
 

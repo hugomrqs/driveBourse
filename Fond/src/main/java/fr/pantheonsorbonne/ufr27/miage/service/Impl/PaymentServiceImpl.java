@@ -21,12 +21,10 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void sendMoney(RIBDTO rib, String sender){
-        int montantEnvoyer = 100;
+        int montantAEnvoyer = 100;
         //à la place de i faire le update dans la bdd pour que Fond s'enlève son argent
         //"UPDATE table SET argentTasvee = argentTasvee - "+rib.montantAPayer()+"
-
-
-
+        mg.sendMoney(montantAEnvoyer,sender);
     }
 
 }

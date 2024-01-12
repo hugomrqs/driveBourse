@@ -24,18 +24,12 @@ public class BusinessServiceImpl implements BusinessService {
     @Inject
     MessagingGateway mg;
 
-
     @Override
-    public void createPropfromBP(BusinessPlanDTO bm){
+    public void createPropfromBP(BusinessPlanDTO bp){
         try {
-            businessDAO.createNewBusinessPlan(bm);
-            Random random = new Random();
-            Proposition proposition = new Proposition();
-            proposition.setSiretFonds(bm.siretEntreprise());
-            proposition.setPourcentagePart(random.nextInt(30) + 10);
-            proposition.setLeveeDeFonds(random.nextInt(9000)+1000);
-
-            PropositionDTO prop = new PropositionDTO(proposition.getIDProposition(),proposition.getLeveeDeFonds(), proposition.getPourcentagePart(),bm.siretEntreprise(),false);
+            businessDAO.createNewBusinessPlan(bp);
+            Proposition proposition = businessDAO.createRandomProposition(bp);
+            PropositionDTO prop = new PropositionDTO(proposition.getIDProposition(),proposition.getLeveeDeFonds(), proposition.getPourcentagePart(),bp.siretEntreprise(),false);
             mg.sendProposal(prop);
         }catch (Exception e){
             System.out.println(e);

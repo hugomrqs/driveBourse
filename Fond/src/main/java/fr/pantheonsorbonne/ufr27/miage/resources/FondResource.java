@@ -26,14 +26,6 @@ public class FondResource {
                 mg.sendProposal(prop);
         }
 
-        @Path("/counterProposal")
-        @GET
-        @Consumes({jakarta.ws.rs.core.MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-        public boolean counterProposal() {
-                PropositionDTO prop = new PropositionDTO(12,10000,25,123456,false);
-                return proposal.challengeProposal(prop);
-        }
-
 
         @Path("/testSendBp")
         @GET
