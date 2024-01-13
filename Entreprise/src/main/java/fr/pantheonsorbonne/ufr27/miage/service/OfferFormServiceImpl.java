@@ -1,9 +1,9 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
-import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeant;
-import fr.pantheonsorbonne.ufr27.miage.dto.OfferForm;
-import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
+import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptableDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeantDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.OfferFormDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.StatutDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -22,10 +22,10 @@ public class OfferFormServiceImpl implements OfferFormService {
     private static final String API_ENDPOINT = "http://localhost:8080/offer-form/new-offer";
 
     @Override
-    public void createAndSendOfferForm(BilanComptable bilanComptable, Statut statut, int objectLevee, Integer siretStartup,
-                                       int organigramme, CvDirigeant cvDirigeant, String siteWeb, String mail, String secteur) {
+    public void createAndSendOfferForm(BilanComptableDTO bilanComptable, StatutDTO statut, int objectLevee, Integer siretStartup,
+                                       int organigramme, CvDirigeantDTO cvDirigeant, String siteWeb, String mail, String secteur) {
         // Construire le DTO OfferForm
-        OfferForm offerForm = new OfferForm(bilanComptable, statut, objectLevee, siretStartup, organigramme, cvDirigeant, siteWeb, mail, secteur);
+        OfferFormDTO offerForm = new OfferFormDTO(bilanComptable, statut, objectLevee, siretStartup, organigramme, cvDirigeant, siteWeb, mail, secteur);
 
         // Convertir l'objet DTO en JSON
         try {

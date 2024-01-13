@@ -7,7 +7,7 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import fr.pantheonsorbonne.ufr27.miage.service.OfferFormService;
-import fr.pantheonsorbonne.ufr27.miage.dto.OfferForm;
+import fr.pantheonsorbonne.ufr27.miage.dto.OfferFormDTO;
 
 @Path("offer-form")
 public class OfferFormResource {
@@ -21,7 +21,7 @@ public class OfferFormResource {
     @Path("/new-offer")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response receiveNewOffer(OfferForm offerForm) {
+    public Response receiveNewOffer(OfferFormDTO offerForm) {
 
         System.out.println("OfferForm reçu : " + offerForm);
         boolean isAccepted = offerFormService.isOfferAccepted(offerForm);

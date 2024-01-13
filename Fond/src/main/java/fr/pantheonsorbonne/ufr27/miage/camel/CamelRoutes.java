@@ -55,11 +55,10 @@ public class CamelRoutes extends RouteBuilder {
         //ecouter les topics contenus dans le Helper de paramétrage
         for (String topic : helper.topicsToListen) {
             from("sjms2:topic:" + jmsPrefix + topic)
+                    .log("${in.body}")
                     .unmarshal().json(OnePager.class)
                     .bean(responseOnePagerGateway, "SendResponse(${body},${in.headers.ReplyTo})");
         }
-
-
 
         from("sjms2:topic:" + jmsPrefix + "businessPlanForFond")
                 .autoStartup(isRouteEnabled)

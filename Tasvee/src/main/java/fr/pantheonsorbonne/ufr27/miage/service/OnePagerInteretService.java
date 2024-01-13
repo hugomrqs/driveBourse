@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.Interet;
+import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerInteret;
 
 public interface OnePagerInteretService {
-    void traiterReponses(Interet interet);
+    void traiterReponses(OnePagerInteret interet);
 }

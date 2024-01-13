@@ -1,8 +1,9 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
-
 import fr.pantheonsorbonne.ufr27.miage.dao.BusinessPlanDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.OnePagerDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.StartUpDAO;
+import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciereDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridiqueDTO;
 import fr.pantheonsorbonne.ufr27.miage.exception.BusinessPlanNotFoundException;
 import fr.pantheonsorbonne.ufr27.miage.exception.OnePagerNotFoundException;
 import fr.pantheonsorbonne.ufr27.miage.exception.StartUpNotFoundException;
@@ -50,16 +51,16 @@ public class BusinessPlanServiceImpl implements BusinessPlanService{
 
         ExpertiseFinanciere expertiseFinanciereModel = onePagerModel.getIdExpertiseFinanciere();
 
-        fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciere expertiseFinanciereDTO =
-                new fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciere(
+        ExpertiseFinanciereDTO expertiseFinanciereDTO =
+                new fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciereDTO(
                         expertiseFinanciereModel.getBFRExpert(),
                         expertiseFinanciereModel.getMargeBrutExpert()
                 );
 
         ExpertiseJuridique expertiseJuridiqueModel = onePagerModel.getIdExpertiseJuridique();
 
-        fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridique expertiseJuridiqueDTO =
-                new fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridique(
+        ExpertiseJuridiqueDTO expertiseJuridiqueDTO =
+                new ExpertiseJuridiqueDTO(
                         expertiseJuridiqueModel.getNombrePartExpertise(),
                         expertiseJuridiqueModel.getPrixPartExpertise()
                 );

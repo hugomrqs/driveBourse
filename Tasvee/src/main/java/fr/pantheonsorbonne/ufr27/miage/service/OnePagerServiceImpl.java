@@ -5,6 +5,8 @@ import fr.pantheonsorbonne.ufr27.miage.dao.ExpertiseFinanciereDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.ExpertiseJuridiqueDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.OnePagerDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.StartUpDAO;
+import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciereDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridiqueDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.OnePager;
 import fr.pantheonsorbonne.ufr27.miage.exception.OnePagerNotFoundException;
 import fr.pantheonsorbonne.ufr27.miage.exception.StartUpNotFoundException;
@@ -46,15 +48,15 @@ public class OnePagerServiceImpl implements OnePagerService {
         String secteur = startUpDAO.selectStartUp(siretEntreprise).getSecteur();
 
         ExpertiseFinanciere expertiseFinanciere = onePagerModel.getIdExpertiseFinanciere();
-        fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciere expertiseFinanciereDTO =
-                new fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciere(
+        ExpertiseFinanciereDTO expertiseFinanciereDTO =
+                new ExpertiseFinanciereDTO(
                         expertiseFinanciere.getBFRExpert(),
                         expertiseFinanciere.getMargeBrutExpert()
                 );
 
         ExpertiseJuridique expertiseJuridique = onePagerModel.getIdExpertiseJuridique();
-        fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridique expertiseJuridiqueDTO =
-                new fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridique(
+        ExpertiseJuridiqueDTO expertiseJuridiqueDTO =
+                new ExpertiseJuridiqueDTO(
                         expertiseJuridique.getNombrePartExpertise(),
                         expertiseJuridique.getPrixPartExpertise()
                 );

@@ -1,9 +1,9 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
-import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeant;
-import fr.pantheonsorbonne.ufr27.miage.dto.OfferForm;
-import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
+import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptableDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeantDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.OfferFormDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.StatutDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.BilanComptableEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.CVDirigeantEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.StartUpEntity;
@@ -21,7 +21,7 @@ public class OfferFormDAOImpl implements OfferFormDAO {
     EntityManager em;
     @Override
     @Transactional
-    public void registerStartUpEntity(OfferForm offerForm) {
+    public void registerStartUpEntity(OfferFormDTO offerForm) {
         StartUpEntity startupEntity = new StartUpEntity();
         startupEntity.setSiretStartUp(offerForm.siretStartup());
         startupEntity.setNombreDePersonne(offerForm.organigramme());
@@ -30,13 +30,13 @@ public class OfferFormDAOImpl implements OfferFormDAO {
         startupEntity.setSecteur(offerForm.secteur());
         startupEntity.setDateOfferForm(LocalDateTime.now());
         //pour les FK associés
-        startupEntity.setIdBilanComptable(registerBilanComptableEntity(offerForm.bilanComptable()));
-        startupEntity.setIdStatuts(registerStatutEntity(offerForm.statut()));
+        startupEntity.setIdBilanComptable(registerBilanComptableEntity(offerForm.bilanComptableDTO()));
+        startupEntity.setIdStatuts(registerStatutEntity(offerForm.statutDTO()));
         startupEntity.setIdCVDirigeant(registerCVDirigeantEntity(offerForm.cvDirigeant()));
         em.persist(startupEntity);
     }
 
-    private BilanComptableEntity registerBilanComptableEntity(BilanComptable bilanComptable) {
+    private BilanComptableEntity registerBilanComptableEntity(BilanComptableDTO bilanComptable) {
         BilanComptableEntity entity = new BilanComptableEntity();
         entity.setEmplois(bilanComptable.emplois());
         entity.setRessources(bilanComptable.ressources());
@@ -46,7 +46,7 @@ public class OfferFormDAOImpl implements OfferFormDAO {
         return entity;
     }
 
-    private StatutEntity registerStatutEntity(Statut statut) {
+    private StatutEntity registerStatutEntity(StatutDTO statut) {
         StatutEntity entity = new StatutEntity();
         entity.setNombrePart(statut.nombrePart());
         entity.setPrixPartActuel(statut.prixPartActuel());
@@ -54,7 +54,7 @@ public class OfferFormDAOImpl implements OfferFormDAO {
         return entity;
     }
 
-    private CVDirigeantEntity registerCVDirigeantEntity(CvDirigeant cvDirigeant) {
+    private CVDirigeantEntity registerCVDirigeantEntity(CvDirigeantDTO cvDirigeant) {
         CVDirigeantEntity entity = new CVDirigeantEntity();
         entity.setEcole(cvDirigeant.ecole());
         entity.setEngagement(cvDirigeant.engagement());

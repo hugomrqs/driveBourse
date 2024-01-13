@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.BilanComptableDAO;
-import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
+import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptableDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.BilanComptableEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -13,12 +13,12 @@ public class BilanComptableServiceImpl implements BilanComptableService {
     BilanComptableDAO bilanComptableDAO ;
 
     @Override
-    public BilanComptable getBilanComptable(int idBilanComptable) {
+    public BilanComptableDTO getBilanComptable(int idBilanComptable) {
         return convertToDTO(bilanComptableDAO.getBilanComptable(idBilanComptable)) ;
     }
 
-    private BilanComptable convertToDTO(BilanComptableEntity entity) {
-        BilanComptable dto = new BilanComptable(entity.getEmplois(), entity.getRessources(), entity.getVenteDeMarchandise(), entity.getCoutDeMarchandise());
+    private BilanComptableDTO convertToDTO(BilanComptableEntity entity) {
+        BilanComptableDTO dto = new BilanComptableDTO(entity.getEmplois(), entity.getRessources(), entity.getVenteDeMarchandise(), entity.getCoutDeMarchandise());
         return dto;
     }
 }

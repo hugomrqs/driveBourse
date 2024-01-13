@@ -28,6 +28,10 @@
                 <scope>import</scope>
             </dependency>
             <dependency>
+                <groupId>fr.pantheonsorbonne.ufr27.miage</groupId>
+                <artifactId>Common</artifactId>
+            </dependency>
+            <dependency>
                 <groupId>${quarkus.platform.group-id}</groupId>
                 <artifactId>quarkus-camel-bom</artifactId>
                 <version>${quarkus.platform.version}</version>
