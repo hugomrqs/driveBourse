@@ -9,9 +9,11 @@ import fr.pantheonsorbonne.ufr27.miage.model.BMEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.CJBMEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import java.util.Scanner;
 
+@Named("businessModelEntrepriseService")
 @ApplicationScoped
 public class BusinessModelServiceImpl implements BusinessModelService {
 
@@ -23,6 +25,7 @@ public class BusinessModelServiceImpl implements BusinessModelService {
 
     @Inject
     SmtpGateway smtp;
+
     @Override
     public void registerBusinessModel(BusinessModel businessModel) {
         businessModelDAO.registerBusinessModel(businessModel) ;

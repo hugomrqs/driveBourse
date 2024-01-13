@@ -3,7 +3,7 @@ package fr.pantheonsorbonne.ufr27.miage.cli;
 import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
 import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeant;
 import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
-import fr.pantheonsorbonne.ufr27.miage.service.OfferFormService;
+import fr.pantheonsorbonne.ufr27.miage.service.OfferFormEntrepriseService;
 import jakarta.inject.Inject;
 import picocli.CommandLine.Command;
 
@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Main implements Runnable {
 
     @Inject
-    OfferFormService offerFormService;
+    OfferFormEntrepriseService offerFormEntrepriseService;
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -75,7 +75,7 @@ public class Main implements Runnable {
             System.out.println(response);
             if (response.equals("y")) {
                 // Appelez la fonction createAndSendOfferForm du service
-                offerFormService.createAndSendOfferForm(bilanComptable, statut, objectLevee, siretStartup,
+                offerFormEntrepriseService.createAndSendOfferForm(bilanComptable, statut, objectLevee, siretStartup,
                         organigramme, cvDirigeant, siteWeb, mail, secteur);
                 // Stocker en DB BilanComptable / Statut / CVdirigeant
             }

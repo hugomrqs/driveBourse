@@ -2,8 +2,6 @@ package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModel;
 import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBM;
-import fr.pantheonsorbonne.ufr27.miage.service.BusinessModelService;
-import jakarta.inject.Inject;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
@@ -13,8 +11,6 @@ import java.util.HashMap;
 
 public class CamelRoutes extends RouteBuilder {
 
-    @Inject
-    BusinessModelService businessModelService;
     @ConfigProperty(name = "camel.routes.enabled", defaultValue = "true")
     boolean isRouteEnabled;
 
@@ -62,7 +58,7 @@ public class CamelRoutes extends RouteBuilder {
 
         from("sjms2:topic:"+jmsPrefix+"-StartUp-BM")
                 .unmarshal().json(BusinessModel.class)
-                .bean(businessModelService,"registerBusinessModel")
+                .bean("businessModelEntrepriseService","registerBusinessModel")
                 .marshal().json();
 
         /////////////////////
@@ -71,18 +67,10 @@ public class CamelRoutes extends RouteBuilder {
 
         from("sjms2:topic:"+jmsPrefix+"-StartUp-CJ")
                 .unmarshal().json(ContratJuridiqueBM.class)
-                .bean(businessModelService,"registerContratJuridiqueBM ")
+                .bean("businessModelEntrepriseService","registerContratJuridiqueBM ")
                 .marshal().json()
                 .to("sjms2:topic:"+jmsPrefix+"-SMTP");
 
-        /////////////////////
-        ////Gestion du contrat juridiqueOPBP
-        /////////////////////
-
-        from("sjms2:topic:"+jmsPrefix+"-StartUp-CJOPBP")
-                //.unmarshal().json(BusinessModel.class)
-                .bean(businessModelService,"xxxxx")
-                .marshal().json();
 
 
         from("direct:startup-smtp")
