@@ -107,9 +107,9 @@ public class CamelRoutes extends RouteBuilder {
                 .marshal().json()
                 .choice()
                 //.when(header("type").in("PDF", "JSON"))
-                .when(header("Pice-Jointe").isEqualTo("true"))
+                .when(header("Piece-Jointe").isEqualTo("true"))
                 .multicast()
-                .to("direct:create-${in.headers.type}","sjms2:topic:" + jmsPrefix + "-Tasvee-BM");
+                .to("sjms2:topic:" + jmsPrefix + "create-","sjms2:topic:" + jmsPrefix + "-Tasvee-${in.headers.subject}");
 
 
         ////trcois une queue de message et la poste sur smtp
@@ -121,15 +121,6 @@ public class CamelRoutes extends RouteBuilder {
 
     //////Creation des pièces jointes
 
-        from("sjms2:topic:" + jmsPrefix + "-Tasvee-Pice-Jointe")
-                .autoStartup(isRouteEnabled)
-                .multicast()
-                .to("direct:creator", "direct:processMessage");
-
-        from("sjms2:topic:" + jmsPrefix + "-Tasvee-BM")
-                .autoStartup(isRouteEnabled)
-                .multicast()
-                .to("direct:creator", "direct:processMessage");
 
         /////////////////////
         ////Tasvee --> StartUp Business Model PDF de préférence sinon message
@@ -138,16 +129,16 @@ public class CamelRoutes extends RouteBuilder {
 
 
 //OP
-        from("sjms2:topic:" + jmsPrefix + "-Tasvee-BM")
-                .autoStartup(isRouteEnabled)
-                .multicast()
-                .to("direct:creator", "direct:processMessage");
 
-        from("direct:creator")
+        from("sjms2:topic:" + jmsPrefix + "create-PDF")
                 .to("pdf:create")
-                .to("file:data/?fileName=bmID-${in.headers.bmID}-ca.pdf");
+                .log("${body}")
+                .to("file:data/json/?fileName=bmID-${in.headers.bmID}-555ca.json");
 
-        from("direct:processMessage")
+        from("direct:create-JSON")
+                .to("file:data/JSON/?fileName=bmID-${in.headers.bmID}-ca.json");
+
+        from("sjms2:topic:" + jmsPrefix + "-Tasvee-BM")
                 .log("${body}")
                 .unmarshal().json(BusinessModelDTO.class)
                 .process(new Processor() {

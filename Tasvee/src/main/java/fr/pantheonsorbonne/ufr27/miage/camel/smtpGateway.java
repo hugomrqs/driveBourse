@@ -34,8 +34,8 @@ public class smtpGateway {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             producerTemplate.sendBodyAndHeaders(  "direct:smtp" ,new BusinessModelDTO(bm.getIdBusinessModel(),bm.getArgentLeveeXpTasvee(), bm.getPartCedeeXpTasvee()),
                     Map.of("subject","BM",
-                            "Pice-Jointe",true,
-                            "type","PDF",
+                            "Piece-Jointe",true,
+                            "type","JSON",
                             "ID",bm.getIdBusinessModel()));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -46,7 +46,7 @@ public class smtpGateway {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             producerTemplate.sendBodyAndHeaders("direct:smtp",contratJuridiqueBM,
                     Map.of("subject","CJ",
-                            "Pice-Jointe",true,
+                            "Piece-Jointe",true,
                             "type","JSON",
                             "ID",contratJuridiqueBM.getContratJuridiqueBMID()));
         } catch (IOException e) {
@@ -62,7 +62,7 @@ public class smtpGateway {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             producerTemplate.sendBodyAndHeaders("direct:smtp",      bc,
                     Map.of("subject","EF",
-                            "Pice-Jointe",false,
+                            "Piece-Jointe",false,
                             "ID","xxxx"));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -76,7 +76,7 @@ public class smtpGateway {
     public void askExpertJur(Statut statut) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             producerTemplate.sendBodyAndHeaders("direct:smtp", statut,  Map.of("subject","CJ",
-                    "Pice-Jointe",false,
+                    "Piece-Jointe",false,
                     "ID","statutID"));
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -91,7 +91,7 @@ public class smtpGateway {
             System.out.println("testvvvvv");
             producerTemplate.sendBodyAndHeader("direct:smtp","subject",
                     Map.of("subject","CJOPBP",
-                            "Pice-Jointe",true,
+                            "Piece-Jointe",true,
                             "type","JSON",
                             "ID","xxxx"));
         } catch (IOException e) {
