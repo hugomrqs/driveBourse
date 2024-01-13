@@ -2,8 +2,8 @@ package fr.pantheonsorbonne.ufr27.miage.dao;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModel;
 import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBM;
-import fr.pantheonsorbonne.ufr27.miage.model.BusinessModelEntity;
-import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueBMEntity;
+import fr.pantheonsorbonne.ufr27.miage.model.BMEntity;
+import fr.pantheonsorbonne.ufr27.miage.model.CJBMEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -16,29 +16,29 @@ public class ContratJuridiqueDAOImpl implements ContratJuridiqueDAO{
     EntityManager em;
     @Override
     @Transactional
-    public ContratJuridiqueBMEntity registerContratJuridiqueBM(ContratJuridiqueBM contratJuridiqueBM) {
-        ContratJuridiqueBMEntity contratJuridiqueBMEntity = new ContratJuridiqueBMEntity() ;
-        contratJuridiqueBMEntity.setContratJuridiqueBM(contratJuridiqueBM.contratJuridiqueBM());
-        contratJuridiqueBMEntity.setIdBusinessModel(getBusinessModel(contratJuridiqueBM.businessModel()));
-        contratJuridiqueBMEntity.setStartUp(contratJuridiqueBM.startUp());
-        contratJuridiqueBMEntity.setTasvee(contratJuridiqueBM.tasvee());
-        contratJuridiqueBMEntity.setSiretTasvee(contratJuridiqueBM.siretTasvee());
-        contratJuridiqueBMEntity.setPourcentageComissionTasvee(contratJuridiqueBM.pourcentageComissionTasvee());
-        em.persist(contratJuridiqueBMEntity);
-        return contratJuridiqueBMEntity;
+    public CJBMEntity registerContratJuridiqueBM(ContratJuridiqueBM contratJuridiqueBM) {
+        CJBMEntity CJBMEntity = new CJBMEntity() ;
+        CJBMEntity.setContratJuridiqueBM(contratJuridiqueBM.contratJuridiqueBM());
+        CJBMEntity.setIdBusinessModel(getBusinessModel(contratJuridiqueBM.businessModel()));
+        CJBMEntity.setStartUp(contratJuridiqueBM.startUp());
+        CJBMEntity.setTasvee(contratJuridiqueBM.tasvee());
+        CJBMEntity.setSiretTasvee(contratJuridiqueBM.siretTasvee());
+        CJBMEntity.setPourcentageComissionTasvee(contratJuridiqueBM.pourcentageComissionTasvee());
+        em.persist(CJBMEntity);
+        return CJBMEntity;
     }
 
     @Override
     @Transactional
-    public ContratJuridiqueBMEntity sign(ContratJuridiqueBMEntity contratJuridiqueBMEntity) {
-        ContratJuridiqueBMEntity existingEntity = em.find(ContratJuridiqueBMEntity.class, contratJuridiqueBMEntity);
+    public CJBMEntity sign(CJBMEntity CJBMEntity) {
+        CJBMEntity existingEntity = em.find(CJBMEntity.class, CJBMEntity);
         existingEntity.setStartUp(true);
         em.merge(existingEntity);
         return existingEntity ;
     }
 
-    private BusinessModelEntity getBusinessModel(BusinessModel businessModel){
-        BusinessModelEntity existingEntity = em.find(BusinessModelEntity.class, businessModel.idBusinessModel());
+    private BMEntity getBusinessModel(BusinessModel businessModel){
+        BMEntity existingEntity = em.find(BMEntity.class, businessModel.idBusinessModel());
         return existingEntity ;
     }
 }

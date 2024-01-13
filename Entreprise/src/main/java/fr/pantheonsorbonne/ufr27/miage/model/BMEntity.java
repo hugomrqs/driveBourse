@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "BusinessModel")
-public class BusinessModelEntity {
+public class BMEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,16 +16,16 @@ public class BusinessModelEntity {
     @Column(name = "partCedeeXpTasvee")
     private Integer partCedeeXpTasvee;
 
-    public BusinessModelEntity() {
+    public BMEntity() {
     }
 
-    public BusinessModelEntity(Integer argentLeveeXpTasvee,
-                               Integer partCedeeXpTasvee) {
+    public BMEntity(Integer argentLeveeXpTasvee,
+                    Integer partCedeeXpTasvee) {
         this.argentLeveeXpTasvee = argentLeveeXpTasvee;
         this.partCedeeXpTasvee = partCedeeXpTasvee;
     }
 
-    public BusinessModelEntity(int i, int i1) {
+    public BMEntity(int i, int i1) {
     }
 
     public Integer getIdBusinessModel() {

@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ContratJuridiqueBM")
-public class ContratJuridiqueBMEntity {
+public class CJBMEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,16 +25,16 @@ public class ContratJuridiqueBMEntity {
 
     @ManyToOne
     @JoinColumn(name = "IDBusinessModel", referencedColumnName = "IDBusinessModel")
-    private BusinessModelEntity idBusinessModel;
+    private BMEntity idBusinessModel;
 
-    public ContratJuridiqueBMEntity() {
+    public CJBMEntity() {
     }
 
-    public ContratJuridiqueBMEntity(Boolean tasvee,
-                                    Boolean startUp,
-                                    Integer pourcentageComissionTasvee,
-                                    Integer siretTasvee,
-                                    BusinessModelEntity idBusinessModel) {
+    public CJBMEntity(Boolean tasvee,
+                      Boolean startUp,
+                      Integer pourcentageComissionTasvee,
+                      Integer siretTasvee,
+                      BMEntity idBusinessModel) {
         this.tasvee = tasvee;
         this.startUp = startUp;
         this.pourcentageComissionTasvee = pourcentageComissionTasvee;
@@ -62,7 +62,7 @@ public class ContratJuridiqueBMEntity {
         return siretTasvee;
     }
 
-    public BusinessModelEntity getIdBusinessModel() {
+    public BMEntity getIdBusinessModel() {
         return idBusinessModel;
     }
 
@@ -86,7 +86,7 @@ public class ContratJuridiqueBMEntity {
         this.siretTasvee = siretTasvee;
     }
 
-    public void setIdBusinessModel(BusinessModelEntity idBusinessModel) {
+    public void setIdBusinessModel(BMEntity idBusinessModel) {
         this.idBusinessModel = idBusinessModel;
     }
 
