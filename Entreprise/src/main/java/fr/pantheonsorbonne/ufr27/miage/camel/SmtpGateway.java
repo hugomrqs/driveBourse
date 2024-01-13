@@ -1,6 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueBMEntity;
+import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBM;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.camel.CamelContext;
@@ -24,11 +24,11 @@ public class SmtpGateway {
     /////////////////////
     ////Start UP
     /////////////////////
-    public void sendSignedCJ(ContratJuridiqueBMEntity contratJuridiqueBMEntity) {
+    public void sendSignedCJ(ContratJuridiqueBM contratJuridiqueBM) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBodyAndHeaders(  "direct:startup-smtp" ,contratJuridiqueBMEntity,
+            producerTemplate.sendBodyAndHeaders(  "direct:startup-smtp" ,contratJuridiqueBM,
                     Map.of("subject","Contrat juridique BM signé",
-                            "CJBMID",contratJuridiqueBMEntity.getContratJuridiqueBM()));
+                            "CJBMID",contratJuridiqueBM.contratJuridiqueBM()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

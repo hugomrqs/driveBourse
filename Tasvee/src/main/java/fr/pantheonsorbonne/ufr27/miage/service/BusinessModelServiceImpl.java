@@ -62,7 +62,7 @@ public class BusinessModelServiceImpl implements BusinessModelService{
     }
 
     private ContratJuridiqueBM convertCJEntityToDTO(ContratJuridiqueBMEntity entity) {
-        ContratJuridiqueBM dto = new ContratJuridiqueBM(entity.getContratJuridiqueBM(), entity.getTasvee(), entity.getStartUp(), entity.getPourcentageComissionTasvee(), entity.getSiretTasvee(), entity.getIdBusinessModel());
+        ContratJuridiqueBM dto = new ContratJuridiqueBM(entity.getContratJuridiqueBM(), entity.getTasvee(), entity.getStartUp(), entity.getPourcentageComissionTasvee(), entity.getSiretTasvee(), convertBMEntityToDTO(entity.getIdBusinessModel()));
         return dto;
     }
 

@@ -37,7 +37,7 @@ public class BilanComptableEntity {
         this.coutDeMarchandise=coutDeMarchandise;
     }
 
-    public int getIdBilanComptable() {
+    public Integer getIdBilanComptable() {
         return idBilanComptable;
     }
 

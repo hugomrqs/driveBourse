@@ -20,8 +20,7 @@ public class BusinessModelEntity {
     }
 
     public BusinessModelEntity(Integer argentLeveeXpTasvee,
-                               Integer partCedeeXpTasvee,
-                               StartUpEntity siretStartUp) {
+                               Integer partCedeeXpTasvee) {
         this.argentLeveeXpTasvee = argentLeveeXpTasvee;
         this.partCedeeXpTasvee = partCedeeXpTasvee;
     }

@@ -10,7 +10,7 @@
   <modules>
       <module>Fond</module>
       <module>Entreprise</module>
-    <module>Tasvee</module>
+      <module>Tasvee</module>
       <module>Common</module>
   </modules>
   <dependencyManagement>
