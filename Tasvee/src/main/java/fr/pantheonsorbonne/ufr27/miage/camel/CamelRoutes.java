@@ -4,7 +4,6 @@ import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
 import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModel;
 import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridique;
 import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
-import fr.pantheonsorbonne.ufr27.miage.model.BusinessModelEntity;
 import fr.pantheonsorbonne.ufr27.miage.service.PrestaFinancierService;
 import fr.pantheonsorbonne.ufr27.miage.service.PrestaJuridiqueService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -82,12 +81,12 @@ public class CamelRoutes extends RouteBuilder {
                 .log("/////////////////////////////////////////////////////////////////////////////////////////")
                 .log("type entreant : ${body}")
                 .log("/////////////////////////////////////////////////////////////////////////////////////////")
-                .unmarshal().json(BusinessModelEntity.class)
+                .unmarshal().json(BusinessModel.class)
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
 
-                        BusinessModelEntity notice = exchange.getMessage().getBody(BusinessModelEntity.class);
+                        BusinessModel notice = exchange.getMessage().getBody(BusinessModel.class);
                         exchange.getMessage().setHeaders(new HashMap<>());
                         exchange.getMessage().setHeader("from",smtpUser);
                         exchange.getMessage().setHeader("to",smtpUser);
