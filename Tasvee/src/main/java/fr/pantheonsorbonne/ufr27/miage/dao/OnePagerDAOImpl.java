@@ -39,5 +39,12 @@ public class OnePagerDAOImpl implements OnePagerDAO{
 
         }
     }
+
+    @Override
+    public OnePager selectOnePagerById(int idOnePager){
+        OnePager onePager = em.find(OnePager.class, idOnePager);
+        return onePager;
+    }
+
 }
 

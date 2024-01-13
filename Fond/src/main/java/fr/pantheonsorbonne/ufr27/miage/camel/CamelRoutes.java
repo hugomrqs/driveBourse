@@ -60,7 +60,7 @@ public class CamelRoutes extends RouteBuilder {
                     .bean(responseOnePagerGateway, "SendResponse(${body},${in.headers.ReplyTo})");
         }
 
-        from("sjms2:topic:" + jmsPrefix + "businessPlanForFond")
+        from("sjms2:topic:" + jmsPrefix + "businessPlanForFond" + helper.siret)
                 .autoStartup(isRouteEnabled)
                 .log("BusinessPlan de Tasvee  reçu")
                 .unmarshal().json(BusinessPlanDTO.class)

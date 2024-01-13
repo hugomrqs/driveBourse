@@ -1,10 +1,14 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
+
+import fr.pantheonsorbonne.ufr27.miage.camel.BusinessPlanGateway;
 import fr.pantheonsorbonne.ufr27.miage.dao.BusinessPlanDAO;
+import fr.pantheonsorbonne.ufr27.miage.dao.ContratJuridiqueOnePagerPourBPDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.OnePagerDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.StartUpDAO;
 import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciereDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridiqueDTO;
 import fr.pantheonsorbonne.ufr27.miage.exception.BusinessPlanNotFoundException;
+import fr.pantheonsorbonne.ufr27.miage.exception.ContractNotSignedException;
 import fr.pantheonsorbonne.ufr27.miage.exception.OnePagerNotFoundException;
 import fr.pantheonsorbonne.ufr27.miage.exception.StartUpNotFoundException;
 import fr.pantheonsorbonne.ufr27.miage.model.*;
@@ -12,19 +16,25 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 @ApplicationScoped
-public class BusinessPlanServiceImpl implements BusinessPlanService{
+public class BusinessPlanServiceImpl implements BusinessPlanService {
     @Inject
     StartUpDAO startUpDAO;
     @Inject
     OnePagerDAO onePagerDAO;
     @Inject
     BusinessPlanDAO businessPlanDAO;
+    @Inject
+    BusinessPlanGateway businessPlanGateway;
+    @Inject
+    ContratJuridiqueOnePagerPourBPDAO contratJuridiqueOnePagerPourBPDAO;
+
     @Override
     public void createBusinessPlan(int siretStartUp) throws StartUpNotFoundException, OnePagerNotFoundException {
         StartUpEntity startUpModel = startUpDAO.selectStartUp(siretStartUp);
         OnePager onePager = onePagerDAO.selectOnePagerByIdStartUp(siretStartUp);
-        businessPlanDAO.createBusinessPlan(startUpModel,onePager);
+        businessPlanDAO.createBusinessPlan(startUpModel, onePager);
     }
+
     public static String determinerSerie(int argentLeve) {
         if (argentLeve <= 100000) {
             return "pre-seed";
@@ -44,7 +54,7 @@ public class BusinessPlanServiceImpl implements BusinessPlanService{
     }
 
     @Override
-    public void sendBusinessPlan(int siretStartUp) throws BusinessPlanNotFoundException, StartUpNotFoundException, OnePagerNotFoundException {
+    public void sendBusinessPlan(int siretStartUp, int siretFond) throws ContractNotSignedException, BusinessPlanNotFoundException, StartUpNotFoundException, OnePagerNotFoundException {
         BusinessPlan businessPlanModel = businessPlanDAO.selectBusinessPlan(siretStartUp);
         OnePager onePagerModel = businessPlanModel.getIdOnePager();
         StartUpEntity startUpModel = businessPlanModel.getSiretStartUp();
@@ -74,6 +84,13 @@ public class BusinessPlanServiceImpl implements BusinessPlanService{
                         determinerSerie(startUpModel.getArgentLevee()),
                         startUpModel.getPartCede()
                 );
-        //@TODO if ContratJurdiqueOnePagerPourBP is signed (appel a ContratJurdiqueOnePagerPourBPDAO) => send to BusinessPlanGateway donnée cryptés et la clé c'est l'id du NDa quel génie
+        if (contratJuridiqueOnePagerPourBPDAO
+                .isContratJuridiqueOnePagerPourBPDAOSigneByFond(
+                        onePagerModel.getIdOnePager(),
+                        siretFond)) {
+            businessPlanGateway.sendBusinessPlan(businessPlan, siretFond);
+        } else {
+            throw new ContractNotSignedException(siretFond);
+        }
     }
 }

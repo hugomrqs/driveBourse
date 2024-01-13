@@ -17,7 +17,7 @@ public class ContratJuridiqueOnePagerPourBP {
     private Boolean fonds;
 
     @Column(name = "SiretTasvee")
-    private String siretTasvee;
+    private int siretTasvee; //@TODO faire clé étrangère changer type to StarUP
 
     @ManyToOne
     @JoinColumn(name = "SiretFonds", referencedColumnName = "SiretFonds")
@@ -30,7 +30,7 @@ public class ContratJuridiqueOnePagerPourBP {
     public ContratJuridiqueOnePagerPourBP() {
     }
 
-    public ContratJuridiqueOnePagerPourBP(Boolean tasvee, Boolean fonds, String siretTasvee, Fond siretFonds, OnePager idOnPager) {
+    public ContratJuridiqueOnePagerPourBP(Boolean tasvee, Boolean fonds, int siretTasvee, Fond siretFonds, OnePager idOnPager) {
         this.tasvee = tasvee;
         this.fonds = fonds;
         this.siretTasvee = siretTasvee;
@@ -50,7 +50,7 @@ public class ContratJuridiqueOnePagerPourBP {
         return fonds;
     }
 
-    public String getSiretTasvee() {
+    public int getSiretTasvee() {
         return siretTasvee;
     }
 
@@ -75,7 +75,7 @@ public class ContratJuridiqueOnePagerPourBP {
         this.fonds = fonds;
     }
 
-    public void setSiretTasvee(String siretTasvee) {
+    public void setSiretTasvee(int siretTasvee) {
         this.siretTasvee = siretTasvee;
     }
 
