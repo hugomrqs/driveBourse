@@ -4,6 +4,7 @@ import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
 import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModel;
 import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridique;
 import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
+import fr.pantheonsorbonne.ufr27.miage.model.BusinessModelEntity;
 import fr.pantheonsorbonne.ufr27.miage.service.PrestaFinancierService;
 import fr.pantheonsorbonne.ufr27.miage.service.PrestaJuridiqueService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -68,6 +69,7 @@ public class CamelRoutes extends RouteBuilder {
                 .toD("sjms2:topic:" + jmsPrefix + "-Tasvee-${in.headers.subject}");
 
         from("sjms2:topic:" + jmsPrefix + "sender")
+                .throttle(1).timePeriodMillis(5000) // 1 message toutes les 10 secondes
                 .to(destinaire);
 
 
@@ -77,26 +79,32 @@ public class CamelRoutes extends RouteBuilder {
 //OP
         from("sjms2:topic:" + jmsPrefix + "-Tasvee-BM")
                 .autoStartup(isRouteEnabled)
-                .unmarshal().json(BusinessModel.class)
+                .log("/////////////////////////////////////////////////////////////////////////////////////////")
+                .log("type entreant : ${body}")
+                .log("/////////////////////////////////////////////////////////////////////////////////////////")
+                .unmarshal().json(BusinessModelEntity.class)
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
 
-                        BusinessModel notice = exchange.getMessage().getBody(BusinessModel.class);
+                        BusinessModelEntity notice = exchange.getMessage().getBody(BusinessModelEntity.class);
                         exchange.getMessage().setHeaders(new HashMap<>());
                         exchange.getMessage().setHeader("from",smtpUser);
                         exchange.getMessage().setHeader("to",smtpUser);
                         exchange.getMessage().setHeader("contentType", "text/html");
                         exchange.getMessage().setHeader("subject", "Send BM");
                         exchange.getMessage().setBody("Cher(e) Client(e)," +
-                                "\n\n Nous avons bien reçu votre demande sur notre site via l'offerForm. L'identifiant ed votre Offer Form est  " + notice.idBusinessModel() +
-                                "\n\n C'est avec grand plaisir que Tasvee annonce notre future collaboration. Nous sommes ravis de vous proposer une levée de fonds à " +  notice.argentLeveeXpTasvee() +
+                                "\n\n Nous avons bien reçu votre demande sur notre site via l'offerForm. L'identifiant ed votre Offer Form est  " +
+                                "\n\n C'est avec grand plaisir que Tasvee annonce notre future collaboration. Nous sommes ravis de vous proposer une levée de fonds à " +
                                 " \n\n Vous trouverez ci-joint un Business Plan détaillé pour votre consultation." +
                                 "\n\n Nous vous remercions pour votre confiance et restons à votre disposition pour toute question." +
                                 "\n\n Cordialement," +
                                 "\n\n L'équipe Tasvee");
                     }
                 })
+                .log("/////////////////////////////////////////////////////////////////////////////////////////")
+                .log("type entreant : ${in.headers.subject}")
+                .log("/////////////////////////////////////////////////////////////////////////////////////////")
                 .to("sjms2:topic:" + jmsPrefix + "-StartUp-SMTP");
 
 
