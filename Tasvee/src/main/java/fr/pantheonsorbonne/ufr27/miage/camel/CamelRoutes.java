@@ -6,6 +6,10 @@ import jakarta.activation.DataHandler;
 import jakarta.activation.FileDataSource;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.mail.Multipart;
+import jakarta.mail.internet.InternetHeaders;
+import jakarta.mail.internet.MimeBodyPart;
+import jakarta.mail.internet.MimeMultipart;
 import jakarta.mail.util.ByteArrayDataSource;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -47,6 +51,10 @@ public class CamelRoutes extends RouteBuilder {
 
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.port")
     String smtpPort;
+
+    PrestaFinancierService pf;
+
+    PrestaJuridiqueServiceImpl pj;
 
     @Inject
     InteretService interetService;
@@ -105,8 +113,10 @@ public class CamelRoutes extends RouteBuilder {
             .to(destinaire);
 
         /////////////////////
-        //// Business Model PDF de préférence sinon message
+        ////Tasvee --> StartUp Business Model PDF de préférence sinon message
         /////////////////////
+
+
 
 //OP
         from("sjms2:topic:" + jmsPrefix + "-Tasvee-BM")
@@ -120,19 +130,28 @@ public class CamelRoutes extends RouteBuilder {
                         exchange.getMessage().setHeaders(new HashMap<>());
                         exchange.getMessage().setHeader("from",smtpUser);
                         exchange.getMessage().setHeader("to",smtpUser);
-                        exchange.getMessage().setHeader("contentType", "text/html");
                         exchange.getMessage().setHeader("subject", "Send BM");
-                        exchange.getMessage().setBody("Cher(e) Client(e)," +
-                                "\n\n Nous avons bien reçu votre demande sur notre site via l'offerForm. L'identifiant ed votre Offer Form est  " + notice.idBusinessModel() +
-                                "\n\n C'est avec grand plaisir que Tasvee annonce notre future collaboration. Nous sommes ravis de vous proposer une levée de fonds à " +  notice.objectifLeveeExperienceTasvee() +
-                                " \n\n Vous trouverez ci-joint un Business Plan détaillé pour votre consultation." +
-                                "\n\n Nous vous remercions pour votre confiance et restons à votre disposition pour toute question." +
-                                "\n\n Cordialement," +
-                                "\n\n L'équipe Tasvee");
+                        String body = "<a href=\"mailto:destinataire@example.com?subject=Sujet-"+ notice.idBusinessModel()+"&body=Corps%20du%20message\">Cliquez ici pour envoyer un e-mail</a>";
+
+
+                        MimeBodyPart attachmentPart = new MimeBodyPart();
+                        // Attacher le fichier à la partie du message
+                        attachmentPart.attachFile(new File("data/bmID-3-ca.json"));
+
+                        // Créer un objet multipart pour contenir les différentes parties du message
+                        Multipart multipart = new MimeMultipart();
+                        // Ajouter la partie du message avec le corps de l'e-mail
+                        multipart.addBodyPart(new MimeBodyPart(new InternetHeaders(), body.getBytes()));
+                        // Ajouter la partie du message avec l'attachement
+                        multipart.addBodyPart(attachmentPart);
+                        exchange.getMessage().setBody(multipart);
+
+
                     }
                 })
-                .to("sjms2:topic:" + jmsPrefix + "-StartUp-SMTP");
-        //.to("sjms2:topic:" + jmsPrefix + "sender" )
+                .log("${body}")
+                //.to("sjms2:topic:" + jmsPrefix + "-StartUp-SMTP");
+        .to("sjms2:topic:" + jmsPrefix + "sender" );
 
 
 
@@ -166,7 +185,7 @@ public class CamelRoutes extends RouteBuilder {
 
 
         /////////////////////
-        //// Contrat Juridique pièce jointe JSON besoins de signer
+        //// Tasvee -->  Contrat Juridique pièce jointe JSON besoins de signer
         /////////////////////
 
 
@@ -193,7 +212,8 @@ public class CamelRoutes extends RouteBuilder {
 
 
         /////////////////////
-        //// Presta Juridique message
+        //// Tasvee -->  Presta Juridique message
+        /// ASK
         /////////////////////
 
         from("sjms2:topic:" + jmsPrefix + "-Tasvee-EJ")
@@ -212,12 +232,23 @@ public class CamelRoutes extends RouteBuilder {
                                 "\n\n Tasvee");
                     }
                 })
-                .to("sjms2:topic:" + jmsPrefix + "sender");
+                .to("sjms2:topic:" + jmsPrefix + "EJ");
 
         ///////////////////////
+        /////////////////////
+        //// Presta Juridique message --> Tasvee
+        /// traite reply
+        /////////////////////
+//            from("sjms2:topic:" + jmsPrefix + "EJ")
+//                    .autoStartup(isRouteEnabled)
+//                    .unmarshal().json(ExpertiseJuridique.class)
+//                    .bean(pj,"registerLegalExpertise")
+//                    .marshal().json()
+//                    .end();
+
 
         /////////////////////
-        //// Presta Juridique message
+        //// Tasvee --> Presta Financier message
         /////////////////////
 
         from("sjms2:topic:" + jmsPrefix + "-Tasvee-EF")
@@ -240,6 +271,19 @@ public class CamelRoutes extends RouteBuilder {
         ///////////////////////
 
         /////////////////////
+        //// Presta Fiancier --> Tasvee
+        /// traite reply
+        /////////////////////
+//        from("sjms2:topic:" + jmsPrefix + "EF")
+//                .autoStartup(isRouteEnabled)
+//                .unmarshal().json(ExpertiseJuridique.class)
+//                .bean(pf,"registerFinancialExpertise")
+//                .marshal().json()
+//                .end();
+
+
+
+        /////////////////////
         //// CjBM  json il doivent signer
         /////////////////////
 
@@ -256,7 +300,10 @@ public class CamelRoutes extends RouteBuilder {
                         exchange.getMessage().setHeader("contentType", "application/JSON");
                     }
                 })
-                .to("sjms2:topic:" + jmsPrefix + "sender" );
+                .to("sjms2:topic:" + jmsPrefix + "sender" )
+                .to("sjms2:topic:" + jmsPrefix + "-Fond-CJOPBP" );
+
+
 
 
 
