@@ -79,12 +79,6 @@ public class CamelRoutes extends RouteBuilder {
         ////Gestion du contrat juridiqueOPBP
         /////////////////////
 
-        from("sjms2:topic:"+jmsPrefix+"-StartUp-CJOPBP")
-                //.unmarshal().json(BusinessModelDTO.class)
-                .bean(reply,"xxxxx")
-                .marshal().json();
-
-
         from("direct:startup-smtp")
                 .marshal().json()
                 .process(new Processor() {
