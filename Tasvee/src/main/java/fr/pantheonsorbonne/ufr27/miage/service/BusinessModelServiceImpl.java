@@ -1,7 +1,10 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
+import fr.pantheonsorbonne.ufr27.miage.camel.SmtpGateway;
 import fr.pantheonsorbonne.ufr27.miage.dao.BusinessModelDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.ContratJuridiqueBMDAO;
+import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModel;
+import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBM;
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModelEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueBMEntity;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -16,8 +19,8 @@ public class BusinessModelServiceImpl implements BusinessModelService{
     @Inject
     ContratJuridiqueBMDAO contratJuridiqueBMDAO ;
 
-    //@Inject
-    //smtpGateway smtp;
+    @Inject
+    SmtpGateway smtp;
 
     @Inject
     PrestaFinancierService prestaFinancierService;
@@ -29,10 +32,10 @@ public class BusinessModelServiceImpl implements BusinessModelService{
     public void isFormAccepted(Integer siretStartup) {
         BusinessModelEntity businessModelEntity = businessModelDAO.createBusinessModel(siretStartup, quantificationLeveeDeFonds(), quantificationParts()) ;
         System.out.println("Le business model de la startup " + siretStartup + " à été créer avec succès, puis stocker en DB.") ;
-        //SendBusinessModel(businessModelEntity, siretStartup) ;
+        SendBusinessModel(convertBMEntityToDTO(businessModelEntity), siretStartup) ;
         ContratJuridiqueBMEntity contratJuridiqueBMEntity = contratJuridiqueBMDAO.createContratJuridiqueBM(businessModelEntity, 20) ;
         System.out.println("Le contrat juridique du business model de la startup " + siretStartup + " à été créer avec succès, puis stocker en DB.") ;
-        //SendContratJuridiqueBM(contratJuridiqueBMEntity, siretStartup) ;
+        SendContratJuridiqueBM(convertCJEntityToDTO(contratJuridiqueBMEntity), siretStartup) ;
     }
 
     private int quantificationLeveeDeFonds() {
@@ -43,15 +46,25 @@ public class BusinessModelServiceImpl implements BusinessModelService{
         return 80 ;
     }
 
-    /*private void SendBusinessModel(BusinessModelEntity businessModelEntity, Integer siretStartup) {
-        smtp.replyToOffer(businessModelEntity);
+    private void SendBusinessModel(BusinessModel businessModel, Integer siretStartup) {
+        smtp.sendBusinessModelToStartUp(businessModel);
         System.out.println("Le business model de la startup " + siretStartup + " à été envoyé par mail avec succès") ;
-    }*/
+    }
 
-    /*private void SendContratJuridiqueBM(ContratJuridiqueBMEntity contratJuridiqueBMEntity, Integer siretStartup) {
-        smtp.sendContratJuridiqueBMtoStartUp(ContratJuridiqueBMEntity);
+    private BusinessModel convertBMEntityToDTO(BusinessModelEntity entity) {
+        BusinessModel dto = new BusinessModel(entity.getIdBusinessModel(), entity.getArgentLeveeXpTasvee(), entity.getPartCedeeXpTasvee());
+        return dto;
+    }
+
+    private void SendContratJuridiqueBM(ContratJuridiqueBM contratJuridiqueBM, Integer siretStartup) {
+        smtp.sendContratJuridiqueBMtoStartUp(contratJuridiqueBM);
         System.out.println("Le contrat juridique pour le Business Model de la startup " + siretStartup + " à été envoyé par mail avec succès") ;
-    }*/
+    }
+
+    private ContratJuridiqueBM convertCJEntityToDTO(ContratJuridiqueBMEntity entity) {
+        ContratJuridiqueBM dto = new ContratJuridiqueBM(entity.getContratJuridiqueBM(), entity.getTasvee(), entity.getStartUp(), entity.getPourcentageComissionTasvee(), entity.getSiretTasvee(), entity.getIdBusinessModel());
+        return dto;
+    }
 
     @Override
     public void contratJuridiqueBMSigned(ContratJuridiqueBMEntity contratJuridiqueBMEntity) {

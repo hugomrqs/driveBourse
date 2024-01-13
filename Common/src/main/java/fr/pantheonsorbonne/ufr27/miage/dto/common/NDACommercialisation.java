@@ -27,4 +27,3 @@ public class NDACommercialisation extends NDA<Proposition> {
         this.signatureEntreprise = signatureEntreprise;
     }
 }
-

@@ -1,12 +1,13 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
-import fr.pantheonsorbonne.ufr27.miage.model.BusinessModelEntity;
+import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModel;
+import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBM;
 import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueBMEntity;
 
 public interface BusinessModelDAO {
-    void registerBusinessModel(BusinessModelEntity businessModelEntity) ;
+    void registerBusinessModel(BusinessModel businessModel) ;
 
-    void registerContratJuridiqueBM(ContratJuridiqueBMEntity contratJuridiqueBMEntity) ;
+    ContratJuridiqueBMEntity registerContratJuridiqueBM(ContratJuridiqueBM contratJuridiqueBM) ;
 
     ContratJuridiqueBMEntity sign(ContratJuridiqueBMEntity contratJuridiqueBMEntity);
 }

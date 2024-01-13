@@ -1,4 +1,5 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -23,10 +24,6 @@ public class ContratJuridiqueBMEntity {
     private Integer siretTasvee;
 
     @ManyToOne
-    @JoinColumn(name = "SiretStartUP", referencedColumnName = "SiretStartUP")
-    private StartUpEntity siretStartUp;
-
-    @ManyToOne
     @JoinColumn(name = "IDBusinessModel", referencedColumnName = "IDBusinessModel")
     private BusinessModelEntity idBusinessModel;
 
@@ -37,13 +34,11 @@ public class ContratJuridiqueBMEntity {
                                     Boolean startUp,
                                     Integer pourcentageComissionTasvee,
                                     Integer siretTasvee,
-                                    StartUpEntity siretStartUp,
                                     BusinessModelEntity idBusinessModel) {
         this.tasvee = tasvee;
         this.startUp = startUp;
         this.pourcentageComissionTasvee = pourcentageComissionTasvee;
         this.siretTasvee = siretTasvee;
-        this.siretStartUp = siretStartUp;
         this.idBusinessModel = idBusinessModel;
     }
 
@@ -65,10 +60,6 @@ public class ContratJuridiqueBMEntity {
 
     public Integer getSiretTasvee() {
         return siretTasvee;
-    }
-
-    public StartUpEntity getSiretStartUp() {
-        return siretStartUp;
     }
 
     public BusinessModelEntity getIdBusinessModel() {
@@ -95,11 +86,8 @@ public class ContratJuridiqueBMEntity {
         this.siretTasvee = siretTasvee;
     }
 
-    public void setSiretStartUp(StartUpEntity siretStartUp) {
-        this.siretStartUp = siretStartUp;
-    }
-
     public void setIdBusinessModel(BusinessModelEntity idBusinessModel) {
         this.idBusinessModel = idBusinessModel;
     }
+
 }

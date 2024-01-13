@@ -1,7 +1,9 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
+import fr.pantheonsorbonne.ufr27.miage.camel.SmtpGateway;
 import fr.pantheonsorbonne.ufr27.miage.dao.BusinessModelDAO;
-import fr.pantheonsorbonne.ufr27.miage.model.BusinessModelEntity;
+import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModel;
+import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBM;
 import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueBMEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -13,16 +15,19 @@ public class BusinessModelServiceImpl implements BusinessModelService {
 
     @Inject
     BusinessModelDAO businessModelDAO;
+
+    @Inject
+    SmtpGateway smtp;
     @Override
-    public void registerBusinessModel(BusinessModelEntity businessModelEntity) {
-        businessModelDAO.registerBusinessModel(businessModelEntity) ;
-        System.out.println("le business model " + businessModelEntity.getIdBusinessModel() + " à été enregistré en DB avec succès");
+    public void registerBusinessModel(BusinessModel businessModel) {
+        businessModelDAO.registerBusinessModel(businessModel) ;
+        System.out.println("le business model " + businessModel.idBusinessModel() + " à été enregistré en DB avec succès");
     }
 
     @Override
-    public void registerContratJuridiqueBM(ContratJuridiqueBMEntity contratJuridiqueBMEntity) {
-        businessModelDAO.registerContratJuridiqueBM(contratJuridiqueBMEntity) ;
-        System.out.println("Le contrat juridique " + contratJuridiqueBMEntity.getContratJuridiqueBM() + " du business model à été enregistré en DB avec succès.") ;
+    public void registerContratJuridiqueBM(ContratJuridiqueBM contratJuridiqueBM) {
+        ContratJuridiqueBMEntity contratJuridiqueBMEntity = businessModelDAO.registerContratJuridiqueBM(contratJuridiqueBM) ;
+        System.out.println("Le contrat juridique " + contratJuridiqueBM.contratJuridiqueBM() + " du business model à été reçu et enregistré en DB avec succès.") ;
         signAndReply(contratJuridiqueBMEntity) ;
     }
 
@@ -34,7 +39,7 @@ public class BusinessModelServiceImpl implements BusinessModelService {
         if (response.equals("y")) {
             ContratJuridiqueBMEntity updateEntity = businessModelDAO.sign(contratJuridiqueBMEntity);
             System.out.println("Le contrat juridique " + updateEntity.getContratJuridiqueBM() + " du business model à été signé, un champs à été modifier en DB avec succès.");
-            //appel de la route SMTP pour renvoyé la updateEntity (signé). On appel grace au service correspondant
+            smtp.sendSignedCJ(updateEntity) ;
             System.out.println("Le contrat juridique " + updateEntity.getContratJuridiqueBM() + " du business model signé à été renvoyé à Tasvee avec succès.");
         }
     }

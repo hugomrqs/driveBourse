@@ -5,10 +5,10 @@ import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeant;
 import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
 import fr.pantheonsorbonne.ufr27.miage.service.OfferFormService;
 import jakarta.inject.Inject;
+import picocli.CommandLine.Command;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import picocli.CommandLine.Command;
 
 @Command
 public class Main implements Runnable {

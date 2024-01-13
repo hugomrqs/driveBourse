@@ -7,7 +7,6 @@ import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
 import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeant;
 import fr.pantheonsorbonne.ufr27.miage.dto.OfferForm;
 import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
-import fr.pantheonsorbonne.ufr27.miage.service.OfferFormService;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
