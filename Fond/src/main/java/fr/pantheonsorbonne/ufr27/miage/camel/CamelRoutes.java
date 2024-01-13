@@ -38,6 +38,8 @@ public class CamelRoutes extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
-
+        //from(queue de PC)
+        //.unmarshall.json(CJOPBPDTO.class)
+        //bean(
     }
 }

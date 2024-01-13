@@ -52,9 +52,9 @@ public class CamelRoutes extends RouteBuilder {
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.port")
     String smtpPort;
 
-    PrestaFinancierService pf;
-
-    PrestaJuridiqueServiceImpl pj;
+//    PrestaFinancierService pf;
+//
+//    PrestaJuridiqueServiceImpl pj;
 
     @Inject
     InteretService interetService;
@@ -106,11 +106,30 @@ public class CamelRoutes extends RouteBuilder {
                 .autoStartup(isRouteEnabled)
                 .marshal().json()
                 .choice()
-                .when(header("subject").in("BM", "CJ", "EF", "EJ", "CJOPBM"))
-                .toD("sjms2:topic:" + jmsPrefix + "-Tasvee-${in.headers.subject}");
+                //.when(header("type").in("PDF", "JSON"))
+                .when(header("Pice-Jointe").isEqualTo("true"))
+                .multicast()
+                .to("direct:create-${in.headers.type}","sjms2:topic:" + jmsPrefix + "-Tasvee-BM");
+
+
+        ////trcois une queue de message et la poste sur smtp
 
     from("sjms2:topic:" + jmsPrefix + "sender")
             .to(destinaire);
+
+
+
+    //////Creation des pièces jointes
+
+        from("sjms2:topic:" + jmsPrefix + "-Tasvee-Pice-Jointe")
+                .autoStartup(isRouteEnabled)
+                .multicast()
+                .to("direct:creator", "direct:processMessage");
+
+        from("sjms2:topic:" + jmsPrefix + "-Tasvee-BM")
+                .autoStartup(isRouteEnabled)
+                .multicast()
+                .to("direct:creator", "direct:processMessage");
 
         /////////////////////
         ////Tasvee --> StartUp Business Model PDF de préférence sinon message
@@ -121,6 +140,15 @@ public class CamelRoutes extends RouteBuilder {
 //OP
         from("sjms2:topic:" + jmsPrefix + "-Tasvee-BM")
                 .autoStartup(isRouteEnabled)
+                .multicast()
+                .to("direct:creator", "direct:processMessage");
+
+        from("direct:creator")
+                .to("pdf:create")
+                .to("file:data/?fileName=bmID-${in.headers.bmID}-ca.pdf");
+
+        from("direct:processMessage")
+                .log("${body}")
                 .unmarshal().json(BusinessModelDTO.class)
                 .process(new Processor() {
                     @Override
@@ -131,28 +159,14 @@ public class CamelRoutes extends RouteBuilder {
                         exchange.getMessage().setHeader("from",smtpUser);
                         exchange.getMessage().setHeader("to",smtpUser);
                         exchange.getMessage().setHeader("subject", "Send BM");
-                        String body = "<a href=\"mailto:destinataire@example.com?subject=Sujet-"+ notice.idBusinessModel()+"&body=Corps%20du%20message\">Cliquez ici pour envoyer un e-mail</a>";
-
-
-                        MimeBodyPart attachmentPart = new MimeBodyPart();
-                        // Attacher le fichier à la partie du message
-                        attachmentPart.attachFile(new File("data/bmID-3-ca.json"));
-
-                        // Créer un objet multipart pour contenir les différentes parties du message
-                        Multipart multipart = new MimeMultipart();
-                        // Ajouter la partie du message avec le corps de l'e-mail
-                        multipart.addBodyPart(new MimeBodyPart(new InternetHeaders(), body.getBytes()));
-                        // Ajouter la partie du message avec l'attachement
-                        multipart.addBodyPart(attachmentPart);
-                        exchange.getMessage().setBody(multipart);
-
-
+                        exchange.getMessage().setHeader("contentType", "text/html");
+                        String Path ="C://Users/Hugo/L3_MIAGE_operating_systems/drive/Tasvee/data/Receipt.pdf";
+                        String body = "<a href='"+Path+"' c'est qu'il faut cliquer/a>";
+                        exchange.getMessage().setBody(body);
                     }
                 })
                 .log("${body}")
-                //.to("sjms2:topic:" + jmsPrefix + "-StartUp-SMTP");
-        .to("sjms2:topic:" + jmsPrefix + "sender" );
-
+                .to("sjms2:topic:" + jmsPrefix + "sender" );
 
 
 
@@ -232,14 +246,14 @@ public class CamelRoutes extends RouteBuilder {
                                 "\n\n Tasvee");
                     }
                 })
-                .to("sjms2:topic:" + jmsPrefix + "EJ");
+                .to("sjms2:topic:" + jmsPrefix + "-presta-EJ");
 
         ///////////////////////
         /////////////////////
         //// Presta Juridique message --> Tasvee
         /// traite reply
         /////////////////////
-//            from("sjms2:topic:" + jmsPrefix + "EJ")
+//            from("sjms2:topic:" + jmsPrefix + "-presta")
 //                    .autoStartup(isRouteEnabled)
 //                    .unmarshal().json(ExpertiseJuridique.class)
 //                    .bean(pj,"registerLegalExpertise")
@@ -274,7 +288,7 @@ public class CamelRoutes extends RouteBuilder {
         //// Presta Fiancier --> Tasvee
         /// traite reply
         /////////////////////
-//        from("sjms2:topic:" + jmsPrefix + "EF")
+//        from("sjms2:topic:" + jmsPrefix + "presta")
 //                .autoStartup(isRouteEnabled)
 //                .unmarshal().json(ExpertiseJuridique.class)
 //                .bean(pf,"registerFinancialExpertise")
