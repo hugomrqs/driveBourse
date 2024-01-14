@@ -4,8 +4,7 @@ import fr.pantheonsorbonne.ufr27.miage.camel.SmtpGateway;
 import fr.pantheonsorbonne.ufr27.miage.dao.ContratJuridiqueOnePagerPourBPDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.FondDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.OnePagerDAO;
-import fr.pantheonsorbonne.ufr27.miage.dto.NDADTODealDTO;
-import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerInteret;
+import fr.pantheonsorbonne.ufr27.miage.dto.*;
 import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueOnePagerPourBP;
 import fr.pantheonsorbonne.ufr27.miage.model.Fond;
 import fr.pantheonsorbonne.ufr27.miage.model.OnePager;
@@ -27,7 +26,7 @@ public class ContratJuridiqueOnePagerPourBPServiceImpl implements ContratJuridiq
     EntityManager em;
 
     @Override
-    public void CreateContratJuridiqueOnePagerPourBP(OnePagerInteret onePagerInteret){
+    public int  CreateContratJuridiqueOnePagerPourBP(OnePagerInteret onePagerInteret){
         int onePagerId = onePagerInteret.idOnePager();
         OnePager onepager = onePagerDAO.selectOnePagerById(onePagerId);
         int siretFond = onePagerInteret.siretFond();
@@ -35,24 +34,45 @@ public class ContratJuridiqueOnePagerPourBPServiceImpl implements ContratJuridiq
         ContratJuridiqueOnePagerPourBP contratJuridiqueOnePagerPourBP =
                 new ContratJuridiqueOnePagerPourBP(true, false, 123456849,fond, onepager );
         em.persist(contratJuridiqueOnePagerPourBPDAO);
+        return contratJuridiqueOnePagerPourBP.getContratJuridiqueBM(); //retourne l'id
     }
 
-    // @TODO get OnePAger par id pour creer le contrat et send avec le gateway puis récuperer le ContratSigné signé à partir d'un dossier data ecoutée a partir d'une routecmael qui le get et le register en bdd
+    @Override
+    public void SendContratJuridiqueOnePagerPourBP(int idContrat) {
+        ContratJuridiqueOnePagerPourBP cjbp =
+                contratJuridiqueOnePagerPourBPDAO.selectContratJuridiqueOnePagerPourBPFromId(idContrat);
+        ExpertiseJuridiqueDTO expertiseJuridiqueDTO = new ExpertiseJuridiqueDTO(
+                 cjbp.getIdOnPager().getIdExpertiseJuridique().getNombrePartExpertise(),
+                 cjbp.getIdOnPager().getIdExpertiseJuridique().getPrixPartExpertise()
+                 );
+         ExpertiseFinanciereDTO expertiseFinanciereDTO = new ExpertiseFinanciereDTO(
+                 cjbp.getIdOnPager().getIdExpertiseFinanciere().getBFRExpert(),
+                 cjbp.getIdOnPager().getIdExpertiseFinanciere().getMargeBrutExpert()
+                 );
+         OnePagerDTO onePagerDTO = new OnePagerDTO(
+                 expertiseJuridiqueDTO,
+                 expertiseFinanciereDTO,
+                 cjbp.getSiretTasvee()
+         );
 
+         NDADTOProductionDTO contratJuridiqueOnePagerPourBP = new NDADTOProductionDTO(
+                 cjbp.getContratJuridiqueBM(),
+                 onePagerDTO,
+                 cjbp.getSiretTasvee(),
+                 cjbp.getSiretFonds().getSiretFonds(),
+                 cjbp.getTasvee(),
+                 cjbp.getFonds()
+                 );
+        smtp.sendCJOPBP(contratJuridiqueOnePagerPourBP);
+    }
 
-//@TODO @Override
-//    public void SendContratJuridiqueOnePagerPourBP(ContratJuridiqueOnePagerPourBP cjbp) {
-//        NDADTODealDTO cjbpDTO =
-//         new NDADTODealDTO(
-//         cjbp.getContratJuridiqueBM(),cjbp.getTasvee(),
-//         cjbp.getFonds(), cjbp.getSiretTasvee(),
-//         cjbp.getSiretFonds(),
-//         cjbp.getIdOnPager());
-//        smtp.askExpertJur(cjbpDTO);
-//    }
-
-//@TODO     @Override
-//    public void RegisterContratJuridiqueOnePagerPourBP(ContratJuridiqueOnePagerPourBP cjbp) {
-//        cjopbp.updateContratJuridiqueOnePagerPourBP(cjbp);
-//    }
+    @Override
+    public void UpdateContratJuridiqueOnePagerPourBPSigne(NDADTOProductionDTO cjbp) {
+        ContratJuridiqueOnePagerPourBP contratJuridiqueOnePagerPourBP =
+                contratJuridiqueOnePagerPourBPDAO.selectContratJuridiqueOnePagerPourBPFromId(cjbp.getNumeroContrat());
+        if (cjbp.isSignatureFonds()){
+            contratJuridiqueOnePagerPourBP.setFonds(true);
+        }
+        em.merge(contratJuridiqueOnePagerPourBP);
+    }
 }

@@ -3,7 +3,6 @@ package fr.pantheonsorbonne.ufr27.miage.dao;
 import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueOnePagerPourBP;
 import fr.pantheonsorbonne.ufr27.miage.model.Fond;
 import fr.pantheonsorbonne.ufr27.miage.model.OnePager;
-import fr.pantheonsorbonne.ufr27.miage.model.StartUpEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -17,7 +16,7 @@ public class ContratJuridiqueOnePagerPourBPDAOImpl implements ContratJuridiqueOn
 
     @Override
     @Transactional
-    public void create(Boolean tasvee, Boolean fonds, String siretTasvee, Fond siretFonds, OnePager idOnPager) {
+    public void create(Boolean tasvee, Boolean fonds, int siretTasvee, Fond siretFonds, OnePager idOnPager) {
         ContratJuridiqueOnePagerPourBP contrat = new ContratJuridiqueOnePagerPourBP();
         contrat.setTasvee(tasvee);
         contrat.setFonds(fonds);
@@ -40,4 +39,9 @@ public class ContratJuridiqueOnePagerPourBPDAOImpl implements ContratJuridiqueOn
 
         return isContratSigned.getFonds(); //getFonds() = signatureduFond
     }
+    @Override
+    public ContratJuridiqueOnePagerPourBP selectContratJuridiqueOnePagerPourBPFromId(int id){
+        return  em.find(ContratJuridiqueOnePagerPourBP.class, id);
+    }
+
 }

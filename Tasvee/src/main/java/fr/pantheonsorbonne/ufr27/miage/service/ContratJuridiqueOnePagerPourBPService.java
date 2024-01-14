@@ -1,7 +1,12 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
+import fr.pantheonsorbonne.ufr27.miage.dto.NDADTOProductionDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerInteret;
+import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueOnePagerPourBP;
 
 public interface ContratJuridiqueOnePagerPourBPService {
-    void CreateContratJuridiqueOnePagerPourBP(OnePagerInteret onePagerInteret);
+    int CreateContratJuridiqueOnePagerPourBP(OnePagerInteret onePagerInteret);
+    void SendContratJuridiqueOnePagerPourBP(int idContrat);
+
+    void UpdateContratJuridiqueOnePagerPourBPSigne(NDADTOProductionDTO cjbp);
 }

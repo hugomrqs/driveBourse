@@ -17,7 +17,7 @@ public class ContratJuridiqueOnePagerPourBP {
     private Boolean fonds;
 
     @Column(name = "SiretTasvee")
-    private int siretTasvee; //@TODO faire clé étrangère changer type to StarUP
+    private int siretTasvee;
 
     @ManyToOne
     @JoinColumn(name = "SiretFonds", referencedColumnName = "SiretFonds")

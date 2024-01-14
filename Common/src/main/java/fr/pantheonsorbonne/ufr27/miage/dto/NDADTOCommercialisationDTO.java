@@ -7,12 +7,13 @@ public class NDADTOCommercialisationDTO extends NDADTO<PropositionDTO> {
     private boolean signatureFonds;
     private boolean signatureEntreprise;
 
-    public NDADTOCommercialisationDTO(PropositionDTO propositionDTO,
+    public NDADTOCommercialisationDTO(int numeroContrat, PropositionDTO propositionDTO,
+                                      int siretTasvee,
                                       boolean signatureTasvee,
                                       boolean signatureFonds,
                                       boolean signatureEntreprise) {
 
-    super(propositionDTO, signatureTasvee);
+    super(numeroContrat, propositionDTO, siretTasvee,signatureTasvee);
     this.signatureFonds = signatureFonds;
     this.signatureEntreprise = signatureEntreprise;
     }

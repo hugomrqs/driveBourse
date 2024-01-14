@@ -1,7 +1,9 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
+import fr.pantheonsorbonne.ufr27.miage.dto.NDADTOProductionDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerInteret;
 import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueOnePagerPourBP;
+import fr.pantheonsorbonne.ufr27.miage.service.ContratJuridiqueOnePagerPourBPService;
 import fr.pantheonsorbonne.ufr27.miage.service.OnePagerInteretService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -20,6 +22,8 @@ public class CamelRoutes extends RouteBuilder {
     OnePagerInteretService onePagerInteretService;
     @Inject
     FundsInterestedGateway fundsInterestedGateway;
+    @Inject
+    ContratJuridiqueOnePagerPourBPService contratJuridiqueOnePagerPourBPService;
 
     @Override
     public void configure() throws Exception {
@@ -35,7 +39,7 @@ public class CamelRoutes extends RouteBuilder {
                     .otherwise()
                         .log("Domaine non pris en charge");
 
-//        from("sjms2:topic:"+ jmsPrefix +"Tech") route que fond utilise
+//        from("sjms2:topic:"+ jmsPrefix +"T") route que fond utilise
 //                .log("OnePager: ${in.headers} ${in.body}");
 
         from("sjms2:" + jmsPrefix + "queue:interestedIn")
@@ -44,16 +48,21 @@ public class CamelRoutes extends RouteBuilder {
                 .aggregate(header("idOnePager"), new InteretAgregationStrategy())
                 .completionSize(2)
                 .completionTimeout(10000)
+                .log("voici la liste des fonds intéressés par l'offre : ${in.body}")
                 .to("direct:processInteretOnePager");
 
-        from("direct:processInteretOnePager");
-                // Créer le contrat en base de données
-//                .bean(contratJuridiqueService, "createContratJuridiqueOnePagerPourBP")
-//                // Créer le DTO
-//               contratJuridiqueService, "createContratJuridiqueOnePagerPourBPDTO")
-//                // Envelopper le DTO dans un message Camel et préparer pour l'envoi
-//                .bean(ContratJuridiqueGateway, "sendContratJuridiqueOnePagerPourBP()");
-//                "contratJuridiqueService,"createContratJuridiqueOnePagerPourBPDTO\""
+        from("direct:processInteretOnePager")
+                .split(body())
+                .log("pour l'interet : ${in.body}")
+                .bean(contratJuridiqueOnePagerPourBPService, "createContratJuridiqueOnePagerPourBP(${in.body}")
+                .log("le contrat numero : ${in.body} a bien été crée")
+                .bean(contratJuridiqueOnePagerPourBPService, "SendContratJuridiqueOnePagerPourBP(${$in.body}")
+                .log("le contrat numero : ${in.body} a bien été envoyé")
+                .end();
 
+        from("sjms2:" + jmsPrefix + "queue:ContratJuridiqueOnePagerPourBP")//ici file/pdf
+                .unmarshal().json(NDADTOProductionDTO.class)
+                .bean(contratJuridiqueOnePagerPourBPService, "UpdateContratJuridiqueOnePagerPourBPSigne(${in.body})")
+                .log("le contrat : ${in.body} signé a bien été reçu et enregistré");
     }
 }
