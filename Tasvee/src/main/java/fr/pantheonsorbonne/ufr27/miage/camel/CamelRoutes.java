@@ -171,24 +171,24 @@ public class CamelRoutes extends RouteBuilder {
         //// Ask
         /////////////////////
 
-//        from("sjms2:topic:" + jmsPrefix + "-Tasvee-EJ")
-//                .autoStartup(isRouteEnabled)
-//                .unmarshal().json(Statut.class)
-//                .process(new Processor() {
-//                    @Override
-//                    public void process(Exchange exchange) throws Exception {
-//
-//                        Statut notice = exchange.getMessage().getBody(Statut.class);
-//                        exchange.getMessage().setBody("Bonjour," +
-//                                "\n\n Nous osuhaitons  :  " + notice.nombrePart() + " de parts" +
-//                                "\n\n Le prix des parts actuel est de  " +  notice.prixPartActuel() +
-//                                " \n\n La stratégie que nous voulons aborder est " + notice.strategieEntrepreneur() +
-//                                "\n\n En vous remerciant par avance" +
-//                                "\n\n Tasvee");
-//                    }
-//                })
-//                .to("sjms2:topic:" + jmsPrefix + "sender");
-//
+        from("sjms2:topic:" + jmsPrefix + "-Tasvee-EJ")
+                .autoStartup(isRouteEnabled)
+                .unmarshal().json(Statut.class)
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
+
+                        Statut notice = exchange.getMessage().getBody(Statut.class);
+                        exchange.getMessage().setBody("Bonjour," +
+                                "\n\n Nous osuhaitons  :  " + notice.nombrePart() + " de parts" +
+                                "\n\n Le prix des parts actuel est de  " +  notice.prixPartActuel() +
+                                " \n\n La stratégie que nous voulons aborder est " + notice.strategieEntrepreneur() +
+                                "\n\n En vous remerciant par avance" +
+                                "\n\n Tasvee");
+                    }
+                })
+                .to("sjms2:topic:" + jmsPrefix + "sender");
+
 
 
         /////////////////////

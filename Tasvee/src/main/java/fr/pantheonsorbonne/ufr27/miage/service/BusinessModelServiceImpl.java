@@ -70,8 +70,8 @@ public class BusinessModelServiceImpl implements BusinessModelService{
     public void contratJuridiqueBMSigned(ContratJuridiqueBM contratJuridiqueBM) {
         businessModelDAO.addSignature(contratJuridiqueBM) ;
         System.out.println("Le contrat juridique " + contratJuridiqueBM.contratJuridiqueBM() + " du business model signé à été receptionné, la signature à été enregistrée avec succès en DB.");
-//        prestaFinancierService.requestForFinanceExpertise(contratJuridiqueBM.siretStartUp().idBilanComptable().getIdBilanComptable()) ; // est-ce ok ou bien passage par dao ?
-//        prestaJuridiqueService.requestForLegalExpertise(contratJuridiqueBM.siretStartUp().idStatuts().getIdStatut()) ;
+        prestaFinancierService.requestForFinanceExpertise(contratJuridiqueBM.businessModel(). ; // est-ce ok ou bien passage par dao ?
+        prestaJuridiqueService.requestForLegalExpertise(contratJuridiqueBM.siretStartUp().idStatuts().getIdStatut()) ;
     }
 
 }
