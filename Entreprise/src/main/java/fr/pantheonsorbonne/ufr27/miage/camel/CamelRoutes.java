@@ -49,12 +49,12 @@ public class CamelRoutes extends RouteBuilder {
         //// endpoint si pas de imap
         /////////////////////
 
-        from("sjms2:topic:" + jmsPrefix + "-StartUp-SMTP")
-                .autoStartup(isRouteEnabled)
-                .choice()
-                //oriente selon le header
-                .when(header("subject").in("BM", "CJ", "CJOPBP"))
-                .toD( "sjms2:topic:"+ jmsPrefix + "-StartUp-${in.headers.subject}");
+//        from("sjms2:topic:" + jmsPrefix + "-StartUp-SMTP")
+//                .autoStartup(isRouteEnabled)
+//                .choice()
+//                //oriente selon le header
+//                .when(header("subject").in("BM", "CJ", "CJOPBP"))
+//                .toD( "sjms2:topic:"+ jmsPrefix + "-StartUp-${in.headers.subject}");
 
 
         /////////////////////
@@ -79,10 +79,10 @@ public class CamelRoutes extends RouteBuilder {
                 .log(" cj recu en doublon ${body}")
                 .unmarshal().json(ContratJuridiqueBM.class)
                 .bean(bm,"registerContratJuridiqueBM")
-                ;
-
-
-
+                .marshal().json();
+//
+//
+//
         from("direct:startup-smtp")
                 .marshal().json()
                 .process(new Processor() {

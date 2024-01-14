@@ -25,9 +25,6 @@ public class BMEntity {
         this.partCedeeXpTasvee = partCedeeXpTasvee;
     }
 
-    public BMEntity(int i, int i1) {
-    }
-
     public Integer getIdBusinessModel() {
         return idBusinessModel;
     }
