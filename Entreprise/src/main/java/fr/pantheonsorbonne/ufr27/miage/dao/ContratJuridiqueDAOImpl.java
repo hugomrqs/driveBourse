@@ -16,22 +16,16 @@ public class ContratJuridiqueDAOImpl implements ContratJuridiqueDAO{
     EntityManager em;
     @Override
     @Transactional
-    public CJBMEntity registerContratJuridiqueBM(ContratJuridiqueBM contratJuridiqueBM) {
-        CJBMEntity CJBMEntity = new CJBMEntity() ;
-        CJBMEntity.setContratJuridiqueBM(contratJuridiqueBM.contratJuridiqueBM());
-        CJBMEntity.setIdBusinessModel(getBusinessModel(contratJuridiqueBM.businessModel()));
-        CJBMEntity.setStartUp(contratJuridiqueBM.startUp());
-        CJBMEntity.setTasvee(contratJuridiqueBM.tasvee());
-        CJBMEntity.setSiretTasvee(contratJuridiqueBM.siretTasvee());
-        CJBMEntity.setPourcentageComissionTasvee(contratJuridiqueBM.pourcentageComissionTasvee());
-        em.persist(CJBMEntity);
-        return CJBMEntity;
+    public CJBMEntity registerContratJuridiqueBMInDB(ContratJuridiqueBM contratJuridiqueBM) {
+        CJBMEntity cjbmEntity = new CJBMEntity(contratJuridiqueBM.tasvee(), contratJuridiqueBM.startUp(), contratJuridiqueBM.pourcentageComissionTasvee(), contratJuridiqueBM.siretTasvee(), getBusinessModel(contratJuridiqueBM.businessModel())) ;
+        em.persist(cjbmEntity);
+        return cjbmEntity;
     }
 
     @Override
     @Transactional
-    public CJBMEntity sign(CJBMEntity CJBMEntity) {
-        CJBMEntity existingEntity = em.find(CJBMEntity.class, CJBMEntity);
+    public CJBMEntity sign(CJBMEntity cjbmEntity) {
+        CJBMEntity existingEntity = em.find(CJBMEntity.class, cjbmEntity);
         existingEntity.setStartUp(true);
         em.merge(existingEntity);
         return existingEntity ;

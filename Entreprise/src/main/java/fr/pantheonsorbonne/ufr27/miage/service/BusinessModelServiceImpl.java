@@ -28,15 +28,14 @@ public class BusinessModelServiceImpl implements BusinessModelService {
 
     @Override
     public void registerBusinessModel(BusinessModel businessModel) {
-        System.out.println("hibhuhvbudifvhduifvhiusfhdiufhvfduihvfiudvhfdiuvhdiuhvfduihv");
         businessModelDAO.registerBusinessModelInBDD(businessModel) ;
         System.out.println("le business model " + businessModel.idBusinessModel() + " à été enregistré en DB avec succès");
     }
 
     @Override
     public void registerContratJuridiqueBM(ContratJuridiqueBM contratJuridiqueBM) {
-        CJBMEntity cjbmEntity = contratJuridiqueDAO.registerContratJuridiqueBM(contratJuridiqueBM) ;
-        System.out.println("Le contrat juridique " + contratJuridiqueBM.contratJuridiqueBM() + " du business model à été reçu et enregistré en DB avec succès.") ;
+        CJBMEntity cjbmEntity = contratJuridiqueDAO.registerContratJuridiqueBMInDB(contratJuridiqueBM) ;
+        System.out.println("Le contrat juridique " + contratJuridiqueBM.contratJuridiqueBM() + " du business model " + contratJuridiqueBM.businessModel().idBusinessModel() + " à été reçu et enregistré en DB avec succès.") ;
         signAndReply(cjbmEntity) ;
     }
 

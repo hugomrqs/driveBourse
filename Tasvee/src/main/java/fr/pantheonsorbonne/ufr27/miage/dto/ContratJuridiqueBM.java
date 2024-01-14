@@ -7,6 +7,6 @@ public record ContratJuridiqueBM(
         Boolean startUp,
         Integer pourcentageComissionTasvee,
         Integer siretTasvee,
-        BusinessModel BusinessModel) {
+        BusinessModel businessModel) {
 }
 
