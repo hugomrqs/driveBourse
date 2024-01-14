@@ -25,7 +25,7 @@ public class ContratJuridiqueDAOImpl implements ContratJuridiqueDAO{
     @Override
     @Transactional
     public CJBMEntity sign(CJBMEntity cjbmEntity) {
-        CJBMEntity existingEntity = em.find(CJBMEntity.class, cjbmEntity);
+        CJBMEntity existingEntity = em.find(CJBMEntity.class, cjbmEntity.getContratJuridiqueBM());
         existingEntity.setStartUp(true);
         em.merge(existingEntity);
         return existingEntity ;
