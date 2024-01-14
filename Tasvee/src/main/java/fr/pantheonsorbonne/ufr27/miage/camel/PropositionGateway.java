@@ -2,6 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.NDADTOCommercialisationDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.RIBDTO;
 import fr.pantheonsorbonne.ufr27.miage.service.PropositionService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -41,7 +42,7 @@ public class PropositionGateway {
         }
     }
 
-    public void sendRIB(Integer ribEntrepreneur, Integer ribTasvee) {
+    public void sendRIB(RIBDTO ribEntrepreneur, RIBDTO ribTasvee) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             producerTemplate.sendBody("direct:ribOfEntrepereneur", ribEntrepreneur);
             producerTemplate.sendBody("direct:ribOfTasvee", ribTasvee);

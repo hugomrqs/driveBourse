@@ -35,7 +35,7 @@ public class MessagingGateway {
 
     public void sendSignedNDACom(NDADTOCommercialisationDTO nda) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBodyAndHeader("direct:signedNDA", nda ,"ndaCom",true);
+            producerTemplate.sendBody("direct:signedNDA", nda );
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

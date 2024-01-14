@@ -18,28 +18,31 @@ public class PropositionServiceImpl implements PropositionService{
     @Inject
     ContratDAO contratDAO;
 
+
+    @Override
     public void challengeProposal(PropositionDTO prop){
         try {
-            if(prop.pourcentagePartFinale() > 20 || prop.leveeDeFondsFinale() < 500 ){
+            if(prop.pourcentagePartFinale() > 20 || prop.leveeDeFondsFinale() < 10000){
                 System.out.println("PROPOSITION REFUSÉ");
-                //FAIRE LA LOGIQUE METIER EN MULTIPLIANT LES NOMBRES LEVEE DE FOND ET POURC PART
-                Integer newLeveeDeFond = prop.leveeDeFondsFinale();
-                Integer newPourcPart = prop.pourcentagePartFinale();
+                Integer newLeveeDeFond = Double.valueOf((int)prop.leveeDeFondsFinale()*1.2).intValue();
+                Integer newPourcPart = Double.valueOf((int)prop.pourcentagePartFinale()*1.3).intValue();
                 PropositionDTO response = new PropositionDTO(prop.idProposition(),
                         newLeveeDeFond,
                         newPourcPart,
                         prop.siretFond(),
+                        prop.siretStartUp(),
                         false );
+                propositionDao.createProposition(prop);
                 pg.sendProposal(response);
-                propositionDao.createNewProposition(prop);
             }else{
                 System.out.println("PROPOSITION ACCEPTÉ");
                 PropositionDTO response = new PropositionDTO(prop.idProposition(),
                         prop.leveeDeFondsFinale(),
                         prop.pourcentagePartFinale(),
                         prop.siretFond(),
+                        prop.siretStartUp(),
                         true );
-                propositionDao.createAcceptedProposition(response);
+                propositionDao.createProposition(response);
                 pg.sendProposal(response);
                 NDADTOCommercialisationDTO contrTripartite = createNDACom(prop);
                 pg.sendContratTripartite(contrTripartite);
@@ -50,9 +53,10 @@ public class PropositionServiceImpl implements PropositionService{
         }
     };
 
+    @Override
     public void addLastProposal(PropositionDTO prop){
         try {
-            propositionDao.createAcceptedProposition(prop);
+            propositionDao.createProposition(prop);
             System.out.println("PropositionAccepté");
             NDADTOCommercialisationDTO contrTripartite = createNDACom(prop);
             pg.sendContratTripartite(contrTripartite);
@@ -61,6 +65,7 @@ public class PropositionServiceImpl implements PropositionService{
         }
     };
 
+    @Override
     public void insertNDA(NDADTOCommercialisationDTO nda){
         try {
             if(nda.isSignatureEntreprise() && nda.isSignatureFonds()){
@@ -76,7 +81,6 @@ public class PropositionServiceImpl implements PropositionService{
 
 
     private NDADTOCommercialisationDTO createNDACom(PropositionDTO prop){
-        NDADTOCommercialisationDTO contratTripartite = new NDADTOCommercialisationDTO(prop,true,false,false);
-        return contratTripartite;
+        return new NDADTOCommercialisationDTO(prop,true,false,false, prop.siretStartUp(),prop.siretFond());
     }
 }

@@ -25,7 +25,7 @@ public class BusinessServiceImpl implements BusinessService {
     public void createPropfromBP(BusinessPlanDTO bp){
         try {
             businessDAO.createNewBusinessPlan(bp);
-            PropositionEntity propositionEntity = businessDAO.createRandomProposition(bp);
+            PropositionEntity propositionEntity = businessDAO.createProposition(bp);
             PropositionDTO prop = new PropositionDTO(propositionEntity.getIDProposition(), propositionEntity.getLeveeDeFonds(), propositionEntity.getPourcentagePart(),bp.siretEntreprise(),false);
             mg.sendProposal(prop);
         }catch (Exception e){

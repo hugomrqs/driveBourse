@@ -12,8 +12,9 @@ public class BusinessPlanEntity {
     @JoinColumn(name = "SiretStartUp", nullable = false)
     private Integer SiretStartUp;
 
+    @OneToOne
     @JoinColumn(name = "IDOnePager", nullable = false)
-    private Integer IDOnePager;
+    private OnePagerEntity IDOnePager;
 
     public Integer getIDBusinessPlan() {
         return IDBusinessPlan;
@@ -31,11 +32,11 @@ public class BusinessPlanEntity {
         this.SiretStartUp = SiretStartUp;
     }
 
-    public Integer getIDOnePager() {
-        return IDOnePager;
+    public OnePagerEntity getIDOnePager() {
+        return this.IDOnePager;
     }
 
-    public void setIDOnePager(Integer IDOnePager) {
-        this.IDOnePager = IDOnePager;
+    public void setOnePager(OnePagerEntity OnePager) {
+        this.IDOnePager = OnePager;
     }
 }

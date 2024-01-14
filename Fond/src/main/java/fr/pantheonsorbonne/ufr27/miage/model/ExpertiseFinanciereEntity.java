@@ -22,5 +22,56 @@ public class ExpertiseFinanciereEntity {
     @Column(name = "mailPrestaJuridique", nullable = false, length = 45)
     private Integer mailPrestaJuridique;
 
+    // Constructeur
+    public ExpertiseFinanciereEntity(Integer SiretPrestataireFinancier, Integer BFRExpert, Integer margeBrutExpert, Integer mailPrestaJuridique) {
+        this.SiretPrestataireFinancier = SiretPrestataireFinancier;
+        this.BFRExpert = BFRExpert;
+        this.margeBrutExpert = margeBrutExpert;
+        this.mailPrestaJuridique = mailPrestaJuridique;
+    }
 
+    public ExpertiseFinanciereEntity() {
+
+    }
+
+    // Getters et setters
+    public Integer getIDExpertiseFinanciere() {
+        return IDExpertiseFinanciere;
+    }
+
+    public void setIDExpertiseFinanciere(Integer IDExpertiseFinanciere) {
+        this.IDExpertiseFinanciere = IDExpertiseFinanciere;
+    }
+
+    public Integer getSiretPrestataireFinancier() {
+        return SiretPrestataireFinancier;
+    }
+
+    public void setSiretPrestataireFinancier(Integer SiretPrestataireFinancier) {
+        this.SiretPrestataireFinancier = SiretPrestataireFinancier;
+    }
+
+    public Integer getBFRExpert() {
+        return BFRExpert;
+    }
+
+    public void setBFRExpert(Integer BFRExpert) {
+        this.BFRExpert = BFRExpert;
+    }
+
+    public Integer getMargeBrutExpert() {
+        return margeBrutExpert;
+    }
+
+    public void setMargeBrutExpert(Integer margeBrutExpert) {
+        this.margeBrutExpert = margeBrutExpert;
+    }
+
+    public Integer getMailPrestaJuridique() {
+        return mailPrestaJuridique;
+    }
+
+    public void setMailPrestaJuridique(Integer mailPrestaJuridique) {
+        this.mailPrestaJuridique = mailPrestaJuridique;
+    }
 }

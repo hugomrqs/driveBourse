@@ -46,13 +46,15 @@ public class ContratJuridiqueOnePagerPourBPServiceImpl implements ContratJuridiq
         ExpertiseJuridiqueDTO expertiseJuridiqueDTO = new ExpertiseJuridiqueDTO(
                 cjbp.getIdOnPager().getIdExpertiseFinanciere().getPrestataireFinancier().getSiretPrestataireFinancier(),
                 cjbp.getIdOnPager().getIdExpertiseJuridique().getNombrePartExpertise(),
-                 cjbp.getIdOnPager().getIdExpertiseJuridique().getPrixActuelPartExpertise()
+                 cjbp.getIdOnPager().getIdExpertiseJuridique().getPrixActuelPartExpertise(),
+                cjbp.getIdOnPager().getSiretStartUp().getSiretStartUp()
                  );
          ExpertiseFinanciereDTO expertiseFinanciereDTO = new ExpertiseFinanciereDTO(
                  cjbp.getIdOnPager().getIdExpertiseFinanciere().getPrestataireFinancier().getSiretPrestataireFinancier(),
                  cjbp.getIdOnPager().getIdExpertiseFinanciere().getBFRExpert(),
-                 cjbp.getIdOnPager().getIdExpertiseFinanciere().getMargeBrutExpert()
-                 );
+                 cjbp.getIdOnPager().getIdExpertiseFinanciere().getMargeBrutExpert(),
+                 cjbp.getIdOnPager().getSiretStartUp().getSiretStartUp()
+         );
          OnePagerDTO onePagerDTO = new OnePagerDTO(
                  cjbp.getIdOnPager().getIdOnePager(),
                  expertiseJuridiqueDTO,

@@ -2,7 +2,9 @@ package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBMDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.NDADTOCommercialisationDTO;
 import fr.pantheonsorbonne.ufr27.miage.service.BusinessModelService;
+import fr.pantheonsorbonne.ufr27.miage.service.ContratService;
 import jakarta.inject.Inject;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -39,6 +41,9 @@ public class CamelRoutes extends RouteBuilder {
 
     @Inject
     BusinessModelService bm;
+
+    @Inject
+    ContratService contratService;
 
     @Override
     public void configure() throws Exception {
@@ -92,5 +97,21 @@ public class CamelRoutes extends RouteBuilder {
                     }
                 })
                 .to("sjms2:topic:"+jmsPrefix+"sender");
+
+        from("sjms2:topic:" + jmsPrefix + "NDACommercialForEntrepreneur")
+                .autoStartup(isRouteEnabled)
+                .log("proposition Envoyé")
+                .unmarshal().json(NDADTOCommercialisationDTO.class)
+                .bean(contratService, "signNDA").marshal().json();
+
+        from("direct:sendNDA")
+                .autoStartup(isRouteEnabled)
+                .log("nda sign for tasvee")
+                .marshal().json()
+                .to("sjms2:topic:" + jmsPrefix + "signedNDAForTasvee");
+
+
+
+
     }
 }

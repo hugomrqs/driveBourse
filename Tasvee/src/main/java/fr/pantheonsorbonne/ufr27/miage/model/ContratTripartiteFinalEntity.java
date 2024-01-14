@@ -1,4 +1,5 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -8,7 +9,11 @@ public class ContratTripartiteFinalEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IDContratTripartiteFinal")
-    private Integer contratJuridiqueBM;
+    private Integer IDContratTripartiteFinal;
+
+    @OneToOne
+    @JoinColumn(name = "contratTripartite")
+    private ContratTripartiteFinalEntity contratTripartiteFinalEntity;
 
     @Column(name = "tasvee")
     private Boolean tasvee;
@@ -23,9 +28,7 @@ public class ContratTripartiteFinalEntity {
     @JoinColumn(name = "PropositionFinaleId", referencedColumnName = "IdPropositionFinale")
     private PropositionFinaleEntity propositionFinaleEntity;
 
-    public ContratTripartiteFinalEntity() {
-    }
-
+    // Constructeur
     public ContratTripartiteFinalEntity(Boolean tasvee, Boolean fonds, Boolean startUp, PropositionFinaleEntity propositionFinaleEntity) {
         this.tasvee = tasvee;
         this.fonds = fonds;
@@ -33,13 +36,17 @@ public class ContratTripartiteFinalEntity {
         this.propositionFinaleEntity = propositionFinaleEntity;
     }
 
-//Ajouter les Sirets pou pouvoir faire des jointure dessus
-    public Integer getContratJuridiqueBM() {
-        return contratJuridiqueBM;
+    public ContratTripartiteFinalEntity() {
+
     }
 
-    public void setContratJuridiqueBM(Integer contratJuridiqueBM) {
-        this.contratJuridiqueBM = contratJuridiqueBM;
+    // Getters et setters
+    public Integer getIDContratTripartiteFinal() {
+        return IDContratTripartiteFinal;
+    }
+
+    public void setIDContratTripartiteFinal(Integer IDContratTripartiteFinal) {
+        this.IDContratTripartiteFinal = IDContratTripartiteFinal;
     }
 
     public Boolean getTasvee() {
@@ -66,11 +73,21 @@ public class ContratTripartiteFinalEntity {
         this.startUp = startUp;
     }
 
-    public PropositionFinaleEntity getPropositionFinale() {
+    public PropositionFinaleEntity getPropositionFinaleEntity() {
         return propositionFinaleEntity;
     }
 
-    public void setPropositionFinale(PropositionFinaleEntity propositionFinaleEntity) {
+    public void setPropositionFinaleEntity(PropositionFinaleEntity propositionFinaleEntity) {
         this.propositionFinaleEntity = propositionFinaleEntity;
+    }
+
+    // Getter
+    public ContratTripartiteFinalEntity getContratTripartiteFinalEntity() {
+        return contratTripartiteFinalEntity;
+    }
+
+    // Setter
+    public void setContratTripartiteFinalEntity(ContratTripartiteFinalEntity contratTripartiteFinalEntity) {
+        this.contratTripartiteFinalEntity = contratTripartiteFinalEntity;
     }
 }

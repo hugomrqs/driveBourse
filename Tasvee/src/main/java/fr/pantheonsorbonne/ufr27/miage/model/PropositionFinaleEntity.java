@@ -16,18 +16,17 @@ public class PropositionFinaleEntity {
     @Column(name = "pourcentagePartFinale")
     private Integer pourcentagePartFinale;
 
-    @ManyToOne
+
     @JoinColumn(name = "SiretFonds", referencedColumnName = "SiretFonds")
-    private FondEntity fondEntity;
+    private Integer siretFond;
 
     public PropositionFinaleEntity() {
     }
 
-    public PropositionFinaleEntity(Integer idPropositionFinale, Integer leveedeFondsFinale, Integer pourcentagePartFinale, FondEntity fondEntity) {
-        this.idPropositionFinale = idPropositionFinale;
+    public PropositionFinaleEntity( Integer leveedeFondsFinale, Integer pourcentagePartFinale, Integer siretFond) {
         this.leveedeFondsFinale = leveedeFondsFinale;
         this.pourcentagePartFinale = pourcentagePartFinale;
-        this.fondEntity = fondEntity;
+        this.siretFond = siretFond;
     }
 
     public Integer getContratJuridiqueBM() {
@@ -54,11 +53,11 @@ public class PropositionFinaleEntity {
         this.pourcentagePartFinale = pourcentagePartFinale;
     }
 
-    public FondEntity getFonds() {
-        return fondEntity;
+    public Integer getSiretFond() {
+        return siretFond;
     }
 
-    public void setFonds(FondEntity fondEntity) {
-        this.fondEntity = fondEntity;
+    public void setSiretFond(Integer siretFond) {
+        this.siretFond = siretFond;
     }
 }

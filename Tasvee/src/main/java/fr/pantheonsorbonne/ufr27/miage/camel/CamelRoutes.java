@@ -1,14 +1,9 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.NDADTOProductionDTO;
-import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerInteretDTO;
-import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.*;
 import fr.pantheonsorbonne.ufr27.miage.service.ContratJuridiqueOnePagerPourBPService;
 import fr.pantheonsorbonne.ufr27.miage.service.OnePagerInteretService;
 import fr.pantheonsorbonne.ufr27.miage.service.PropositionService;
-import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptableDTO;
-import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridiqueDTO;
-import fr.pantheonsorbonne.ufr27.miage.dto.StatutDTO;
 import fr.pantheonsorbonne.ufr27.miage.service.PrestaFinancierService;
 import fr.pantheonsorbonne.ufr27.miage.service.PrestaJuridiqueService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -110,10 +105,11 @@ public class CamelRoutes extends RouteBuilder {
                 .autoStartup(isRouteEnabled)
                 .log("Proposition de Fond reçu")
                 .choice()
-                .when(simple("${header.etatProp} == 'Accepter'"))
+                .when(simple("${header.etatProp} == true"))
                 .log("Proposition de Fond accepté")
+                .unmarshal().json(PropositionDTO.class)
                 .bean(propositionService, "addLastProposal")
-                .when(simple("${header.etatProp} == 'Refuser'"))
+                .when(simple("${header.etatProp} == false"))
                 .log("Proposition de Fond refusé")
                 .unmarshal().json(PropositionDTO.class)
                 .bean(propositionService, "challengeProposal").marshal().json()
@@ -127,22 +123,17 @@ public class CamelRoutes extends RouteBuilder {
 
         from("direct:sendContratTrip")
                 .autoStartup(isRouteEnabled)
-                .log("proposition Envoyé")
+                .log("proposition Envoyé à Fond")
                 .marshal().json()
                 .to("sjms2:topic:" + jmsPrefix + "NDACommercialForFond");
 
-        from("sjms2:topic:" + jmsPrefix + "signedNDAForTasvee")
-                .autoStartup(isRouteEnabled)
-                .log("proposition Envoyé")
-                .marshal().json()
-                .to("sjms2:topic:" + jmsPrefix + "NDACommercialForEntrepreneur");
-
 
         from("sjms2:topic:" + jmsPrefix + "signedNDAForTasvee")
                 .autoStartup(isRouteEnabled)
                 .log("proposition Envoyé")
-                .marshal().json()
+                .unmarshal().json(NDADTOCommercialisationDTO.class)
                 .bean(propositionService, "insertNDA").marshal().json();
+
 
         from("direct:ribOfTasvee")
                 .autoStartup(isRouteEnabled)

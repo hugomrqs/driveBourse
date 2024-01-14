@@ -2,8 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.DAO.Impl;
 
 import fr.pantheonsorbonne.ufr27.miage.DAO.BusinessDAO;
 import fr.pantheonsorbonne.ufr27.miage.dto.BusinessPlanDTO;
-import fr.pantheonsorbonne.ufr27.miage.model.BusinessPlanEntity;
-import fr.pantheonsorbonne.ufr27.miage.model.PropositionEntity;
+import fr.pantheonsorbonne.ufr27.miage.model.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -20,17 +19,28 @@ public class BusinessDAOImpl implements BusinessDAO {
     public void createNewBusinessPlan(BusinessPlanDTO bm) {
         BusinessPlanEntity businessPlanEntity = new BusinessPlanEntity();
         businessPlanEntity.setSiretStartUp(bm.siretEntreprise());
-        //businessPlan.setIDOnePager();
-        // EXPLICATION PLEASE, LE DTO ET LE MODEL SONT COMLETEMENT DIFFERENT
+
+        ExpertiseFinanciereEntity ef = new ExpertiseFinanciereEntity();
+            ef.setBFRExpert((int) bm.expertiseFinanciere().bfrExpert());
+            ef.setMargeBrutExpert((int) bm.expertiseFinanciere().margeBrutExpert());
+
+        ExpertiseJuridiqueEntity ej = new ExpertiseJuridiqueEntity();
+            ej.setNombrePartExpertise(bm.expertiseJuridique().nombrePartExpertise());
+            ej.setPrixPartExpertise(bm.expertiseJuridique().prixActuelPartExpertise());
+
+        OnePagerEntity op = new OnePagerEntity(ef,ej,bm.siretEntreprise());
+
+        businessPlanEntity.setOnePager(op);
+        em.persist(businessPlanEntity);
     }
 
     @Override
-    public PropositionEntity createRandomProposition(BusinessPlanDTO bp) {
+    public PropositionEntity createProposition(BusinessPlanDTO bp) {
         PropositionEntity p = new PropositionEntity();
         Random random = new Random();
         p.setSiretFonds(bp.siretEntreprise());
-        p.setPourcentagePart(random.nextInt(30) + 10);
-        p.setLeveeDeFonds(random.nextInt(9000)+1000);
+        p.setPourcentagePart((int) (bp.expertiseJuridique().nombrePartExpertise() * 1.2));
+        p.setLeveeDeFonds((int) (bp.expertiseFinanciere().bfrExpert()*5));
         em.persist(p);
         return p;
     }

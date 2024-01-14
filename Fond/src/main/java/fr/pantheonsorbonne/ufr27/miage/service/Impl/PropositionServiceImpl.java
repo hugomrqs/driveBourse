@@ -19,25 +19,27 @@ public class PropositionServiceImpl implements PropositionService {
 
     public void challengeProposal(PropositionDTO prop){
         try {
-            if(prop.pourcentagePartFinale() < 10 || prop.leveeDeFondsFinale() > 1000){
+            if(prop.pourcentagePartFinale() < 5 || prop.leveeDeFondsFinale() > 100000){
                 System.out.println("PROPOSITION REFUSÉ");
-                Integer newLeveeDeFond = prop.leveeDeFondsFinale();
-                Integer newPourcPart = prop.pourcentagePartFinale();
+                Integer newLeveeDeFond = Double.valueOf((int)prop.leveeDeFondsFinale()*1.3).intValue();
+                Integer newPourcPart = Double.valueOf((int)prop.pourcentagePartFinale()*1.2).intValue();
                 PropositionDTO response = new PropositionDTO(prop.idProposition(),
                                                             newLeveeDeFond,
                                                             newPourcPart,
                                                             prop.siretFond(),
+                                                            prop.siretStartUp(),
                                                             false );
+                propositionDao.createProposition(prop);
                 mg.sendProposal(response);
-                propositionDao.createNewProposition(prop);
             }else{
                 System.out.println("PROPOSITION ACCEPTÉ");
                 PropositionDTO response = new PropositionDTO(prop.idProposition(),
                         prop.leveeDeFondsFinale(),
                         prop.pourcentagePartFinale(),
                         prop.siretFond(),
+                        prop.siretStartUp(),
                         true );
-                propositionDao.createAcceptedProposition(response);
+                propositionDao.createProposition(response);
                 mg.sendProposal(response);
             }
 
@@ -48,7 +50,7 @@ public class PropositionServiceImpl implements PropositionService {
 
     public void addLastProposal(PropositionDTO prop){
         try {
-            propositionDao.createAcceptedProposition(prop);
+            propositionDao.createProposition(prop);
             System.out.println("PropositionAccepté");
         }catch (Exception e){
             System.out.println(e);

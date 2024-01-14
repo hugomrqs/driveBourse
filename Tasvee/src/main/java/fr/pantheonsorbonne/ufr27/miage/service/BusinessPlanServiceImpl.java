@@ -66,7 +66,8 @@ public class BusinessPlanServiceImpl implements BusinessPlanService {
                 new fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciereDTO(
                         expertiseFinanciereEntityModel.getPrestataireFinancier().getSiretPrestataireFinancier(),
                         expertiseFinanciereEntityModel.getBFRExpert(),
-                        expertiseFinanciereEntityModel.getMargeBrutExpert()
+                        expertiseFinanciereEntityModel.getMargeBrutExpert(),
+                        expertiseFinanciereEntityModel.getSiretStartUp().getSiretStartUp()
                 );
 
         ExpertiseJuridiqueEntity expertiseJuridiqueEntityModel = onePagerEntityModel.getIdExpertiseJuridique();
@@ -75,7 +76,8 @@ public class BusinessPlanServiceImpl implements BusinessPlanService {
                 new ExpertiseJuridiqueDTO(
                         expertiseFinanciereEntityModel.getPrestataireFinancier().getSiretPrestataireFinancier(),
                         expertiseJuridiqueEntityModel.getNombrePartExpertise(),
-                        expertiseJuridiqueEntityModel.getPrixActuelPartExpertise()
+                        expertiseJuridiqueEntityModel.getPrixActuelPartExpertise(),
+                        expertiseFinanciereEntityModel.getSiretStartUp().getSiretStartUp()
                 );
 
         BusinessPlanDTO businessPlanDTO =
