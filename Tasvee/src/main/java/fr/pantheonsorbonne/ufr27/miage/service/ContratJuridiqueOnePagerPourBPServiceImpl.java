@@ -11,6 +11,7 @@ import fr.pantheonsorbonne.ufr27.miage.model.OnePager;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class ContratJuridiqueOnePagerPourBPServiceImpl implements ContratJuridiqueOnePagerPourBPService{
@@ -26,6 +27,7 @@ public class ContratJuridiqueOnePagerPourBPServiceImpl implements ContratJuridiq
     EntityManager em;
 
     @Override
+    @Transactional
     public int  CreateContratJuridiqueOnePagerPourBP(OnePagerInteret onePagerInteret){
         int onePagerId = onePagerInteret.idOnePager();
         OnePager onepager = onePagerDAO.selectOnePagerById(onePagerId);
@@ -33,7 +35,7 @@ public class ContratJuridiqueOnePagerPourBPServiceImpl implements ContratJuridiq
         Fond fond = fondDAO.selectFondBySiret(siretFond);
         ContratJuridiqueOnePagerPourBP contratJuridiqueOnePagerPourBP =
                 new ContratJuridiqueOnePagerPourBP(true, false, 123456849,fond, onepager );
-        em.persist(contratJuridiqueOnePagerPourBPDAO);
+        em.persist(contratJuridiqueOnePagerPourBP);
         return contratJuridiqueOnePagerPourBP.getContratJuridiqueBM(); //retourne l'id
     }
 

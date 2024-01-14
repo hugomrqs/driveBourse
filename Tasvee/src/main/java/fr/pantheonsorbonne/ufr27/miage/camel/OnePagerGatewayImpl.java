@@ -25,7 +25,9 @@ public class OnePagerGatewayImpl implements OnePagerGateway {
     public void sendOnePager(OnePager onePager) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             String responseDestination = "sjms2:" + jmsPrefix + "queue:interestedIn";
-            producerTemplate.sendBodyAndHeaders("direct:OnePager", onePager, Map.of(
+            producerTemplate.sendBodyAndHeaders(
+                    "direct:OnePager",
+                    onePager, Map.of(
                     "Secteur", onePager.domaine(),
                     "ReplyTo", responseDestination
             ));

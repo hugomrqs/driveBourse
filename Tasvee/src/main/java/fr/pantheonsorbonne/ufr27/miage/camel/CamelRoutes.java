@@ -44,7 +44,9 @@ public class CamelRoutes extends RouteBuilder {
 
         from("sjms2:" + jmsPrefix + "queue:interestedIn")
                 .filter(header("IsInterested").isEqualTo(true))
-                .unmarshal().json(OnePagerInteret.class)
+                .unmarshal()
+                .json(OnePagerInteret.class)
+                .log("${in.headers.idOnePager}")
                 .aggregate(header("idOnePager"), new InteretAgregationStrategy())
                 .completionSize(2)
                 .completionTimeout(10000)
@@ -54,15 +56,22 @@ public class CamelRoutes extends RouteBuilder {
         from("direct:processInteretOnePager")
                 .split(body())
                 .log("pour l'interet : ${in.body}")
-                .bean(contratJuridiqueOnePagerPourBPService, "createContratJuridiqueOnePagerPourBP(${in.body}")
+                .bean(contratJuridiqueOnePagerPourBPService, "CreateContratJuridiqueOnePagerPourBP(${in.body})")
                 .log("le contrat numero : ${in.body} a bien été crée")
-                .bean(contratJuridiqueOnePagerPourBPService, "SendContratJuridiqueOnePagerPourBP(${$in.body}")
+                .bean(contratJuridiqueOnePagerPourBPService, "SendContratJuridiqueOnePagerPourBP(${in.body})")
                 .log("le contrat numero : ${in.body} a bien été envoyé")
                 .end();
 
         from("sjms2:" + jmsPrefix + "queue:ContratJuridiqueOnePagerPourBP")//ici file/pdf
                 .unmarshal().json(NDADTOProductionDTO.class)
                 .bean(contratJuridiqueOnePagerPourBPService, "UpdateContratJuridiqueOnePagerPourBPSigne(${in.body})")
+                .marshal().json()
                 .log("le contrat : ${in.body} signé a bien été reçu et enregistré");
+
+        from("direct:smtp")
+                .marshal().json()
+                .log(",,,,,,,,,,,,,,,,,,,,,ddznkbhdjjjjjjjjjjjj")
+                .log("${in.body}")
+                .to("sjms2:" + jmsPrefix + "queue:test");//@TODO broker smtp
     }
 }

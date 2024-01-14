@@ -40,6 +40,7 @@ public class ContratJuridiqueOnePagerPourBPDAOImpl implements ContratJuridiqueOn
         return isContratSigned.getFonds(); //getFonds() = signatureduFond
     }
     @Override
+    @Transactional
     public ContratJuridiqueOnePagerPourBP selectContratJuridiqueOnePagerPourBPFromId(int id){
         return  em.find(ContratJuridiqueOnePagerPourBP.class, id);
     }
