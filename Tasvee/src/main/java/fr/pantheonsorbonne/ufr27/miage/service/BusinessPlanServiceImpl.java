@@ -68,7 +68,7 @@ public class BusinessPlanServiceImpl implements BusinessPlanService {
                         expertiseFinanciereEntityModel.getBFRExpert(),
                         expertiseFinanciereEntityModel.getMargeBrutExpert(),
                         expertiseFinanciereEntityModel.getSiretStartUp().getSiretStartUp()
-                        );
+                );
 
         ExpertiseJuridiqueEntity expertiseJuridiqueEntityModel = onePagerEntityModel.getIdExpertiseJuridique();
 
@@ -77,8 +77,8 @@ public class BusinessPlanServiceImpl implements BusinessPlanService {
                         expertiseFinanciereEntityModel.getPrestataireFinancier().getSiretPrestataireFinancier(),
                         expertiseJuridiqueEntityModel.getNombrePartExpertise(),
                         expertiseJuridiqueEntityModel.getPrixActuelPartExpertise(),
-                        expertiseJuridiqueEntityModel.getSiretStartUp().getSiretStartUp()
-                        );
+                        expertiseFinanciereEntityModel.getSiretStartUp().getSiretStartUp()
+                );
 
         BusinessPlanDTO businessPlanDTO =
                 new BusinessPlanDTO(

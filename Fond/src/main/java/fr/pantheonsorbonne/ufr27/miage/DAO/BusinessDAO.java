@@ -7,6 +7,6 @@ public interface BusinessDAO {
 
     void createNewBusinessPlan(BusinessPlanDTO bp);
 
-    PropositionEntity createRandomProposition(BusinessPlanDTO bp);
+    PropositionEntity createProposition(BusinessPlanDTO bp);
 
 }

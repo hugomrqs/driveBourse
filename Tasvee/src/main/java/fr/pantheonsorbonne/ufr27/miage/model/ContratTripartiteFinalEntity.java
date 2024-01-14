@@ -1,4 +1,5 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -8,7 +9,7 @@ public class ContratTripartiteFinalEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IDContratTripartiteFinal")
-    private Integer contratJuridiqueBM;
+    private Integer IDContratTripartiteFinal;
 
     @Column(name = "tasvee")
     private Boolean tasvee;
@@ -19,26 +20,28 @@ public class ContratTripartiteFinalEntity {
     private Boolean startUp;
 
     @ManyToOne
-    @JoinColumn(name = "PropositionFinaleId", referencedColumnName = "IdPropositionFinale")
-    private PropositionFinaleEntity propositionFinaleEntity;
+    @JoinColumn(name = "IdPropositionFinale", referencedColumnName = "IdPropositionFinale")
+    private PropositionEntity propositionEntity;
 
-    public ContratTripartiteFinalEntity() {
-    }
-
-    public ContratTripartiteFinalEntity(Boolean tasvee, Boolean fonds, Boolean startUp, PropositionFinaleEntity propositionFinaleEntity) {
+    // Constructeur
+    public ContratTripartiteFinalEntity(Boolean tasvee, Boolean fonds, Boolean startUp, PropositionEntity propositionEntity) {
         this.tasvee = tasvee;
         this.fonds = fonds;
         this.startUp = startUp;
-        this.propositionFinaleEntity = propositionFinaleEntity;
+        this.propositionEntity = propositionEntity;
     }
 
-//Ajouter les Sirets pou pouvoir faire des jointure dessus
-    public Integer getContratJuridiqueBM() {
-        return contratJuridiqueBM;
+    public ContratTripartiteFinalEntity() {
+
     }
 
-    public void setContratJuridiqueBM(Integer contratJuridiqueBM) {
-        this.contratJuridiqueBM = contratJuridiqueBM;
+    // Getters et setters
+    public Integer getIDContratTripartiteFinal() {
+        return IDContratTripartiteFinal;
+    }
+
+    public void setIDContratTripartiteFinal(Integer IDContratTripartiteFinal) {
+        this.IDContratTripartiteFinal = IDContratTripartiteFinal;
     }
 
     public Boolean getTasvee() {
@@ -65,11 +68,11 @@ public class ContratTripartiteFinalEntity {
         this.startUp = startUp;
     }
 
-    public PropositionFinaleEntity getPropositionFinale() {
-        return propositionFinaleEntity;
+    public PropositionEntity getPropositionFinaleEntity() {
+        return propositionEntity;
     }
 
-    public void setPropositionFinale(PropositionFinaleEntity propositionFinaleEntity) {
-        this.propositionFinaleEntity = propositionFinaleEntity;
+    public void setPropositionFinaleEntity(PropositionEntity propositionEntity) {
+        this.propositionEntity = propositionEntity;
     }
 }

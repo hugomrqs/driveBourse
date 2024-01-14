@@ -4,6 +4,7 @@ public record PropositionDTO(
         Integer idProposition,
         Integer leveeDeFondsFinale,
         Integer pourcentagePartFinale,
-        Integer siretFond,
+        Integer siretTasvee,
+        Integer siretStartUp,
         boolean etatProposition) {
 }

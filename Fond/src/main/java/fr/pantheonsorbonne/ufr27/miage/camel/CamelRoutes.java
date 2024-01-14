@@ -99,14 +99,15 @@ public class CamelRoutes extends RouteBuilder {
                 .bean(businessService, "createPropfromBP").marshal().json();
 
 
+
         from("sjms2:topic:" + jmsPrefix + "proposalForFond")
                 .autoStartup(isRouteEnabled)
                 .log("Proposition  de Tasvee  reçu")
                 .choice()
-                .when(simple("${header.etatProp} == 'Accepter'"))
+                .when(simple("${header.etatProp} == true"))
                 .log("Proposition  de Tasvee  reçu accepté")
                 .bean(propositionService, "addLastProposal")
-                .when(simple("${header.etatProp} == 'Refuser'"))
+                .when(simple("${header.etatProp} == false"))
                 .log("Proposition de Tasvee  reçu refusé")
                 .unmarshal().json(PropositionDTO.class)
                 .bean(propositionService, "challengeProposal").marshal().json()
@@ -137,39 +138,15 @@ public class CamelRoutes extends RouteBuilder {
                 .autoStartup(isRouteEnabled)
                 .log("rib de entrepreneur recupérer")
                 .unmarshal().json(RIBDTO.class)
-                .process(exchange -> {
-                    RIBDTO ribDto = exchange.getIn().getBody(RIBDTO.class);
-                    exchange.setProperty("ribDto", ribDto);
-                })
-                .bean(paymentService, "sendMoney(${exchangeProperty.ribDto}, 'Entrepreneur')")
+                .bean(paymentService, "sendMoneyToEntrepreneur")
                 .marshal().json();
 
         from("sjms2:topic:" + jmsPrefix + "ribOfTasvee")
                 .autoStartup(isRouteEnabled)
                 .log("rib de Tasvee recupérer")
                 .unmarshal().json(RIBDTO.class)
-                .process(exchange -> {
-                    RIBDTO ribDto = exchange.getIn().getBody(RIBDTO.class);
-                    exchange.setProperty("ribDto", ribDto);
-                })
-                .bean(paymentService, "sendMoney(${exchangeProperty.ribDto}, 'Tasvee')")
+                .bean(paymentService, "sendMoneyToTasvee")
                 .marshal().json();
-
-        from("direct:moneyForTasvee")
-                .autoStartup(isRouteEnabled)
-                .log("argent envoyé pour Tasvee")
-                .marshal().json()
-                .to("sjms2:topic:" + jmsPrefix + "moneyForTasvee");
-
-
-        from("direct:moneyForEntrepreneur")
-                .autoStartup(isRouteEnabled)
-                .log("argent envoyé pour Entrepreneur")
-                .marshal().json()
-                .to("sjms2:topic:" + jmsPrefix + "moneyForEntrepreneur");
-
-
-
 
     }
 }

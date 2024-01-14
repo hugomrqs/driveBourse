@@ -26,7 +26,6 @@ public class PropositionEntity {
     @Column(name = "etatProposition", nullable = false)
     private boolean etatProposition;
 
-    // Constructeur
     public PropositionEntity(Integer siretFond, Integer siretStartUp, Integer leveeDeFonds, Integer pourcentagePart, boolean etatProposition) {
         this.siretFond = siretFond;
         this.siretStartUp = siretStartUp;

@@ -7,5 +7,9 @@ public interface PaymentService {
 
     void signNDACom(NDADTOCommercialisationDTO nda);
 
-    void sendMoney(RIBDTO rib, String sender);
+    void sendMoneyToEntrepreneur(RIBDTO rib);
+
+    void sendMoneyToTasvee(RIBDTO rib);
+
+
 }
