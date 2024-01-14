@@ -1,13 +1,13 @@
 package fr.pantheonsorbonne.ufr27.miage.cli;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
-import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeant;
-import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
+import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptableDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeantDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.StatutDTO;
 import fr.pantheonsorbonne.ufr27.miage.service.OfferFormEntrepriseService;
 import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptableDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeantDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.StatutDTO;
-import fr.pantheonsorbonne.ufr27.miage.service.OfferFormService;
+import fr.pantheonsorbonne.ufr27.miage.service.OfferFormEntrepriseService;
 import jakarta.inject.Inject;
 import picocli.CommandLine.Command;
 

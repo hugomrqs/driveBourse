@@ -1,9 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.OnePager;
-import fr.pantheonsorbonne.ufr27.miage.exception.OnePagerNotFoundException;
-import fr.pantheonsorbonne.ufr27.miage.exception.StartUpNotFoundException;
-import fr.pantheonsorbonne.ufr27.miage.service.OnePagerService;
+import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.camel.CamelContext;
@@ -22,13 +19,13 @@ public class OnePagerGatewayImpl implements OnePagerGateway {
     CamelContext camelContext;
 
     @Override
-    public void sendOnePager(OnePager onePager) {
+    public void sendOnePager(OnePagerDTO onePagerDTO) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             String responseDestination = "sjms2:" + jmsPrefix + "queue:interestedIn";
             producerTemplate.sendBodyAndHeaders(
                     "direct:OnePager",
-                    onePager, Map.of(
-                    "Secteur", onePager.domaine(),
+                    onePagerDTO, Map.of(
+                    "Secteur", onePagerDTO.domaine(),
                     "ReplyTo", responseDestination
             ));
         } catch (IOException e) {

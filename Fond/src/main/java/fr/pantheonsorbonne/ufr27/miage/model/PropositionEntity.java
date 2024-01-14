@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 
 @Entity
-public class Proposition {
+public class PropositionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

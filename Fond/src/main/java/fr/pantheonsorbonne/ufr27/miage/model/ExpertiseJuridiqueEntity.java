@@ -3,7 +3,7 @@ package fr.pantheonsorbonne.ufr27.miage.model;
 import jakarta.persistence.*;
 
 @Entity
-public class ExpertiseJuridique {
+public class ExpertiseJuridiqueEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

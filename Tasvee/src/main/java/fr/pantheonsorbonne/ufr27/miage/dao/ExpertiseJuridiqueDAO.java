@@ -1,12 +1,12 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
+import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridiqueDTO;
 import fr.pantheonsorbonne.ufr27.miage.exception.StartUpNotFoundException;
-import fr.pantheonsorbonne.ufr27.miage.model.ExpertiseFinanciere;
-import fr.pantheonsorbonne.ufr27.miage.model.ExpertiseJuridique;
+import fr.pantheonsorbonne.ufr27.miage.model.ExpertiseJuridiqueEntity;
 
 public interface ExpertiseJuridiqueDAO {
-    public ExpertiseJuridique selectExpertiseJuridiqueFromSiret(int siretStartup)
+    public ExpertiseJuridiqueEntity selectExpertiseJuridiqueFromSiret(int siretStartup)
             throws StartUpNotFoundException;
-    public ExpertiseJuridique findById(Integer id);
-   void registerExpertiseJuridique(ExpertiseJuridique expertiseJuridique);
+    public ExpertiseJuridiqueEntity findById(Integer id);
+   void registerExpertiseJuridique(ExpertiseJuridiqueDTO expertiseJuridiqueEntity);
 }

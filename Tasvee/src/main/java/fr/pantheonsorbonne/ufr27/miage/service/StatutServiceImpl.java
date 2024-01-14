@@ -1,7 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.StatutDAO;
-import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
 import fr.pantheonsorbonne.ufr27.miage.dto.StatutDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.StatutEntity;
 import jakarta.enterprise.context.ApplicationScoped;

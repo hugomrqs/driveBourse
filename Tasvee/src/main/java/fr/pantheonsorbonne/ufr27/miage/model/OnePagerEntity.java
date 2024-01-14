@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "OnePager")
-public class OnePager {
+public class OnePagerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +20,10 @@ public class OnePager {
     @JoinColumn(name = "IDExpertiseFinanciere", referencedColumnName = "IDExpertiseFinanciere")
     private ExpertiseFinanciereEntity idExpertiseFinanciere;
 
-    public OnePager() {
+    public OnePagerEntity() {
     }
 
-    public OnePager(StartUpEntity siretStartUp, ExpertiseJuridiqueEntity idExpertiseJuridique, ExpertiseFinanciereEntity idExpertiseFinanciere) {
+    public OnePagerEntity(StartUpEntity siretStartUp, ExpertiseJuridiqueEntity idExpertiseJuridique, ExpertiseFinanciereEntity idExpertiseFinanciere) {
         this.siretStartUp = siretStartUp;
         this.idExpertiseJuridique = idExpertiseJuridique;
         this.idExpertiseFinanciere = idExpertiseFinanciere;

@@ -1,5 +1,5 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
-import fr.pantheonsorbonne.ufr27.miage.dto.OnePager;
+import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
@@ -15,11 +15,11 @@ public class TraitementOnePagerServiceImpl implements TraitementOnePagerService 
     private static final double WEIGHT_BFR = 0.25;
     private static final double WEIGHT_MARGE_BRUT = 0.25;
 
-    public static double calculateInterestLevel(OnePager onePager) {
-        double normalizedPartExpertise = (double) onePager.expertiseJuridique().nombrePartExpertise() / MAX_PART_EXPERTISE;
-        double normalizedPrixPart = (double) onePager.expertiseJuridique().prixActuelPartExpertise() / MAX_PRIX_PAR_PART;
-        double normalizedBFR = 1.0 - (onePager.expertiseFinanciere().bfrExpert() / MAX_BFR); // Inverse as lower is better
-        double normalizedMargeBrut = onePager.expertiseFinanciere().margeBrutExpert() / MAX_MARGE_BRUT;
+    public static double calculateInterestLevel(OnePagerDTO onePagerDTO) {
+        double normalizedPartExpertise = (double) onePagerDTO.expertiseJuridique().nombrePartExpertise() / MAX_PART_EXPERTISE;
+        double normalizedPrixPart = (double) onePagerDTO.expertiseJuridique().prixActuelPartExpertise() / MAX_PRIX_PAR_PART;
+        double normalizedBFR = 1.0 - (onePagerDTO.expertiseFinanciere().bfrExpert() / MAX_BFR); // Inverse as lower is better
+        double normalizedMargeBrut = onePagerDTO.expertiseFinanciere().margeBrutExpert() / MAX_MARGE_BRUT;
 
         return (normalizedPartExpertise * WEIGHT_PART_EXPERTISE +
                 normalizedPrixPart * WEIGHT_PRIX_PAR_PART +
@@ -27,13 +27,13 @@ public class TraitementOnePagerServiceImpl implements TraitementOnePagerService 
                 normalizedMargeBrut * WEIGHT_MARGE_BRUT);
     }
 
-    public static boolean isOnePagerInteresting(OnePager onePager) {
-        return calculateInterestLevel(onePager) > 0.60;
+    public static boolean isOnePagerInteresting(OnePagerDTO onePagerDTO) {
+        return calculateInterestLevel(onePagerDTO) > 0.60;
     }
 
     @Override
-    public boolean OnePagerResponse(OnePager onePager) {
-        return isOnePagerInteresting(onePager);
+    public boolean OnePagerResponse(OnePagerDTO onePagerDTO) {
+        return isOnePagerInteresting(onePagerDTO);
     }
 
 }

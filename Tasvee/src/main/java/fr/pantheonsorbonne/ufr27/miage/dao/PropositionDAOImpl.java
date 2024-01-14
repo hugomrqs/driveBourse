@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
-import fr.pantheonsorbonne.ufr27.miage.model.Proposition;
+import fr.pantheonsorbonne.ufr27.miage.model.PropositionEntity;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
@@ -12,7 +12,7 @@ public class PropositionDAOImpl implements PropositionDAO{
 
     @Override
     public void createNewProposition(PropositionDTO p) {
-        Proposition propo = new Proposition();
+        PropositionEntity propo = new PropositionEntity();
         propo.setIDProposition(p.idProposition());
         propo.setSiretFonds(p.siretFond());
         propo.setLeveeDeFonds(p.leveeDeFondsFinale());
@@ -23,7 +23,7 @@ public class PropositionDAOImpl implements PropositionDAO{
 
     @Override
     public void createAcceptedProposition(PropositionDTO p) {
-        Proposition propo = new Proposition();
+        PropositionEntity propo = new PropositionEntity();
         propo.setIDProposition(p.idProposition());
         propo.setSiretFonds(p.siretFond());
         propo.setLeveeDeFonds(p.leveeDeFondsFinale());

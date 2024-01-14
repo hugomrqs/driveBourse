@@ -1,6 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
-import fr.pantheonsorbonne.ufr27.miage.model.Fond;
+import fr.pantheonsorbonne.ufr27.miage.model.FondEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -9,9 +9,9 @@ import jakarta.persistence.EntityManager;
 public class FondDAOImpl implements FondDAO{
     @Inject
     EntityManager em;
-    public Fond selectFondBySiret(int siret){
-        Fond fond = em.find(Fond.class,siret );
-        return fond;
+    public FondEntity selectFondBySiret(int siret){
+        FondEntity fondEntity = em.find(FondEntity.class,siret );
+        return fondEntity;
     }
 
 }

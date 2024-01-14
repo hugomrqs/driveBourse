@@ -1,11 +1,9 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
 import fr.pantheonsorbonne.ufr27.miage.exception.BusinessPlanNotFoundException;
-import fr.pantheonsorbonne.ufr27.miage.exception.OnePagerNotFoundException;
-import fr.pantheonsorbonne.ufr27.miage.model.BusinessPlan;
-import fr.pantheonsorbonne.ufr27.miage.model.OnePager;
+import fr.pantheonsorbonne.ufr27.miage.model.BusinessPlanEntity;
+import fr.pantheonsorbonne.ufr27.miage.model.OnePagerEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.StartUpEntity;
-import jakarta.ejb.Asynchronous;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -19,19 +17,19 @@ public class BusinessPlanDAOImpl implements BusinessPlanDAO{
 
     @Override
     @Transactional
-    public void createBusinessPlan(StartUpEntity startUp, OnePager onePager) {
-        BusinessPlan businessPlan = new BusinessPlan(startUp, onePager);
-        em.persist(businessPlan);
+    public void createBusinessPlan(StartUpEntity startUp, OnePagerEntity onePagerEntity) {
+        BusinessPlanEntity businessPlanEntity = new BusinessPlanEntity(startUp, onePagerEntity);
+        em.persist(businessPlanEntity);
     }
 
     @Override
-    public BusinessPlan selectBusinessPlan(int siretStartup) throws BusinessPlanNotFoundException {
+    public BusinessPlanEntity selectBusinessPlan(int siretStartup) throws BusinessPlanNotFoundException {
         try {
-            BusinessPlan businessPlan = (BusinessPlan) em.createQuery(
-                            "SELECT c FROM BusinessPlan c WHERE c.siretStartUp.siretStartUp = :siretStartup")
+            BusinessPlanEntity businessPlanEntity = (BusinessPlanEntity) em.createQuery(
+                            "SELECT c FROM BusinessPlanEntity c WHERE c.siretStartUp.siretStartUp = :siretStartup")
                     .setParameter("siretStartup",siretStartup)
                     .getSingleResult();
-            return businessPlan;
+            return businessPlanEntity;
         } catch (NoResultException e) {
             throw new BusinessPlanNotFoundException(siretStartup);
         }

@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "BusinessPlan")
-public class BusinessPlan {
+public class BusinessPlanEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,13 +16,13 @@ public class BusinessPlan {
 
     @ManyToOne
     @JoinColumn(name = "IDOnePager", referencedColumnName = "IDOnePager")
-    private OnePager idOnePager;
+    private OnePagerEntity idOnePagerEntity;
 
-    public BusinessPlan() {
+    public BusinessPlanEntity() {
     }
-    public BusinessPlan(StartUpEntity siretStartUp, OnePager idOnePager) {
+    public BusinessPlanEntity(StartUpEntity siretStartUp, OnePagerEntity idOnePagerEntity) {
         this.siretStartUp = siretStartUp;
-        this.idOnePager = idOnePager;
+        this.idOnePagerEntity = idOnePagerEntity;
     }
 
     public Integer getIdBusinessPlan() {
@@ -33,8 +33,8 @@ public class BusinessPlan {
         return siretStartUp;
     }
 
-    public OnePager getIdOnePager() {
-        return idOnePager;
+    public OnePagerEntity getIdOnePager() {
+        return idOnePagerEntity;
     }
 
     // Setters
@@ -46,7 +46,7 @@ public class BusinessPlan {
         this.siretStartUp = siretStartUp;
     }
 
-    public void setIdOnePager(OnePager idOnePager) {
-        this.idOnePager = idOnePager;
+    public void setIdOnePager(OnePagerEntity idOnePagerEntity) {
+        this.idOnePagerEntity = idOnePagerEntity;
     }
 }

@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.OnePager;
+import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerDTO;
 
 public interface OnePagerGateway {
-    void sendOnePager(OnePager onePager);
+    void sendOnePager(OnePagerDTO onePagerDTO);
 }

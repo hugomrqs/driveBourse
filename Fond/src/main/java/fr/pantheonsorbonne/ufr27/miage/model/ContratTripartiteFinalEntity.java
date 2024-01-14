@@ -3,7 +3,7 @@ package fr.pantheonsorbonne.ufr27.miage.model;
 import jakarta.persistence.*;
 
 @Entity
-public class ContratTripartiteFinal {
+public class ContratTripartiteFinalEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,7 +1,8 @@
 package fr.pantheonsorbonne.ufr27.miage.dto;
 
 public record OnePagerDTO(
-        ExpertiseJuridiqueDTO expertiseJuridiqueDTO,
+        int idOnePager,
+        ExpertiseJuridiqueDTO expertiseJuridique,
         ExpertiseFinanciereDTO expertiseFinanciere,
-        String siretEntreprise) {
+        String domaine) {
 }

@@ -1,28 +1,23 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.NDADTOProductionDTO;
-import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerInteret;
+import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerInteretDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
-import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueOnePagerPourBP;
 import fr.pantheonsorbonne.ufr27.miage.service.ContratJuridiqueOnePagerPourBPService;
 import fr.pantheonsorbonne.ufr27.miage.service.OnePagerInteretService;
 import fr.pantheonsorbonne.ufr27.miage.service.PropositionService;
 import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptableDTO;
-import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridiqueDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.StatutDTO;
 import fr.pantheonsorbonne.ufr27.miage.service.PrestaFinancierService;
 import fr.pantheonsorbonne.ufr27.miage.service.PrestaJuridiqueService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Inject;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
-
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.util.HashMap;
 
@@ -81,7 +76,7 @@ public class CamelRoutes extends RouteBuilder {
         from("sjms2:" + jmsPrefix + "queue:interestedIn")
                 .filter(header("IsInterested").isEqualTo(true))
                 .unmarshal()
-                .json(OnePagerInteret.class)
+                .json(OnePagerInteretDTO.class)
                 .log("${in.headers.idOnePager}")
                 .aggregate(header("idOnePager"), new InteretAgregationStrategy())
                 .completionSize(2)

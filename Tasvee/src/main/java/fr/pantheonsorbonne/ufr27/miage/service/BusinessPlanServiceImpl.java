@@ -5,6 +5,7 @@ import fr.pantheonsorbonne.ufr27.miage.dao.BusinessPlanDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.ContratJuridiqueOnePagerPourBPDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.OnePagerDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.StartUpDAO;
+import fr.pantheonsorbonne.ufr27.miage.dto.BusinessPlanDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciereDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridiqueDTO;
 import fr.pantheonsorbonne.ufr27.miage.exception.BusinessPlanNotFoundException;
@@ -31,8 +32,8 @@ public class BusinessPlanServiceImpl implements BusinessPlanService {
     @Override
     public void createBusinessPlan(int siretStartUp) throws StartUpNotFoundException, OnePagerNotFoundException {
         StartUpEntity startUpModel = startUpDAO.selectStartUp(siretStartUp);
-        OnePager onePager = onePagerDAO.selectOnePagerByIdStartUp(siretStartUp);
-        businessPlanDAO.createBusinessPlan(startUpModel, onePager);
+        OnePagerEntity onePagerEntity = onePagerDAO.selectOnePagerByIdStartUp(siretStartUp);
+        businessPlanDAO.createBusinessPlan(startUpModel, onePagerEntity);
     }
 
     public static String determinerSerie(int argentLeve) {
@@ -55,28 +56,30 @@ public class BusinessPlanServiceImpl implements BusinessPlanService {
 
     @Override
     public void sendBusinessPlan(int siretStartUp, int siretFond) throws ContractNotSignedException, BusinessPlanNotFoundException, StartUpNotFoundException, OnePagerNotFoundException {
-        BusinessPlan businessPlanModel = businessPlanDAO.selectBusinessPlan(siretStartUp);
-        OnePager onePagerModel = businessPlanModel.getIdOnePager();
-        StartUpEntity startUpModel = businessPlanModel.getSiretStartUp();
+        BusinessPlanEntity businessPlanEntityModel = businessPlanDAO.selectBusinessPlan(siretStartUp);
+        OnePagerEntity onePagerEntityModel = businessPlanEntityModel.getIdOnePager();
+        StartUpEntity startUpModel = businessPlanEntityModel.getSiretStartUp();
 
-        ExpertiseFinanciere expertiseFinanciereModel = onePagerModel.getIdExpertiseFinanciere();
+        ExpertiseFinanciereEntity expertiseFinanciereEntityModel = onePagerEntityModel.getIdExpertiseFinanciere();
 
         ExpertiseFinanciereDTO expertiseFinanciereDTO =
                 new fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciereDTO(
-                        expertiseFinanciereModel.getBFRExpert(),
-                        expertiseFinanciereModel.getMargeBrutExpert()
+                        expertiseFinanciereEntityModel.getPrestataireFinancier().getSiretPrestataireFinancier(),
+                        expertiseFinanciereEntityModel.getBFRExpert(),
+                        expertiseFinanciereEntityModel.getMargeBrutExpert()
                 );
 
-        ExpertiseJuridique expertiseJuridiqueModel = onePagerModel.getIdExpertiseJuridique();
+        ExpertiseJuridiqueEntity expertiseJuridiqueEntityModel = onePagerEntityModel.getIdExpertiseJuridique();
 
         ExpertiseJuridiqueDTO expertiseJuridiqueDTO =
                 new ExpertiseJuridiqueDTO(
-                        expertiseJuridiqueModel.getNombrePartExpertise(),
-                        expertiseJuridiqueModel.getPrixPartExpertise()
+                        expertiseFinanciereEntityModel.getPrestataireFinancier().getSiretPrestataireFinancier(),
+                        expertiseJuridiqueEntityModel.getNombrePartExpertise(),
+                        expertiseJuridiqueEntityModel.getPrixActuelPartExpertise()
                 );
 
-        fr.pantheonsorbonne.ufr27.miage.dto.BusinessPlan businessPlan =
-                new fr.pantheonsorbonne.ufr27.miage.dto.BusinessPlan(
+        BusinessPlanDTO businessPlanDTO =
+                new BusinessPlanDTO(
                         expertiseJuridiqueDTO,
                         expertiseFinanciereDTO,
                         startUpModel.getSiretStartUp(),
@@ -86,9 +89,9 @@ public class BusinessPlanServiceImpl implements BusinessPlanService {
                 );
         if (contratJuridiqueOnePagerPourBPDAO
                 .isContratJuridiqueOnePagerPourBPDAOSigneByFond(
-                        onePagerModel.getIdOnePager(),
+                        onePagerEntityModel.getIdOnePager(),
                         siretFond)) {
-            businessPlanGateway.sendBusinessPlan(businessPlan, siretFond);
+            businessPlanGateway.sendBusinessPlan(businessPlanDTO, siretFond);
         } else {
             throw new ContractNotSignedException(siretFond);
         }

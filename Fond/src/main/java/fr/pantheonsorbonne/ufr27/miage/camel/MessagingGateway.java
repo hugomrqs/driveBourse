@@ -1,10 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.BusinessPlanDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.NDADTOCommercialisationDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
-import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
-import fr.pantheonsorbonne.ufr27.miage.model.Proposition;
 import fr.pantheonsorbonne.ufr27.miage.service.PropositionService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

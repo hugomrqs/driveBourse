@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "PropositionFinale")
-public class PropositionFinale {
+public class PropositionFinaleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,16 +18,16 @@ public class PropositionFinale {
 
     @ManyToOne
     @JoinColumn(name = "SiretFonds", referencedColumnName = "SiretFonds")
-    private Fond fond;
+    private FondEntity fondEntity;
 
-    public PropositionFinale() {
+    public PropositionFinaleEntity() {
     }
 
-    public PropositionFinale(Integer idPropositionFinale, Integer leveedeFondsFinale, Integer pourcentagePartFinale, Fond fond) {
+    public PropositionFinaleEntity(Integer idPropositionFinale, Integer leveedeFondsFinale, Integer pourcentagePartFinale, FondEntity fondEntity) {
         this.idPropositionFinale = idPropositionFinale;
         this.leveedeFondsFinale = leveedeFondsFinale;
         this.pourcentagePartFinale = pourcentagePartFinale;
-        this.fond = fond;
+        this.fondEntity = fondEntity;
     }
 
     public Integer getContratJuridiqueBM() {
@@ -54,11 +54,11 @@ public class PropositionFinale {
         this.pourcentagePartFinale = pourcentagePartFinale;
     }
 
-    public Fond getFonds() {
-        return fond;
+    public FondEntity getFonds() {
+        return fondEntity;
     }
 
-    public void setFonds(Fond fond) {
-        this.fond = fond;
+    public void setFonds(FondEntity fondEntity) {
+        this.fondEntity = fondEntity;
     }
 }

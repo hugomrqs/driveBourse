@@ -2,7 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.camel.SmtpGateway;
 import fr.pantheonsorbonne.ufr27.miage.dao.ExpertiseFinanciereDAO;
-import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciere;
+import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciereDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -22,9 +22,9 @@ public class PrestaFinancierServiceImpl implements PrestaFinancierService{
     }
 
     @Override
-    public void registerFinancialExpertise(ExpertiseFinanciere expertiseFinanciere) {
-        expertiseFinanciereDAO.registerExpertiseFinanciere(expertiseFinanciere) ;
-        System.out.println("L'expertise financière du prestataire " + expertiseFinanciere.siretPrestataireFinancier() + " à bien été enregistrée avec succès en DB");
+    public void registerFinancialExpertise(ExpertiseFinanciereDTO expertiseFinanciereDTO) {
+        expertiseFinanciereDAO.registerExpertiseFinanciere(expertiseFinanciereDTO) ;
+        System.out.println("L'expertise financière du prestataire " + expertiseFinanciereDTO.siretPrestataireFinancier() + " à bien été enregistrée avec succès en DB");
 
     }
 }

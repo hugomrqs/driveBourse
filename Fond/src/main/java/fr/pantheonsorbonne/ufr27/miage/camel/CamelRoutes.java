@@ -1,6 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.OnePager;
+import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerDTO;
 import fr.pantheonsorbonne.ufr27.miage.helper.Helper;
 import fr.pantheonsorbonne.ufr27.miage.service.TraitementOnePagerService;
 import fr.pantheonsorbonne.ufr27.miage.dto.BusinessPlanDTO;
@@ -54,7 +54,7 @@ public class CamelRoutes extends RouteBuilder {
         for (String topic : helper.topicsToListen) {
             from("sjms2:topic:" + jmsPrefix + topic)
                     .log("${in.body}")
-                    .unmarshal().json(OnePager.class)
+                    .unmarshal().json(OnePagerDTO.class)
                     .bean(responseOnePagerGateway, "SendResponse(${in.body},${in.headers.ReplyTo})");
         }
         from("direct:cool")

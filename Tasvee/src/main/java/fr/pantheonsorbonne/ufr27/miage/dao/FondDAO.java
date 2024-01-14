@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
-import fr.pantheonsorbonne.ufr27.miage.model.Fond;
+import fr.pantheonsorbonne.ufr27.miage.model.FondEntity;
 
 public interface FondDAO {
-    Fond selectFondBySiret(int Siret);
+    FondEntity selectFondBySiret(int Siret);
 }

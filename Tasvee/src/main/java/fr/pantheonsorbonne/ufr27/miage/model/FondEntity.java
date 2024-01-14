@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Fonds")
-public class Fond {
+public class FondEntity {
 
     @Id
     @Column(name = "SiretFonds")
@@ -17,10 +17,10 @@ public class Fond {
     @Column(name = "IsInterested")
     private boolean isInterested;
 
-    public Fond() {
+    public FondEntity() {
     }
 
-    public Fond(Integer siretFonds, String mail, String iban,boolean isInterested) {
+    public FondEntity(Integer siretFonds, String mail, String iban, boolean isInterested) {
         this.siretFonds = siretFonds;
         this.mail = mail;
         this.iban = iban;

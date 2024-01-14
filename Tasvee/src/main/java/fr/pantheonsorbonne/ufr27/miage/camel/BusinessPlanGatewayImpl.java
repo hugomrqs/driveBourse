@@ -1,6 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.BusinessPlan;
+import fr.pantheonsorbonne.ufr27.miage.dto.BusinessPlanDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.camel.CamelContext;
@@ -16,10 +16,10 @@ public class BusinessPlanGatewayImpl implements BusinessPlanGateway {
     @Inject
     CamelContext camelContext;
 
-    public void sendBusinessPlan(BusinessPlan businessPlan, int toFondSiretQueue) {
+    public void sendBusinessPlan(BusinessPlanDTO businessPlanDTO, int toFondSiretQueue) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             String responseDestination = "sjms2:topic:" + jmsPrefix + "businessPlanForFond" + toFondSiretQueue;
-            producerTemplate.sendBodyAndHeader(responseDestination, businessPlan, "SiretStartUp", businessPlan.siretEntreprise());
+            producerTemplate.sendBodyAndHeader(responseDestination, businessPlanDTO, "SiretStartUp", businessPlanDTO.siretEntreprise());
         } catch (Exception e) {
             throw new RuntimeException("Error sending Business Plan", e);
         }

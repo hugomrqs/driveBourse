@@ -1,8 +1,8 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.NDADTOCommercialisationDTO;
-import fr.pantheonsorbonne.ufr27.miage.model.ContratTripartiteFinal;
-import fr.pantheonsorbonne.ufr27.miage.model.PropositionFinale;
+import fr.pantheonsorbonne.ufr27.miage.model.ContratTripartiteFinalEntity;
+import fr.pantheonsorbonne.ufr27.miage.model.PropositionFinaleEntity;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
@@ -13,15 +13,15 @@ public class ContratDAOImpl implements ContratDAO{
 
     @Override
     public void insertContratTripartiteFinal(NDADTOCommercialisationDTO nda){
-        ContratTripartiteFinal contrat = new ContratTripartiteFinal(true,
+        ContratTripartiteFinalEntity contrat = new ContratTripartiteFinalEntity(true,
                                                                     true,
                                                                     true,
                                                                             findByIdPropositionFinale(nda.getIdPropositionDTO()));
     }
 
 
-    private PropositionFinale findByIdPropositionFinale(Integer idProp){
-        PropositionFinale pf = (PropositionFinale) em.createQuery("Select pf from PropositionFinale pf where pf.idPropositionFinale =:idProp").setParameter("idProp", idProp).getSingleResult();
+    private PropositionFinaleEntity findByIdPropositionFinale(Integer idProp){
+        PropositionFinaleEntity pf = (PropositionFinaleEntity) em.createQuery("Select pf from PropositionFinaleEntity pf where pf.idPropositionFinale =:idProp").setParameter("idProp", idProp).getSingleResult();
         return pf;
     }
 

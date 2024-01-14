@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "PrestataireFinancier")
-public class PrestataireFinancier {
+public class PrestataireFinancierEntity {
 
     @Id
     @Column(name = "SiretPrestataireFinancier")
@@ -12,10 +12,10 @@ public class PrestataireFinancier {
     @Column(name = "mail")
     private String mail;
 
-    public PrestataireFinancier() {
+    public PrestataireFinancierEntity() {
     }
 
-    public PrestataireFinancier(Integer siretPrestataireFinancier, String mail) {
+    public PrestataireFinancierEntity(Integer siretPrestataireFinancier, String mail) {
         this.siretPrestataireFinancier = siretPrestataireFinancier;
         this.mail = mail;
     }

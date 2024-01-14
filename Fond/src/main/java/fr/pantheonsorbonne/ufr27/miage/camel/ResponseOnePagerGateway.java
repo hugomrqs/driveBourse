@@ -1,8 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.OnePager;
+import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerInteret;
-import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerResponse;
 import fr.pantheonsorbonne.ufr27.miage.helper.Helper;
 import fr.pantheonsorbonne.ufr27.miage.service.TraitementOnePagerService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -25,8 +24,8 @@ public class ResponseOnePagerGateway {
     @Inject
     Helper helper;
 
-    public void SendResponse(OnePager onePager, String replyTo) {
-        OnePagerInteret onePagerInteret = new OnePagerInteret(helper.siret, onePager.idOnePager(), traitementOnePagerService.OnePagerResponse(onePager));
+    public void SendResponse(OnePagerDTO onePagerDTO, String replyTo) {
+        OnePagerInteret onePagerInteret = new OnePagerInteret(helper.siret, onePagerDTO.idOnePager(), traitementOnePagerService.OnePagerResponse(onePagerDTO));
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             Map<String, Object> headers = new HashMap<>();
             headers.put("IsInterested", onePagerInteret.isInterested());

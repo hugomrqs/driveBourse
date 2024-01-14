@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ContratTripartiteFinal")
-public class ContratTripartiteFinal {
+public class ContratTripartiteFinalEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,16 +21,16 @@ public class ContratTripartiteFinal {
 
     @ManyToOne
     @JoinColumn(name = "PropositionFinaleId", referencedColumnName = "IdPropositionFinale")
-    private PropositionFinale propositionFinale;
+    private PropositionFinaleEntity propositionFinaleEntity;
 
-    public ContratTripartiteFinal() {
+    public ContratTripartiteFinalEntity() {
     }
 
-    public ContratTripartiteFinal(Boolean tasvee, Boolean fonds, Boolean startUp, PropositionFinale propositionFinale) {
+    public ContratTripartiteFinalEntity(Boolean tasvee, Boolean fonds, Boolean startUp, PropositionFinaleEntity propositionFinaleEntity) {
         this.tasvee = tasvee;
         this.fonds = fonds;
         this.startUp = startUp;
-        this.propositionFinale = propositionFinale;
+        this.propositionFinaleEntity = propositionFinaleEntity;
     }
 
 //Ajouter les Sirets pou pouvoir faire des jointure dessus
@@ -66,11 +66,11 @@ public class ContratTripartiteFinal {
         this.startUp = startUp;
     }
 
-    public PropositionFinale getPropositionFinale() {
-        return propositionFinale;
+    public PropositionFinaleEntity getPropositionFinale() {
+        return propositionFinaleEntity;
     }
 
-    public void setPropositionFinale(PropositionFinale propositionFinale) {
-        this.propositionFinale = propositionFinale;
+    public void setPropositionFinale(PropositionFinaleEntity propositionFinaleEntity) {
+        this.propositionFinaleEntity = propositionFinaleEntity;
     }
 }

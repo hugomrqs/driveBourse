@@ -55,7 +55,15 @@ public class StartUpEntity {
 
     @OneToOne
     @JoinColumn(name = "IDOnePager", referencedColumnName = "IDOnePager")
-    private OnePager idOnePager;
+    private OnePagerEntity idOnePagerEntity;
+
+    @OneToOne
+    @JoinColumn(name = "expertiseFinanciere", referencedColumnName = "expertiseFinanciere")
+    private ExpertiseFinanciereEntity expertiseFinanciere;
+
+    @OneToOne
+    @JoinColumn(name = "expertiseJuridique", referencedColumnName = "expertiseJuridique")
+    private ExpertiseJuridiqueEntity expertiseJuridique;
 
     public StartUpEntity() {
     }
@@ -74,7 +82,7 @@ public class StartUpEntity {
                          StatutEntity idStatut,
                          CVDirigeantEntity idCVDirigeant,
                          BusinessModelEntity idBusinessModel,
-                         OnePager idOnePager) {
+                         OnePagerEntity idOnePagerEntity) {
 
         this.siretStartUp = siretStartUp;
         this.nombreDePersonne = nombreDePersonne;
@@ -90,7 +98,7 @@ public class StartUpEntity {
         this.idStatut = idStatut;
         this.idCVDirigeant = idCVDirigeant;
         this.idBusinessModel = idBusinessModel;
-        this.idOnePager = idOnePager;
+        this.idOnePagerEntity = idOnePagerEntity;
     }
 
     // Getters
@@ -150,8 +158,8 @@ public class StartUpEntity {
         return idBusinessModel;
     }
 
-    public OnePager getIdOnePager() {
-        return idOnePager;
+    public OnePagerEntity getIdOnePager() {
+        return idOnePagerEntity;
     }
 
     // Setters
@@ -211,7 +219,23 @@ public class StartUpEntity {
         this.idBusinessModel = idBusinessModel;
     }
 
-    public void setIdOnePager(OnePager idOnePager) {
-        this.idOnePager = idOnePager;
+    public void setIdOnePager(OnePagerEntity idOnePagerEntity) {
+        this.idOnePagerEntity = idOnePagerEntity;
+    }
+
+    public ExpertiseFinanciereEntity getExpertiseFinanciere() {
+        return expertiseFinanciere;
+    }
+
+    public void setExpertiseFinanciere(ExpertiseFinanciereEntity expertiseFinanciere) {
+        this.expertiseFinanciere = expertiseFinanciere;
+    }
+
+    public ExpertiseJuridiqueEntity getExpertiseJuridique() {
+        return expertiseJuridique;
+    }
+
+    public void setExpertiseJuridique(ExpertiseJuridiqueEntity expertiseJuridique) {
+        this.expertiseJuridique = expertiseJuridique;
     }
 }

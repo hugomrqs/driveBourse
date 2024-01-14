@@ -1,8 +1,8 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
-import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueOnePagerPourBP;
-import fr.pantheonsorbonne.ufr27.miage.model.Fond;
-import fr.pantheonsorbonne.ufr27.miage.model.OnePager;
+import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueOnePagerPourBPEntity;
+import fr.pantheonsorbonne.ufr27.miage.model.FondEntity;
+import fr.pantheonsorbonne.ufr27.miage.model.OnePagerEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -16,8 +16,8 @@ public class ContratJuridiqueOnePagerPourBPDAOImpl implements ContratJuridiqueOn
 
     @Override
     @Transactional
-    public void create(Boolean tasvee, Boolean fonds, int siretTasvee, Fond siretFonds, OnePager idOnPager) {
-        ContratJuridiqueOnePagerPourBP contrat = new ContratJuridiqueOnePagerPourBP();
+    public void create(Boolean tasvee, Boolean fonds, int siretTasvee, FondEntity siretFonds, OnePagerEntity idOnPager) {
+        ContratJuridiqueOnePagerPourBPEntity contrat = new ContratJuridiqueOnePagerPourBPEntity();
         contrat.setTasvee(tasvee);
         contrat.setFonds(fonds);
         contrat.setSiretTasvee(siretTasvee);
@@ -28,11 +28,11 @@ public class ContratJuridiqueOnePagerPourBPDAOImpl implements ContratJuridiqueOn
     @Override
     public boolean isContratJuridiqueOnePagerPourBPDAOSigneByFond(int onePagerId, int siretFond){
         String sqlQuery =
-                "SELECT c FROM ContratJuridiqueOnePagerPourBP c" +
+                "SELECT c FROM ContratJuridiqueOnePagerPourBPEntity c" +
                         " WHERE c.idOnPager.id = :onePagerId " +
                         "AND c.siretFonds.siretFonds = :siretFond " +
                         "AND c.fonds = TRUE";
-        ContratJuridiqueOnePagerPourBP isContratSigned = (ContratJuridiqueOnePagerPourBP) em.createQuery(sqlQuery)
+        ContratJuridiqueOnePagerPourBPEntity isContratSigned = (ContratJuridiqueOnePagerPourBPEntity) em.createQuery(sqlQuery)
                 .setParameter("onePagerId", onePagerId)
                 .setParameter("siretFond", siretFond)
                 .getSingleResult();
@@ -41,8 +41,8 @@ public class ContratJuridiqueOnePagerPourBPDAOImpl implements ContratJuridiqueOn
     }
     @Override
     @Transactional
-    public ContratJuridiqueOnePagerPourBP selectContratJuridiqueOnePagerPourBPFromId(int id){
-        return  em.find(ContratJuridiqueOnePagerPourBP.class, id);
+    public ContratJuridiqueOnePagerPourBPEntity selectContratJuridiqueOnePagerPourBPFromId(int id){
+        return  em.find(ContratJuridiqueOnePagerPourBPEntity.class, id);
     }
 
 }

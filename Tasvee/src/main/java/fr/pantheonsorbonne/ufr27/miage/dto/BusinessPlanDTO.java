@@ -1,6 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.dto;
 
-public record BusinessPlan(
+public record BusinessPlanDTO(
         ExpertiseJuridiqueDTO expertiseJuridique,
         ExpertiseFinanciereDTO expertiseFinanciere,
         int siretEntreprise,

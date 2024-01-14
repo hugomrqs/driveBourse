@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModel;
-import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBM;
+import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBMDTO;
 import fr.pantheonsorbonne.ufr27.miage.service.BusinessModelService;
 import jakarta.inject.Inject;
 import org.apache.camel.Exchange;
@@ -61,7 +61,7 @@ public class CamelRoutes extends RouteBuilder {
 
 
         from("sjms2:topic:"+jmsPrefix+"-StartUp-BM")
-                .unmarshal().json(BusinessModel.class)
+                .unmarshal().json(BusinessModelDTO.class)
                 .bean("businessModelEntrepriseService","registerBusinessModel")
                 .marshal().json();
 
@@ -70,8 +70,8 @@ public class CamelRoutes extends RouteBuilder {
         /////////////////////
 
         from("sjms2:topic:"+jmsPrefix+"-StartUp-CJ")
-                .unmarshal().json(ContratJuridiqueBM.class)
-                .bean("businessModelEntrepriseService","registerContratJuridiqueBM")
+                .unmarshal().json(ContratJuridiqueBMDTO.class)
+                .bean(bm,"registerContratJuridiqueBM")
                 .marshal().json();
 
 

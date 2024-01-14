@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "PrestataireJuridique")
-public class PrestataireJuridique {
+public class PrestataireJuridiqueEntity {
 
     @Id
     @Column(name = "SiretPrestataireJuridique")
@@ -12,10 +12,10 @@ public class PrestataireJuridique {
     @Column(name = "email")
     private String email;
 
-    public PrestataireJuridique() {
+    public PrestataireJuridiqueEntity() {
     }
 
-    public PrestataireJuridique(Integer siretPrestataireJuridique, String email) {
+    public PrestataireJuridiqueEntity(Integer siretPrestataireJuridique, String email) {
         this.siretPrestataireJuridique = siretPrestataireJuridique;
         this.email = email;
     }

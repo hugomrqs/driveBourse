@@ -1,10 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
-import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeant;
-import fr.pantheonsorbonne.ufr27.miage.dto.OfferForm;
-import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
 import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptableDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeantDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.OfferFormDTO;

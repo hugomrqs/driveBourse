@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModel;
-import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBM;
+import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBMDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.BMEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.CJBMEntity;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -16,14 +16,14 @@ public class ContratJuridiqueDAOImpl implements ContratJuridiqueDAO{
     EntityManager em;
     @Override
     @Transactional
-    public CJBMEntity registerContratJuridiqueBM(ContratJuridiqueBM contratJuridiqueBM) {
+    public CJBMEntity registerContratJuridiqueBM(ContratJuridiqueBMDTO contratJuridiqueBMDTO) {
         CJBMEntity CJBMEntity = new CJBMEntity() ;
-        CJBMEntity.setContratJuridiqueBM(contratJuridiqueBM.contratJuridiqueBM());
-        CJBMEntity.setIdBusinessModel(getBusinessModel(contratJuridiqueBM.businessModel()));
-        CJBMEntity.setStartUp(contratJuridiqueBM.startUp());
-        CJBMEntity.setTasvee(contratJuridiqueBM.tasvee());
-        CJBMEntity.setSiretTasvee(contratJuridiqueBM.siretTasvee());
-        CJBMEntity.setPourcentageComissionTasvee(contratJuridiqueBM.pourcentageComissionTasvee());
+        CJBMEntity.setContratJuridiqueBM(contratJuridiqueBMDTO.contratJuridiqueBM());
+        CJBMEntity.setIdBusinessModel(getBusinessModel(contratJuridiqueBMDTO.businessModel()));
+        CJBMEntity.setStartUp(contratJuridiqueBMDTO.startUp());
+        CJBMEntity.setTasvee(contratJuridiqueBMDTO.tasvee());
+        CJBMEntity.setSiretTasvee(contratJuridiqueBMDTO.siretTasvee());
+        CJBMEntity.setPourcentageComissionTasvee(contratJuridiqueBMDTO.pourcentageComissionTasvee());
         em.persist(CJBMEntity);
         return CJBMEntity;
     }
@@ -37,7 +37,7 @@ public class ContratJuridiqueDAOImpl implements ContratJuridiqueDAO{
         return existingEntity ;
     }
 
-    private BMEntity getBusinessModel(BusinessModel businessModel){
+    private BMEntity getBusinessModel(BusinessModelDTO businessModel){
         BMEntity existingEntity = em.find(BMEntity.class, businessModel.idBusinessModel());
         return existingEntity ;
     }

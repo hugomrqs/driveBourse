@@ -1,9 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage;
 
 
-import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
-import fr.pantheonsorbonne.ufr27.miage.model.Proposition;
-
 import java.util.Scanner;
 
 public class Main {

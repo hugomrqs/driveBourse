@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ContratJuridiqueOnePagerPourBP")
-public class ContratJuridiqueOnePagerPourBP {
+public class ContratJuridiqueOnePagerPourBPEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,16 +21,16 @@ public class ContratJuridiqueOnePagerPourBP {
 
     @ManyToOne
     @JoinColumn(name = "SiretFonds", referencedColumnName = "SiretFonds")
-    private Fond siretFonds;
+    private FondEntity siretFonds;
 
     @ManyToOne
     @JoinColumn(name = "IDOnePager", referencedColumnName = "IDOnePager")
-    private OnePager idOnPager;
+    private OnePagerEntity idOnPager;
 
-    public ContratJuridiqueOnePagerPourBP() {
+    public ContratJuridiqueOnePagerPourBPEntity() {
     }
 
-    public ContratJuridiqueOnePagerPourBP(Boolean tasvee, Boolean fonds, int siretTasvee, Fond siretFonds, OnePager idOnPager) {
+    public ContratJuridiqueOnePagerPourBPEntity(Boolean tasvee, Boolean fonds, int siretTasvee, FondEntity siretFonds, OnePagerEntity idOnPager) {
         this.tasvee = tasvee;
         this.fonds = fonds;
         this.siretTasvee = siretTasvee;
@@ -54,11 +54,11 @@ public class ContratJuridiqueOnePagerPourBP {
         return siretTasvee;
     }
 
-    public Fond getSiretFonds() {
+    public FondEntity getSiretFonds() {
         return siretFonds;
     }
 
-    public OnePager getIdOnPager() {
+    public OnePagerEntity getIdOnPager() {
         return idOnPager;
     }
 
@@ -79,11 +79,11 @@ public class ContratJuridiqueOnePagerPourBP {
         this.siretTasvee = siretTasvee;
     }
 
-    public void setSiretFonds(Fond siretFonds) {
+    public void setSiretFonds(FondEntity siretFonds) {
         this.siretFonds = siretFonds;
     }
 
-    public void setIdOnPager(OnePager idOnPager) {
+    public void setIdOnPager(OnePagerEntity idOnPager) {
         this.idOnPager = idOnPager;
     }
 }

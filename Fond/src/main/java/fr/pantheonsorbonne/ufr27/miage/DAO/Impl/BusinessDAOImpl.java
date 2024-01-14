@@ -2,8 +2,8 @@ package fr.pantheonsorbonne.ufr27.miage.DAO.Impl;
 
 import fr.pantheonsorbonne.ufr27.miage.DAO.BusinessDAO;
 import fr.pantheonsorbonne.ufr27.miage.dto.BusinessPlanDTO;
-import fr.pantheonsorbonne.ufr27.miage.model.BusinessPlan;
-import fr.pantheonsorbonne.ufr27.miage.model.Proposition;
+import fr.pantheonsorbonne.ufr27.miage.model.BusinessPlanEntity;
+import fr.pantheonsorbonne.ufr27.miage.model.PropositionEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -18,15 +18,15 @@ public class BusinessDAOImpl implements BusinessDAO {
 
     @Override
     public void createNewBusinessPlan(BusinessPlanDTO bm) {
-        BusinessPlan businessPlan = new BusinessPlan();
-        businessPlan.setSiretStartUp(bm.siretEntreprise());
+        BusinessPlanEntity businessPlanEntity = new BusinessPlanEntity();
+        businessPlanEntity.setSiretStartUp(bm.siretEntreprise());
         //businessPlan.setIDOnePager();
         // EXPLICATION PLEASE, LE DTO ET LE MODEL SONT COMLETEMENT DIFFERENT
     }
 
     @Override
-    public Proposition createRandomProposition(BusinessPlanDTO bp) {
-        Proposition p = new Proposition();
+    public PropositionEntity createRandomProposition(BusinessPlanDTO bp) {
+        PropositionEntity p = new PropositionEntity();
         Random random = new Random();
         p.setSiretFonds(bp.siretEntreprise());
         p.setPourcentagePart(random.nextInt(30) + 10);

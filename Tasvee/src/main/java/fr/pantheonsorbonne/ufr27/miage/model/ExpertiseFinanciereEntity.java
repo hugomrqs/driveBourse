@@ -18,15 +18,20 @@ public class ExpertiseFinanciereEntity {
 
     @ManyToOne
     @JoinColumn(name = "SiretPrestataireFinancier", referencedColumnName = "SiretPrestataireFinancier")
-    private PrestataireFinancier prestataireFinancier;
+    private PrestataireFinancierEntity prestataireFinancierEntity;
+
+    @OneToOne
+    @JoinColumn(name = "siretStartUp", referencedColumnName = "siretStartUp")
+    private StartUpEntity siretStartUp;
+
 
     public ExpertiseFinanciereEntity() {
     }
 
-    public ExpertiseFinanciereEntity(Double bfrExpert, Double margeBrutExpert, PrestataireFinancier prestataireFinancier) {
+    public ExpertiseFinanciereEntity(Double bfrExpert, Double margeBrutExpert, PrestataireFinancierEntity prestataireFinancierEntity) {
         this.bfrExpert = bfrExpert;
         this.margeBrutExpert = margeBrutExpert;
-        this.prestataireFinancier = prestataireFinancier;
+        this.prestataireFinancierEntity = prestataireFinancierEntity;
     }
 
     public Integer getIdExpertiseFinanciere() {
@@ -53,11 +58,19 @@ public class ExpertiseFinanciereEntity {
         this.margeBrutExpert = margeBrutExpert;
     }
 
-    public PrestataireFinancier getPrestataireFinancier() {
-        return prestataireFinancier;
+    public PrestataireFinancierEntity getPrestataireFinancier() {
+        return prestataireFinancierEntity;
     }
 
-    public void setPrestataireFinancier(PrestataireFinancier prestataireFinancier) {
-        this.prestataireFinancier = prestataireFinancier;
+    public void setPrestataireFinancier(PrestataireFinancierEntity prestataireFinancierEntity) {
+        this.prestataireFinancierEntity = prestataireFinancierEntity;
+    }
+
+    public StartUpEntity getSiretStartUp() {
+        return siretStartUp;
+    }
+
+    public void setSiretStartUp(StartUpEntity siretStartUp) {
+        this.siretStartUp = siretStartUp;
     }
 }

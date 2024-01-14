@@ -2,7 +2,6 @@ package fr.pantheonsorbonne.ufr27.miage.resources;
 
 import fr.pantheonsorbonne.ufr27.miage.camel.MessagingGateway;
 import fr.pantheonsorbonne.ufr27.miage.dto.*;
-import fr.pantheonsorbonne.ufr27.miage.model.Proposition;
 import fr.pantheonsorbonne.ufr27.miage.service.PropositionService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;

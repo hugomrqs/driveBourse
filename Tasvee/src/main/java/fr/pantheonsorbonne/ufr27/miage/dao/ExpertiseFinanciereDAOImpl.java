@@ -1,7 +1,10 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
+import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciereDTO;
 import fr.pantheonsorbonne.ufr27.miage.exception.StartUpNotFoundException;
-import fr.pantheonsorbonne.ufr27.miage.model.ExpertiseFinanciere;
+import fr.pantheonsorbonne.ufr27.miage.model.ExpertiseFinanciereEntity;
+import fr.pantheonsorbonne.ufr27.miage.model.PrestataireFinancierEntity;
+import fr.pantheonsorbonne.ufr27.miage.model.StartUpEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.PersistenceContext;
@@ -15,19 +18,19 @@ public class ExpertiseFinanciereDAOImpl implements ExpertiseFinanciereDAO {
     EntityManager em;
 
     @Override
-    public ExpertiseFinanciere selectExpertiseFinanicereFromSiret(int siretStartup) throws StartUpNotFoundException {
-        return new ExpertiseFinanciere();
+    public ExpertiseFinanciereEntity selectExpertiseFinanicereFromSiret(int siretStartup) throws StartUpNotFoundException {
+        return em.find(StartUpEntity.class,siretStartup).getExpertiseFinanciere();
     }
 
     @Override
-    public ExpertiseFinanciere findById(Integer id) {
-        return em.find(ExpertiseFinanciere.class, id);
+    public ExpertiseFinanciereEntity findById(Integer id) {
+        return em.find(ExpertiseFinanciereEntity.class, id);
     }
 
     @Override
-    public void registerExpertiseFinanciere(ExpertiseFinanciere expertiseFinanciere) {
+    public void registerExpertiseFinanciere(ExpertiseFinanciereDTO expertiseFinanciere) {
         ExpertiseFinanciereEntity expertiseFinanciereEntity = new ExpertiseFinanciereEntity() ;
-        expertiseFinanciereEntity.setPrestataireFinancier(em.find(PrestataireFinancier.class, expertiseFinanciere.siretPrestataireFinancier()));
+        expertiseFinanciereEntity.setPrestataireFinancier(em.find(PrestataireFinancierEntity.class, expertiseFinanciere.siretPrestataireFinancier()));
         expertiseFinanciereEntity.setBFRExpert(expertiseFinanciere.bfrExpert());
         expertiseFinanciereEntity.setMargeBrutExpert(expertiseFinanciere.margeBrutExpert());
         em.persist(expertiseFinanciereEntity);

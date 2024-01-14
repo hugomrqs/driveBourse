@@ -3,7 +3,6 @@ package fr.pantheonsorbonne.ufr27.miage.service.Impl;
 import fr.pantheonsorbonne.ufr27.miage.DAO.PropositionDAO;
 import fr.pantheonsorbonne.ufr27.miage.camel.MessagingGateway;
 import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
-import fr.pantheonsorbonne.ufr27.miage.model.Proposition;
 import fr.pantheonsorbonne.ufr27.miage.service.PropositionService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
