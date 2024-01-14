@@ -26,8 +26,7 @@ public class ContratTripartiteFinal {
     public ContratTripartiteFinal() {
     }
 
-    public ContratTripartiteFinal(Integer contratJuridiqueBM, Boolean tasvee, Boolean fonds, Boolean startUp, PropositionFinale propositionFinale) {
-        this.contratJuridiqueBM = contratJuridiqueBM;
+    public ContratTripartiteFinal(Boolean tasvee, Boolean fonds, Boolean startUp, PropositionFinale propositionFinale) {
         this.tasvee = tasvee;
         this.fonds = fonds;
         this.startUp = startUp;

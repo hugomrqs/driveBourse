@@ -1,8 +1,10 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerInteret;
+import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueOnePagerPourBP;
 import fr.pantheonsorbonne.ufr27.miage.service.OnePagerInteretService;
+import fr.pantheonsorbonne.ufr27.miage.service.PropositionService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.camel.builder.RouteBuilder;
@@ -18,6 +20,8 @@ public class CamelRoutes extends RouteBuilder {
     String jmsPrefix;
     @Inject
     OnePagerInteretService onePagerInteretService;
+    @Inject
+    PropositionService propositionService;
     @Inject
     FundsInterestedGateway fundsInterestedGateway;
 
@@ -54,5 +58,59 @@ public class CamelRoutes extends RouteBuilder {
 //                // Envelopper le DTO dans un message Camel et préparer pour l'envoi
 //                .bean(ContratJuridiqueGateway, "sendContratJuridiqueOnePagerPourBP()");
 //                "contratJuridiqueService,"createContratJuridiqueOnePagerPourBPDTO\""
+
+
+        from("sjms2:topic:" + jmsPrefix + "proposalForTasvee")
+                .autoStartup(isRouteEnabled)
+                .log("Proposition de Fond reçu")
+                .choice()
+                .when(simple("${header.etatProp} == 'Accepter'"))
+                .log("Proposition de Fond accepté")
+                .bean(propositionService, "addLastProposal")
+                .when(simple("${header.etatProp} == 'Refuser'"))
+                .log("Proposition de Fond refusé")
+                .unmarshal().json(PropositionDTO.class)
+                .bean(propositionService, "challengeProposal").marshal().json()
+                .end();
+
+        from("direct:sendProposal")
+                .autoStartup(isRouteEnabled)
+                .log("proposition Envoyé")
+                .marshal().json()
+                .to("sjms2:topic:" + jmsPrefix + "proposalForFond");
+
+        from("direct:sendContratTrip")
+                .autoStartup(isRouteEnabled)
+                .log("proposition Envoyé")
+                .marshal().json()
+                .to("sjms2:topic:" + jmsPrefix + "NDACommercialForFond");
+
+        from("sjms2:topic:" + jmsPrefix + "signedNDAForTasvee")
+                .autoStartup(isRouteEnabled)
+                .log("proposition Envoyé")
+                .marshal().json()
+                .to("sjms2:topic:" + jmsPrefix + "NDACommercialForEntrepreneur");
+
+
+        from("sjms2:topic:" + jmsPrefix + "signedNDAForTasvee")
+                .autoStartup(isRouteEnabled)
+                .log("proposition Envoyé")
+                .marshal().json()
+                .bean(propositionService, "insertNDA").marshal().json();
+
+        from("direct:ribOfTasvee")
+                .autoStartup(isRouteEnabled)
+                .log("proposition Envoyé")
+                .marshal().json()
+                .to("sjms2:topic:" + jmsPrefix + "ribOfTasvee");
+
+        from("direct:ribOfEntrepereneur")
+                .autoStartup(isRouteEnabled)
+                .log("proposition Envoyé")
+                .marshal().json()
+                .to("sjms2:topic:" + jmsPrefix + "ribOfEntrepereneur");
+
+
+
     }
 }

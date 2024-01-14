@@ -20,7 +20,7 @@ public class PropositionServiceImpl implements PropositionService {
 
     public void challengeProposal(PropositionDTO prop){
         try {
-            if(prop.pourcentagePartFinale() > 20 || prop.leveeDeFondsFinale() < 100 ){
+            if(prop.pourcentagePartFinale() < 10 || prop.leveeDeFondsFinale() > 1000){
                 System.out.println("PROPOSITION REFUSÉ");
                 Integer newLeveeDeFond = prop.leveeDeFondsFinale();
                 Integer newPourcPart = prop.pourcentagePartFinale();
@@ -38,8 +38,8 @@ public class PropositionServiceImpl implements PropositionService {
                         prop.pourcentagePartFinale(),
                         prop.siretFond(),
                         true );
+                propositionDao.createAcceptedProposition(response);
                 mg.sendProposal(response);
-                propositionDao.createNewProposition(prop);
             }
 
         }catch (Exception e){

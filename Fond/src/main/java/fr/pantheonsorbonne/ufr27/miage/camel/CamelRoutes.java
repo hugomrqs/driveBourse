@@ -102,20 +102,27 @@ public class CamelRoutes extends RouteBuilder {
                 .marshal().json()
                 .to("sjms2:topic:" + jmsPrefix + "signedNDAForTasvee");
 
-
-        from("sjms2:topic:" + jmsPrefix + "ribOfTasvee")
-                .autoStartup(isRouteEnabled)
-                .log("rib de tasvee recupérer")
-                .marshal().json(RIBDTO.class)
-                .bean(paymentService, "sendMoney(,Tasvee)").marshal().json();
-
-
         from("sjms2:topic:" + jmsPrefix + "ribOfEntrepreneur")
                 .autoStartup(isRouteEnabled)
                 .log("rib de entrepreneur recupérer")
-                .marshal().json(RIBDTO.class)
-                .bean(paymentService, "sendMoney(,Entrepreneur)").marshal().json();
+                .unmarshal().json(RIBDTO.class)
+                .process(exchange -> {
+                    RIBDTO ribDto = exchange.getIn().getBody(RIBDTO.class);
+                    exchange.setProperty("ribDto", ribDto);
+                })
+                .bean(paymentService, "sendMoney(${exchangeProperty.ribDto}, 'Entrepreneur')")
+                .marshal().json();
 
+        from("sjms2:topic:" + jmsPrefix + "ribOfTasvee")
+                .autoStartup(isRouteEnabled)
+                .log("rib de Tasvee recupérer")
+                .unmarshal().json(RIBDTO.class)
+                .process(exchange -> {
+                    RIBDTO ribDto = exchange.getIn().getBody(RIBDTO.class);
+                    exchange.setProperty("ribDto", ribDto);
+                })
+                .bean(paymentService, "sendMoney(${exchangeProperty.ribDto}, 'Tasvee')")
+                .marshal().json();
 
         from("direct:moneyForTasvee")
                 .autoStartup(isRouteEnabled)

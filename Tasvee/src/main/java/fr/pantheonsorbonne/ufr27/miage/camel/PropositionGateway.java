@@ -1,10 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.BusinessPlanDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.NDADTOCommercialisationDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
-import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
-import fr.pantheonsorbonne.ufr27.miage.model.Proposition;
 import fr.pantheonsorbonne.ufr27.miage.service.PropositionService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -15,7 +12,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 import java.io.IOException;
 
 @ApplicationScoped
-public class MessagingGateway {
+public class PropositionGateway {
 
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.jmsPrefix")
     String jmsPrefix;
@@ -27,6 +24,7 @@ public class MessagingGateway {
     PropositionService propService;
 
 
+
     public void sendProposal(PropositionDTO prop) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             producerTemplate.sendBodyAndHeader("direct:sendProposal", prop ,"etatProp",prop.etatProposition());
@@ -35,22 +33,22 @@ public class MessagingGateway {
         }
     }
 
-
-    public void sendSignedNDACom(NDADTOCommercialisationDTO nda) {
+    public void sendContratTripartite(NDADTOCommercialisationDTO contr) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBodyAndHeader("direct:signedNDA", nda ,"ndaCom",true);
+            producerTemplate.sendBody("direct:sendContratTrip", contr);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-
-    public void sendMoney(int argent, String sender) {
+    public void sendRIB(Integer ribEntrepreneur, Integer ribTasvee) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBody("direct:moneyFor"+sender, argent);
+            producerTemplate.sendBody("direct:ribOfEntrepereneur", ribEntrepreneur);
+            producerTemplate.sendBody("direct:ribOfTasvee", ribTasvee);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
 
 }

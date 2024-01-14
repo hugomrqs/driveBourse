@@ -1,14 +1,11 @@
-package fr.pantheonsorbonne.ufr27.miage.DAO.Impl;
+package fr.pantheonsorbonne.ufr27.miage.dao;
 
-import fr.pantheonsorbonne.ufr27.miage.DAO.PropositionDAO;
 import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.Proposition;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
-@ApplicationScoped
-public class PropositionDAOImpl implements PropositionDAO {
+public class PropositionDAOImpl implements PropositionDAO{
 
     @Inject
     EntityManager em;
