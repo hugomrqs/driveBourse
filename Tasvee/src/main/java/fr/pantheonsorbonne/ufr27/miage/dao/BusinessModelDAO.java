@@ -9,5 +9,5 @@ public interface BusinessModelDAO {
 
     BusinessModelEntity createBusinessModel(Integer idSiretStartup, Integer ArgentLeveeXpTasvee, Integer PartCedeeXpTasvee) ;
 
-    void addSignature(ContratJuridiqueBM contratJuridiqueBM);
+    ContratJuridiqueBMEntity addSignature(ContratJuridiqueBM contratJuridiqueBM);
 }

@@ -68,10 +68,10 @@ public class BusinessModelServiceImpl implements BusinessModelService{
 
     @Override
     public void contratJuridiqueBMSigned(ContratJuridiqueBM contratJuridiqueBM) {
-        businessModelDAO.addSignature(contratJuridiqueBM) ;
+        ContratJuridiqueBMEntity contratJuridiqueBMEntity = businessModelDAO.addSignature(contratJuridiqueBM) ;
         System.out.println("Le contrat juridique " + contratJuridiqueBM.contratJuridiqueBM() + " du business model signé à été receptionné, la signature à été enregistrée avec succès en DB.");
-        prestaFinancierService.requestForFinanceExpertise(contratJuridiqueBM.businessModel(). ; // est-ce ok ou bien passage par dao ?
-        prestaJuridiqueService.requestForLegalExpertise(contratJuridiqueBM.siretStartUp().idStatuts().getIdStatut()) ;
+        prestaFinancierService.requestForFinanceExpertise(contratJuridiqueBMEntity.getSiretStartUp().getIdBilanComptable().getIdBilanComptable()) ; // est-ce ok ou bien passage par dao ?
+        prestaJuridiqueService.requestForLegalExpertise(contratJuridiqueBMEntity.getSiretStartUp().getIdStatuts().getIdStatut()) ;
     }
 
 }

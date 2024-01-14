@@ -32,9 +32,10 @@ public class BusinessModelDAOImpl implements BusinessModelDAO{
 
     @Override
     @Transactional
-    public void addSignature(ContratJuridiqueBM contratJuridiqueBM) {
+    public ContratJuridiqueBMEntity addSignature(ContratJuridiqueBM contratJuridiqueBM) {
         ContratJuridiqueBMEntity existing = em.find(ContratJuridiqueBMEntity.class, contratJuridiqueBM.contratJuridiqueBM());
         existing.setStartUp(true);
         em.merge(existing);
+        return existing ;
     }
 }
