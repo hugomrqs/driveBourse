@@ -15,7 +15,6 @@ public class ContratTripartiteFinalEntity {
 
     @Column(name = "fonds")
     private Boolean fonds;
-
     @Column(name = "startUp")
     private Boolean startUp;
 

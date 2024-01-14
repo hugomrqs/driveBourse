@@ -34,7 +34,7 @@ public class FondResource {
                 ExpertiseJuridiqueDTO ej = new ExpertiseJuridiqueDTO(5, 500);
                 OrganigrammeDTO o = new OrganigrammeDTO(10);
                 BusinessPlanDTO bp = new BusinessPlanDTO(ej,ef,1,o,"www.zara.com");
-                mg.testEnvoiBP(bp);
+//                mg.testEnvoiBP(bp);
         }
 
 }

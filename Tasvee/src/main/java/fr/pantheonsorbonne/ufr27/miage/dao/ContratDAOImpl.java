@@ -10,20 +10,20 @@ public class ContratDAOImpl implements ContratDAO{
 
     @Inject
     EntityManager em;
-
-    @Override
-    public void insertContratTripartiteFinal(NDADTOCommercialisationDTO nda){
-        ContratTripartiteFinalEntity contrat = new ContratTripartiteFinalEntity(true,
-                                                                    true,
-                                                                    true,
-                                                                            findByIdPropositionFinale(nda.getIdPropositionDTO()));
-    }
-
-
-    private PropositionFinaleEntity findByIdPropositionFinale(Integer idProp){
-        PropositionFinaleEntity pf = (PropositionFinaleEntity) em.createQuery("Select pf from PropositionFinaleEntity pf where pf.idPropositionFinale =:idProp").setParameter("idProp", idProp).getSingleResult();
-        return pf;
-    }
+//
+//    @Override
+//    public void insertContratTripartiteFinal(NDADTOCommercialisationDTO nda){
+//        ContratTripartiteFinalEntity contrat = new ContratTripartiteFinalEntity(true,
+//                                                                    true,
+//                                                                    true,
+//                                                                            findByIdPropositionFinale(nda.getIdPropositionDTO()));
+//    }
+//
+//
+//    private PropositionFinaleEntity findByIdPropositionFinale(Integer idProp){
+//        PropositionFinaleEntity pf = (PropositionFinaleEntity) em.createQuery("Select pf from PropositionFinaleEntity pf where pf.idPropositionFinale =:idProp").setParameter("idProp", idProp).getSingleResult();
+//        return pf;
+//    }
 
 
 }

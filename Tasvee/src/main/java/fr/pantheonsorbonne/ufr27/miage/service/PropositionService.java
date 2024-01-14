@@ -5,11 +5,11 @@ import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
 
 public interface PropositionService {
 
-    public void challengeProposal(PropositionDTO prop);
+//    public void challengeProposal(PropositionDTO prop);
+//
+//    public void addLastProposal(PropositionDTO prop);
 
-    public void addLastProposal(PropositionDTO prop);
-
-    public void insertNDA(NDADTOCommercialisationDTO nda);
+//    public void insertNDA(NDADTOCommercialisationDTO nda);
 
 
 }

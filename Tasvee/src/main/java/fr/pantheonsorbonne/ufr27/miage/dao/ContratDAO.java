@@ -5,5 +5,5 @@ import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
 
 public interface ContratDAO {
 
-    void insertContratTripartiteFinal(NDADTOCommercialisationDTO nda);
+//    void insertContratTripartiteFinal(NDADTOCommercialisationDTO nda);
 }

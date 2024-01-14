@@ -53,7 +53,8 @@ public class OnePagerServiceImpl implements OnePagerService {
                 new ExpertiseFinanciereDTO(
                         expertiseFinanciereEntity.getPrestataireFinancier().getSiretPrestataireFinancier(),
                         expertiseFinanciereEntity.getBFRExpert(),
-                        expertiseFinanciereEntity.getMargeBrutExpert()
+                        expertiseFinanciereEntity.getMargeBrutExpert(),
+                        expertiseFinanciereEntity.getIdExpertiseFinanciere()
                 );
 
         ExpertiseJuridiqueEntity expertiseJuridiqueEntity = onePagerEntityModel.getIdExpertiseJuridique();
@@ -61,7 +62,8 @@ public class OnePagerServiceImpl implements OnePagerService {
                 new ExpertiseJuridiqueDTO(
                         expertiseJuridiqueEntity.getPrestataireJuridique().getSiretPrestataireJuridique(),
                         expertiseJuridiqueEntity.getNombrePartExpertise(),
-                        expertiseJuridiqueEntity.getPrixActuelPartExpertise()
+                        expertiseJuridiqueEntity.getPrixActuelPartExpertise(),
+                        expertiseJuridiqueEntity.getIdExpertiseJuridique()
                 );
 
        OnePagerDTO onePagerDTO = new OnePagerDTO(idOnePager,expertiseJuridiqueDTO,expertiseFinanciereDTO, secteur);

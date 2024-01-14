@@ -1,20 +1,18 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.*;
 import fr.pantheonsorbonne.ufr27.miage.helper.Helper;
-import fr.pantheonsorbonne.ufr27.miage.service.TraitementOnePagerService;
-import fr.pantheonsorbonne.ufr27.miage.dto.BusinessPlanDTO;
-import fr.pantheonsorbonne.ufr27.miage.dto.NDADTOCommercialisationDTO;
-import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
-import fr.pantheonsorbonne.ufr27.miage.dto.RIBDTO;
-import fr.pantheonsorbonne.ufr27.miage.service.BusinessService;
-import fr.pantheonsorbonne.ufr27.miage.service.PaymentService;
-import fr.pantheonsorbonne.ufr27.miage.service.PropositionService;
+import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueOnePagerPourBPEntity;
+import fr.pantheonsorbonne.ufr27.miage.service.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.camel.CamelContext;
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+import java.util.HashMap;
 
 @ApplicationScoped
 public class CamelRoutes extends RouteBuilder {
@@ -47,6 +45,20 @@ public class CamelRoutes extends RouteBuilder {
     TraitementOnePagerService traitementOnePagerService;
     @Inject
     Helper helper;
+    @Inject
+    ContratJuridiqueOnePagerPourBPService contratJuridiqueOnePagerPourBP;
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.user")
+    String smtpUser;
+
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.password")
+    String smtpPassword;
+
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.host")
+    String smtpHost;
+
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.port")
+    String smtpPort;
+
     @Override
     public void configure() throws Exception {
 
@@ -62,12 +74,29 @@ public class CamelRoutes extends RouteBuilder {
                 .marshal().json()
                 .to("sjms2:" + jmsPrefix + "queue:interestedIn");
 
+        from("file:ContratJuridiqueOnePagerPourBP")
+                .unmarshal().json(NDADTOProductionDTO.class)
+                .bean(contratJuridiqueOnePagerPourBP, "ContratJuridiqueOnePagerPourBPServiceImpl")
+                .marshal().json()
+                .log("Le NDA ${in.body} va être envoyé")
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
+                        exchange.getMessage().setHeaders(new HashMap<>());
+                        exchange.getMessage().setHeader("from",smtpUser);
+                        exchange.getMessage().setHeader("to",smtpUser);
+                        exchange.getMessage().setHeader("contentType", "application/JSON");
+                        exchange.getMessage().setHeader("subject", "ContratJuridiqueOnePagerPourBP");
+                    }
+                })
+                .to("smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword);//@TODO broker smtp
+
+
         from("sjms2:topic:" + jmsPrefix + "businessPlanForFond" + helper.siret)
                 .autoStartup(isRouteEnabled)
                 .log("BusinessPlan de Tasvee  reçu")
                 .unmarshal().json(BusinessPlanDTO.class)
                 .bean(businessService, "createPropfromBP").marshal().json();
-
 
 
         from("sjms2:topic:" + jmsPrefix + "proposalForFond")

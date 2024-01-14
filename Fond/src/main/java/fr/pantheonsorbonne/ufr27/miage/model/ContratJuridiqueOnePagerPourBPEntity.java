@@ -12,8 +12,9 @@ public class ContratJuridiqueOnePagerPourBPEntity {
     @JoinColumn(name = "SiretFonds", nullable = false)
     private Integer SiretFonds;
 
+    @ManyToOne
     @JoinColumn(name = "IDOnePager", nullable = false)
-    private Integer IDOnePager;
+    private OnePagerEntity IDOnePager;
 
     @Column(name = "TASVEE", nullable = false)
     private boolean TASVEE;

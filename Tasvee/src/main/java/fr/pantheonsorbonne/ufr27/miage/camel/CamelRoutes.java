@@ -93,17 +93,34 @@ public class CamelRoutes extends RouteBuilder {
                 .log("le contrat numero : ${in.body} a bien été envoyé")
                 .end();
 
-        from("sjms2:" + jmsPrefix + "queue:ContratJuridiqueOnePagerPourBP")//ici file/pdf
+        //envoie Contrat
+        from("direct:smtp")
+                .marshal().json()
+                .log("${in.body}")
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
+                        exchange.getMessage().setHeaders(new HashMap<>());
+                        exchange.getMessage().setHeader("from",smtpUser);
+                        exchange.getMessage().setHeader("to",smtpUser);
+                        exchange.getMessage().setHeader("contentType", "application/JSON");
+                        exchange.getMessage().setHeader("subject", "ContratJuridiqueOnePagerPourBP");
+                    }
+                })
+                .to("smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword);//@TODO broker smtp
+
+        //receive NDA
+//        from("sjms2:" + jmsPrefix + "queue:ContratJuridiqueOnePagerPourBP")//ici file/pdf
+//                .unmarshal().json(NDADTOProductionDTO.class)
+//                .bean(contratJuridiqueOnePagerPourBPService, "UpdateContratJuridiqueOnePagerPourBPSigne(${in.body})")
+//                .marshal().json()
+//                .log("le contrat : ${in.body} signé a bien été reçu et enregistré");
+
+        from("file:ContratJuridiqueOnePagerPourBP")
                 .unmarshal().json(NDADTOProductionDTO.class)
                 .bean(contratJuridiqueOnePagerPourBPService, "UpdateContratJuridiqueOnePagerPourBPSigne(${in.body})")
                 .marshal().json()
                 .log("le contrat : ${in.body} signé a bien été reçu et enregistré");
-
-        from("direct:smtp")
-                .marshal().json()
-                .log(",,,,,,,,,,,,,,,,,,,,,ddznkbhdjjjjjjjjjjjj")
-                .log("${in.body}")
-                .to("sjms2:" + jmsPrefix + "queue:test");//@TODO broker smtp
 
 
         from("sjms2:topic:" + jmsPrefix + "proposalForTasvee")
