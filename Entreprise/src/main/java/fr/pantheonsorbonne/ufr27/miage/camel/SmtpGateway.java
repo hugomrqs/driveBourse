@@ -26,7 +26,7 @@ public class SmtpGateway {
     public void sendSignedCJ(ContratJuridiqueBM contratJuridiqueBM) {
         System.out.println("Ca passe dans sendDignedCJ");
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBody(  "direct:startup-smtp" ,contratJuridiqueBM) ;
+            producerTemplate.sendBody(  "direct:startup-smtp" ,contratJuridiqueBM); ;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

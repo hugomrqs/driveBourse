@@ -83,7 +83,7 @@ public class CamelRoutes extends RouteBuilder {
                 .marshal().json()
                 .log("///////////////////////")
                 .log("${body}")
-                .to("sjms2:topic:"+jmsPrefix+"-StartUp-BM");
+                .to("sjms2:topic:"+jmsPrefix+"sender");
 
 
         from("direct:smtp-cj")
@@ -91,7 +91,7 @@ public class CamelRoutes extends RouteBuilder {
                 .log("///////////////////////")
                 .marshal().json()
                 .log("${body}")
-                .to("sjms2:topic:"+jmsPrefix+"-StartUp-CJ");
+                .to("sjms2:topic:"+jmsPrefix+"sender");
         //        .unmarshal().json(BusinessModel.class)
 //                .process(new Processor() {
 //                    @Override

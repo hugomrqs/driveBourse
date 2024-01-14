@@ -80,24 +80,23 @@ public class CamelRoutes extends RouteBuilder {
                 .unmarshal().json(ContratJuridiqueBM.class)
                 .bean(bm,"registerContratJuridiqueBM")
                 .marshal().json();
-//
-//
-//
+
+
         from("direct:startup-smtp")
-                .log("ca passe par ici ${body}")
-                .marshal().json(JsonLibrary.Jackson)
+                  .autoStartup(isRouteEnabled)
+                .log("///////////////////////")
+                .marshal().json()
+                .log("${body}")
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
-
                         exchange.getMessage().setHeaders(new HashMap<>());
                         exchange.getMessage().setHeader("from",smtpUser);
                         exchange.getMessage().setHeader("to",smtpUser);
-                        exchange.getMessage().setHeader("contentType", "application/JSON");
-                        exchange.getMessage().setHeader("subject", "Send BM signé");
-                        exchange.getMessage().setBody("Le body du message");
+                        exchange.getMessage().setHeader("contentType", "application/json");
+                        exchange.getMessage().setHeader("subject", "Send signé");
                     }
                 })
-                .to("sjms2:topic:"+jmsPrefix+"sender");
+                .to("sjms2:topic:" + jmsPrefix + "sender");
     }
 }
