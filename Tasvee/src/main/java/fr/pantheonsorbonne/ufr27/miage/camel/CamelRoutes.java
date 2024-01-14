@@ -78,9 +78,6 @@ public class CamelRoutes extends RouteBuilder {
 //OP
         from("sjms2:topic:" + jmsPrefix + "-Tasvee-BM")
                 .autoStartup(isRouteEnabled)
-                .log("/////////////////////////////////////////////////////////////////////////////////////////")
-                .log("type entreant : ${body}")
-                .log("/////////////////////////////////////////////////////////////////////////////////////////")
                 .unmarshal().json(BusinessModel.class)
                 .process(new Processor() {
                     @Override
@@ -101,10 +98,7 @@ public class CamelRoutes extends RouteBuilder {
                                 "\n\n L'équipe Tasvee");
                     }
                 })
-                .log("/////////////////////////////////////////////////////////////////////////////////////////")
-                .log("type entreant : ${in.headers.subject}")
-                .log("/////////////////////////////////////////////////////////////////////////////////////////")
-                .to("sjms2:topic:" + jmsPrefix + "-StartUp-SMTP");
+                .to("sjms2:topic:" + jmsPrefix + "sender");
 
 
         /////////////////////

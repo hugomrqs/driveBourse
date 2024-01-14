@@ -64,10 +64,6 @@ public class OfferFormEntrepriseServiceImpl implements OfferFormEntrepriseServic
             }
         } catch (IOException e) {
             LOGGER.error("Erreur lors de l'envoi de l'offre", e);
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
         }
     }
 }
