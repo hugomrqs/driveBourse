@@ -3,6 +3,7 @@ package fr.pantheonsorbonne.ufr27.miage.camel;
 import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModel;
 import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBM;
 import fr.pantheonsorbonne.ufr27.miage.service.BusinessModelService;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -11,6 +12,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.util.HashMap;
 
+@ApplicationScoped
 public class CamelRoutes extends RouteBuilder {
 
     @ConfigProperty(name = "camel.routes.enabled", defaultValue = "true")
@@ -61,8 +63,12 @@ public class CamelRoutes extends RouteBuilder {
 
 
         from("sjms2:topic:"+jmsPrefix+"-StartUp-BM")
+                .log(" bm recu en doublon ${body}")
                 .unmarshal().json(BusinessModel.class)
-                .bean("businessModelEntrepriseService","registerBusinessModel")
+                .log("///////////////////////")
+                .log("cette queue fonctionne")
+                .log("${body}")
+                .bean(bm,"registerBusinessModel")
                 .marshal().json();
 
         /////////////////////
@@ -70,9 +76,10 @@ public class CamelRoutes extends RouteBuilder {
         /////////////////////
 
         from("sjms2:topic:"+jmsPrefix+"-StartUp-CJ")
+                .log(" cj recu en doublon ${body}")
                 .unmarshal().json(ContratJuridiqueBM.class)
-                .bean("businessModelEntrepriseService","registerContratJuridiqueBM")
-                .marshal().json();
+                .bean(bm,"registerContratJuridiqueBM")
+                ;
 
 
 

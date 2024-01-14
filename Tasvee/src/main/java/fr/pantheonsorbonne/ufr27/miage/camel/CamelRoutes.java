@@ -63,6 +63,8 @@ public class CamelRoutes extends RouteBuilder {
         from("direct:smtp")
                 .autoStartup(isRouteEnabled)
                 .marshal().json()
+                .log("SMTP entrée///////////////////////")
+                .log("${body}")
                 .choice()
                 .when(header("subject").in("BM", "CJ", "EF", "EJ", "CJOPBM"))
                 .toD("sjms2:topic:" + jmsPrefix + "-Tasvee-${in.headers.subject}");
@@ -78,29 +80,35 @@ public class CamelRoutes extends RouteBuilder {
 //OP
         from("sjms2:topic:" + jmsPrefix + "-Tasvee-BM")
                 .autoStartup(isRouteEnabled)
-                .unmarshal().json(BusinessModel.class)
-                .process(new Processor() {
-                    @Override
-                    public void process(Exchange exchange) throws Exception {
+                .log("///////////////////////")
+                .log("${body}")
+                .to("sjms2:topic:"+jmsPrefix+"-StartUp-BM");
+        //        .unmarshal().json(BusinessModel.class)
+//                .process(new Processor() {
+//                    @Override
+//                    public void process(Exchange exchange) throws Exception {
+//
+//                        BusinessModel notice = exchange.getMessage().getBody(BusinessModel.class);
+//                        exchange.getMessage().setHeaders(new HashMap<>());
+//                        exchange.getMessage().setHeader("from",smtpUser);
+//                        exchange.getMessage().setHeader("to",smtpUser);
+//                        exchange.getMessage().setHeader("contentType", "text/html");
+//                        exchange.getMessage().setHeader("subject", "Send BM");
+//                        String Path ="C://Users/Hugo/L3_MIAGE_operating_systems/drive/Tasvee/data/PDF/bmID-"+notice.idBusinessModel()+".pdf";
+//                        exchange.getMessage().setBody("Cher(e) Client(e)," +
+//                                "<br> Nous avons bien reçu votre demande sur notre site via l'offerForm. L'identifiant ed votre Offer Form est  " + notice.idBusinessModel() +
+//                                "<br> C'est avec grand plaisir que Tasvee annonce notre future collaboration. Nous sommes ravis de vous proposer une levée de fonds à " +
+//                                "<br> Vous trouverez ci-joint un Business Plan détaillé pour votre consultation." +
+//                                "<br> Nous vous remercions pour votre confiance et restons à votre disposition pour toute question." +
+//                                "<br><a href='"+Path+"' c'est qu'il faut cliquer/a>"+
+//                                "<br> Cordialement," +
+//                                "<br> L'équipe Tasvee");
+//                    }
+//                })
 
-                        BusinessModel notice = exchange.getMessage().getBody(BusinessModel.class);
-                        exchange.getMessage().setHeaders(new HashMap<>());
-                        exchange.getMessage().setHeader("from",smtpUser);
-                        exchange.getMessage().setHeader("to",smtpUser);
-                        exchange.getMessage().setHeader("contentType", "text/html");
-                        exchange.getMessage().setHeader("subject", "Send BM");
-                        exchange.getMessage().setBody("Cher(e) Client(e)," +
-                                "\n\n Nous avons bien reçu votre demande sur notre site via l'offerForm. L'identifiant ed votre Offer Form est  " +
-                                "\n\n C'est avec grand plaisir que Tasvee annonce notre future collaboration. Nous sommes ravis de vous proposer une levée de fonds à " +
-                                " \n\n Vous trouverez ci-joint un Business Plan détaillé pour votre consultation." +
-                                "\n\n Nous vous remercions pour votre confiance et restons à votre disposition pour toute question." +
-                                "\n\n Cordialement," +
-                                "\n\n L'équipe Tasvee");
-                    }
-                })
-                .to("sjms2:topic:" + jmsPrefix + "sender");
+                //.to("sjms2:topic:" + jmsPrefix + "sender");
 
-
+     ;
         /////////////////////
         //// Contrat Juridique pièce jointe JSON
         //// besoin de signer
@@ -120,7 +128,8 @@ public class CamelRoutes extends RouteBuilder {
                         exchange.getMessage().setHeader("contentType", "application/JSON");
                     }
                 })
-                .to("sjms2:topic:" + jmsPrefix + "sender");
+                .to("sjms2:topic:"+jmsPrefix+"-StartUp-CJ");
+                //.to("sjms2:topic:" + jmsPrefix + "sender");
 
 
         /////////////////////
