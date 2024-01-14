@@ -5,11 +5,24 @@ import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueOnePagerPourBP;
 import fr.pantheonsorbonne.ufr27.miage.service.OnePagerInteretService;
 import fr.pantheonsorbonne.ufr27.miage.service.PropositionService;
+import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptableDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridiqueDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.StatutDTO;
+import fr.pantheonsorbonne.ufr27.miage.service.PrestaFinancierService;
+import fr.pantheonsorbonne.ufr27.miage.service.PrestaJuridiqueService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.inject.Inject;
+import org.apache.camel.Exchange;
+import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
+
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+import java.util.HashMap;
 
 
 @ApplicationScoped
@@ -24,6 +37,32 @@ public class CamelRoutes extends RouteBuilder {
     PropositionService propositionService;
     @Inject
     FundsInterestedGateway fundsInterestedGateway;
+
+
+    @Inject
+    PrestaJuridiqueService prestaJuridiqueService ;
+
+    @Inject
+    PrestaFinancierService prestaFinancierService ;
+
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.user")
+    String smtpUser;
+
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.imap.host")
+    String imapHost;
+
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.imap.port")
+    String imapPort;
+
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.password")
+    String smtpPassword;
+
+
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.host")
+    String smtpHost;
+
+    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.port")
+    String smtpPort;
 
     @Override
     public void configure() throws Exception {
@@ -110,6 +149,100 @@ public class CamelRoutes extends RouteBuilder {
                 .marshal().json()
                 .to("sjms2:topic:" + jmsPrefix + "ribOfEntrepereneur");
 
+
+        /////////////////////
+        //// Tasvee --> Presta Juridique message
+        //// Ask
+        /////////////////////
+
+        from("sjms2:topic:" + jmsPrefix + "-Tasvee-EJ")
+                .autoStartup(isRouteEnabled)
+                .unmarshal().json(StatutDTO.class)
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
+
+                        StatutDTO notice = exchange.getMessage().getBody(StatutDTO.class);
+                        exchange.getMessage().setBody("Bonjour," +
+                                "\n\n Nous osuhaitons  :  " + notice.nombrePart() + " de parts" +
+                                "\n\n Le prix des parts actuel est de  " +  notice.prixPartActuel() +
+                                " \n\n La stratégie que nous voulons aborder est " + notice.strategieEntrepreneur() +
+                                "\n\n En vous remerciant par avance" +
+                                "\n\n Tasvee");
+                    }
+                })
+                .to("sjms2:topic:" + jmsPrefix + "sender");
+
+
+
+        /////////////////////
+        //// Tasvee --> Presta Financier message
+        //// Ask
+        /////////////////////
+
+        from("sjms2:topic:" + jmsPrefix + "-Tasvee-EF")
+                .autoStartup(isRouteEnabled)
+                .unmarshal().json(BilanComptableDTO.class)
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
+
+                        BilanComptableDTO notice = exchange.getMessage().getBody(BilanComptableDTO.class);
+                        exchange.getMessage().setBody("Bonjour," +
+                                "\n\n :  " + notice.emplois() + notice.ressources()+
+
+                                "\n\n Tasvee");
+
+                    }
+                })
+                .to("sjms2:topic:" + jmsPrefix + "sender");
+
+
+
+        /////////////////////
+        //// Presta Fiancier --> Tasvee
+        /// traite reply
+        /////////////////////
+
+        from("sjms2:topic:" + jmsPrefix + "EF")
+                .autoStartup(isRouteEnabled)
+                .unmarshal().json(ExpertiseJuridiqueDTO.class)
+                .bean(prestaFinancierService,"registerFinancialExpertise")
+                .marshal().json()
+                .end();
+
+
+        /////////////////////
+        //// Presta Juridique --> Tasvee
+        /// traite reply
+        /////////////////////
+
+            from("sjms2:topic:" + jmsPrefix + "EJ")
+                    .autoStartup(isRouteEnabled)
+                    .unmarshal().json(ExpertiseJuridiqueDTO.class)
+                    .bean(prestaJuridiqueService,"registerLegalExpertise")
+                    .marshal().json()
+                    .end();
+
+
+        /////////////////////
+        //// CjBM  json il doivent signer
+        /////////////////////
+
+        from("sjms2:topic:" + jmsPrefix + "-Tasvee-CJOPBP")
+                .autoStartup(isRouteEnabled)
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
+                        exchange.getMessage().setHeaders(new HashMap<>());
+                        exchange.getMessage().setHeader("from",smtpUser);
+                        exchange.getMessage().setHeader("to",smtpUser);
+                        exchange.getMessage().setHeader("cc",smtpUser);
+                        exchange.getMessage().setHeader("subject","JSON");
+                        exchange.getMessage().setHeader("contentType", "application/JSON");
+                    }
+                })
+                .to("sjms2:topic:" + jmsPrefix + "sender" );
 
 
     }

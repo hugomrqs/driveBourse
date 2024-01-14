@@ -3,7 +3,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "ExpertiseJuridique")
-public class ExpertiseJuridique {
+public class ExpertiseJuridiqueEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,20 +13,21 @@ public class ExpertiseJuridique {
     @Column(name = "nombrePartExpertise")
     private Integer nombrePartExpertise;
 
-    @Column(name = "prixPartExpertise")
-    private Integer prixPartExpertise;
+    @Column(name = "prixActuelPartExpertise")
+    private Integer prixActuelPartExpertise;
 
     @ManyToOne
     @JoinColumn(name = "SiretPrestataireJuridique", referencedColumnName = "SiretPrestataireJuridique")
     private PrestataireJuridique prestataireJuridique;
 
-    public ExpertiseJuridique() {
+    public ExpertiseJuridiqueEntity(Integer nombrePartExpertise, PrestataireJuridique prestataireJuridique, Integer prixActuelPartExpertise,) {
+        this.nombrePartExpertise = nombrePartExpertise;
+        this.prixActuelPartExpertise = prixActuelPartExpertise;
+        this.prestataireJuridique = prestataireJuridique;
     }
 
-    public ExpertiseJuridique(Integer nombrePartExpertise,Integer prixPartExpertise, PrestataireJuridique prestataireJuridique) {
-        this.nombrePartExpertise = nombrePartExpertise;
-        this.prixPartExpertise = prixPartExpertise;
-        this.prestataireJuridique = prestataireJuridique;
+    public ExpertiseJuridiqueEntity() {
+
     }
 
     // Getters et Setters
@@ -47,12 +48,12 @@ public class ExpertiseJuridique {
         this.nombrePartExpertise = nombrePartExpertise;
     }
 
-    public Integer getPrixPartExpertise() {
-        return prixPartExpertise;
+    public Integer getPrixActuelPartExpertise() {
+        return prixActuelPartExpertise;
     }
 
-    public void setPrixPartExpertise(Integer prixPartExpertise) {
-        this.prixPartExpertise = prixPartExpertise;
+    public void setPrixActuelPartExpertise(Integer prixActuelPartExpertise) {
+        this.prixActuelPartExpertise = prixActuelPartExpertise;
     }
 
     public PrestataireJuridique getPrestataireJuridique() {

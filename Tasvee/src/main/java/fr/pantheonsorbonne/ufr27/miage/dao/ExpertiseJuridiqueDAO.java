@@ -8,4 +8,5 @@ public interface ExpertiseJuridiqueDAO {
     public ExpertiseJuridique selectExpertiseJuridiqueFromSiret(int siretStartup)
             throws StartUpNotFoundException;
     public ExpertiseJuridique findById(Integer id);
+   void registerExpertiseJuridique(ExpertiseJuridique expertiseJuridique);
 }

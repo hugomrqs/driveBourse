@@ -3,16 +3,12 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "BusinessModel")
-public class BusinessModel {
+public class BMEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IDBusinessModel")
     private Integer idBusinessModel;
-
-    @ManyToOne
-    @JoinColumn(name = "SiretStartUP", referencedColumnName = "SiretStartUP")
-    private StartUpEntity siretStartUp;
 
     @Column(name = "argentLeveeXpTasvee")
     private Integer argentLeveeXpTasvee;
@@ -20,15 +16,16 @@ public class BusinessModel {
     @Column(name = "partCedeeXpTasvee")
     private Integer partCedeeXpTasvee;
 
-    public BusinessModel() {
+    public BMEntity() {
     }
 
-    public BusinessModel(Integer argentLeveeXpTasvee,
-                         Integer partCedeeXpTasvee,
-                         StartUpEntity siretStartUp) {
+    public BMEntity(Integer argentLeveeXpTasvee,
+                    Integer partCedeeXpTasvee) {
         this.argentLeveeXpTasvee = argentLeveeXpTasvee;
         this.partCedeeXpTasvee = partCedeeXpTasvee;
-        this.siretStartUp = siretStartUp;
+    }
+
+    public BMEntity(int i, int i1) {
     }
 
     public Integer getIdBusinessModel() {
@@ -37,13 +34,6 @@ public class BusinessModel {
 
     public void setIdBusinessModel(Integer idBusinessModel) {
         this.idBusinessModel = idBusinessModel;
-    }
-    public StartUpEntity getsiretStartUp() {
-        return siretStartUp;
-    }
-
-    public void setsiretStartUp(StartUpEntity siretStartUp) {
-        this.siretStartUp = siretStartUp;
     }
 
     public Integer getArgentLeveeXpTasvee() {

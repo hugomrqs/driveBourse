@@ -27,4 +27,3 @@ public class NDADTOCommercialisationDTO extends NDADTO<PropositionDTO> {
         this.signatureEntreprise = signatureEntreprise;
     }
 }
-

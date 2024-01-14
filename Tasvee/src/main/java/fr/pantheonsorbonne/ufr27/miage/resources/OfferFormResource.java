@@ -1,7 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.resources;
 
-import fr.pantheonsorbonne.ufr27.miage.dao.OfferFormDAO;
-import fr.pantheonsorbonne.ufr27.miage.model.BusinessModel;
+import fr.pantheonsorbonne.ufr27.miage.service.BusinessModelService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -15,8 +14,8 @@ public class OfferFormResource {
     @Inject
     OfferFormService offerFormService;
 
-    //@Inject
-    //BusinessModelService businessModelService;
+    @Inject
+    BusinessModelService businessModelService;
 
     @Path("/new-offer")
     @POST
@@ -28,7 +27,7 @@ public class OfferFormResource {
 
         if (isAccepted) {
             offerFormService.saveOfferForm(offerForm);
-            //businessModelService.isFormAccepted() ; //pour trigger le service BM : trigger la composition du BM puis son envoi par SMTP
+            businessModelService.isFormAccepted(offerForm.siretStartup()) ; //pour trigger le service BM : trigger la composition du BM puis son envoi par SMTP + la composition du contratJuridiqueBM puis son envoi par SMTP
             return Response.ok("L'offre a été acceptée, le business model sera constitué puis vous sera envoyé à l'adresse mail : " + offerForm.mail()).build();
         } else {
             return Response.ok("L'offre a été reçue, cependant elle est refusée.").build();

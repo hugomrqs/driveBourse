@@ -1,24 +1,28 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
+import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeant;
+import fr.pantheonsorbonne.ufr27.miage.dto.OfferForm;
+import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
 import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptableDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeantDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.OfferFormDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.StatutDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 @ApplicationScoped
-public class OfferFormServiceImpl implements OfferFormService {
+public class OfferFormEntrepriseServiceImpl implements OfferFormEntrepriseService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OfferFormServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OfferFormEntrepriseServiceImpl.class);
     private static final String API_ENDPOINT = "http://localhost:8080/offer-form/new-offer";
 
     @Override

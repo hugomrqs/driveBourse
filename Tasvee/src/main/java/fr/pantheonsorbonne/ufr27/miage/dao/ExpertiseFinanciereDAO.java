@@ -7,4 +7,5 @@ public interface ExpertiseFinanciereDAO {
     ExpertiseFinanciere selectExpertiseFinanicereFromSiret(int siretStartup)
             throws StartUpNotFoundException;
     ExpertiseFinanciere findById(Integer id);
+    void registerExpertiseFinanciere(ExpertiseFinanciere expertiseFinanciere);
 }

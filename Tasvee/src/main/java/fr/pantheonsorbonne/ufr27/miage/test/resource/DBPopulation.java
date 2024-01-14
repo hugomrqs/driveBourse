@@ -1,4 +1,5 @@
 package fr.pantheonsorbonne.ufr27.miage.test.resource;
+
 import fr.pantheonsorbonne.ufr27.miage.model.BilanComptableEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.CVDirigeantEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.StatutEntity;
@@ -6,6 +7,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
+
 import java.util.List;
 
 @ApplicationScoped
@@ -13,6 +15,7 @@ public class DBPopulation {
     public EntityManager getEm() {
         return em;
     }
+
     @Inject
     EntityManager em;
 

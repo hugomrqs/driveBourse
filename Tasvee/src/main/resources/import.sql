@@ -12,19 +12,19 @@ VALUES (1, 100, 50, 1);
 
 -- Inserting into PrestataireFinancier
 INSERT INTO PrestataireFinancier (SiretPrestataireFinancier, mail)
-VALUES (1234567890, 'finance@example.com');
+VALUES (1234567, 'finance@example.com');
 
 -- Inserting into PrestataireJuridique
 INSERT INTO PrestataireJuridique (SiretPrestataireJuridique, email)
-VALUES (98765432109876, 'legal@example.com');
+VALUES (98765, 'legal@example.com');
 
 -- Inserting into ExpertiseFinanciere
 INSERT INTO ExpertiseFinanciere (BFRExpert, margeBrutExpert, SiretPrestataireFinancier)
-VALUES (5000, 7000, 1234567890);
+VALUES (5000, 7000, 1234567);
 
 -- Inserting into ExpertiseJuridique
 INSERT INTO ExpertiseJuridique (nombrePartExpertise,prixPartExpertise, SiretPrestataireJuridique)
-VALUES (20,20, 98765432109876);
+VALUES (20,20, 98765);
 
 -- Inserting into StartUp (assuming IDBilanComptable, IDCVDirigeant, IDStatut are 1)
 INSERT INTO StartUp (IDBilanComptable, IDCVDirigeant, IDStatut, argentLevee, nombreDePersonne, numeroDeLevee, partCede, dateOfferForm, IBAN, SiretStartUP, lienSiteWeb, mail, secteur)

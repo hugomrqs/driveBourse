@@ -51,7 +51,7 @@ public class StartUpEntity {
 
     @ManyToOne
     @JoinColumn(name = "IDBusinessModel", referencedColumnName = "IDBusinessModel")
-    private BusinessModel idBusinessModel;
+    private BusinessModelEntity idBusinessModel;
 
     @OneToOne
     @JoinColumn(name = "IDOnePager", referencedColumnName = "IDOnePager")
@@ -73,7 +73,7 @@ public class StartUpEntity {
                          BilanComptableEntity idBilanComptable,
                          StatutEntity idStatut,
                          CVDirigeantEntity idCVDirigeant,
-                         BusinessModel idBusinessModel,
+                         BusinessModelEntity idBusinessModel,
                          OnePager idOnePager) {
 
         this.siretStartUp = siretStartUp;
@@ -146,7 +146,7 @@ public class StartUpEntity {
         return idCVDirigeant;
     }
 
-    public BusinessModel getIdBusinessModel() {
+    public BusinessModelEntity getIdBusinessModel() {
         return idBusinessModel;
     }
 
@@ -207,7 +207,7 @@ public class StartUpEntity {
         this.idCVDirigeant = idCVDirigeant;
     }
 
-    public void setIdBusinessModel(BusinessModel idBusinessModel) {
+    public void setIdBusinessModel(BusinessModelEntity idBusinessModel) {
         this.idBusinessModel = idBusinessModel;
     }
 

@@ -20,4 +20,13 @@ public class ExpertiseJuridiqueDAOImpl implements ExpertiseJuridiqueDAO {
     public ExpertiseJuridique findById(Integer id) {
         return em.find(ExpertiseJuridique.class, id);
     }
+
+    @Override
+    public void registerExpertiseJuridique(ExpertiseJuridique expertiseJuridique){
+        ExpertiseJuridiqueEntity expertiseJuridiqueEntity = new ExpertiseJuridiqueEntity() ;
+        expertiseJuridiqueEntity.setPrestataireJuridique(em.find(PrestataireJuridique.class, expertiseJuridique.siretPrestataireJuridique()));
+        expertiseJuridiqueEntity.setNombrePartExpertise(expertiseJuridique.nombrePartExpertise());
+        expertiseJuridiqueEntity.setPrixActuelPartExpertise(expertiseJuridique.prixActuelPartExpertise());
+        em.persist(expertiseJuridiqueEntity);
+    }
 }
