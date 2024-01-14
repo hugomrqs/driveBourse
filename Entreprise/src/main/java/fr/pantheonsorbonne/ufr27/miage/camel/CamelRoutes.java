@@ -65,7 +65,7 @@ public class CamelRoutes extends RouteBuilder {
         /////////////////////
 
 
-        from("sjms2:topic:"+jmsPrefix+"-StartUp-BM")
+        from("file:data/BM")
                 .log("bm recu ${body}")
                 .unmarshal().json(BusinessModel.class)
                 .bean(bm,"registerBusinessModel")
@@ -75,7 +75,7 @@ public class CamelRoutes extends RouteBuilder {
         ////Gestion du contrat juridique
         /////////////////////
 
-        from("sjms2:topic:"+jmsPrefix+"-StartUp-CJ")
+        from("file:data/CJ")
                 .log("cjbm recu ${body}")
                 .unmarshal().json(ContratJuridiqueBM.class)
                 .bean(bm,"registerContratJuridiqueBM")

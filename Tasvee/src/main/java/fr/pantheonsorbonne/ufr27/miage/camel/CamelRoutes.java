@@ -1,9 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
-import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModel;
-import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridique;
-import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
+import fr.pantheonsorbonne.ufr27.miage.dto.*;
+import fr.pantheonsorbonne.ufr27.miage.service.BusinessModelService;
 import fr.pantheonsorbonne.ufr27.miage.service.PrestaFinancierService;
 import fr.pantheonsorbonne.ufr27.miage.service.PrestaJuridiqueService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -34,11 +32,6 @@ public class CamelRoutes extends RouteBuilder {
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.user")
     String smtpUser;
 
-    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.imap.host")
-    String imapHost;
-
-    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.imap.port")
-    String imapPort;
 
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.password")
     String smtpPassword;
@@ -49,6 +42,9 @@ public class CamelRoutes extends RouteBuilder {
 
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.port")
     String smtpPort;
+
+    @Inject
+    BusinessModelService bm;
 
     @Override
     public void configure() throws Exception {
@@ -83,26 +79,16 @@ public class CamelRoutes extends RouteBuilder {
                 .marshal().json()
                 .log("///////////////////////")
                 .log("${body}")
-                .to("sjms2:topic:"+jmsPrefix+"sender");
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
 
-
-        from("direct:smtp-cj")
-                .autoStartup(isRouteEnabled)
-                .log("///////////////////////")
-                .marshal().json()
-                .log("${body}")
-                .to("sjms2:topic:"+jmsPrefix+"sender");
-        //        .unmarshal().json(BusinessModel.class)
-//                .process(new Processor() {
-//                    @Override
-//                    public void process(Exchange exchange) throws Exception {
-//
-//                        BusinessModel notice = exchange.getMessage().getBody(BusinessModel.class);
-//                        exchange.getMessage().setHeaders(new HashMap<>());
-//                        exchange.getMessage().setHeader("from",smtpUser);
-//                        exchange.getMessage().setHeader("to",smtpUser);
-//                        exchange.getMessage().setHeader("contentType", "text/html");
-//                        exchange.getMessage().setHeader("subject", "Send BM");
+                        //   BusinessModel notice = exchange.getMessage().getBody(BusinessModel.class);
+                        exchange.getMessage().setHeaders(new HashMap<>());
+                        exchange.getMessage().setHeader("from", smtpUser);
+                        exchange.getMessage().setHeader("to", smtpUser);
+                        exchange.getMessage().setHeader("contentType", "application/json");
+                        exchange.getMessage().setHeader("subject", "Send BM");
 //                        String Path ="C://Users/Hugo/L3_MIAGE_operating_systems/drive/Tasvee/data/PDF/bmID-"+notice.idBusinessModel()+".pdf";
 //                        exchange.getMessage().setBody("Cher(e) Client(e)," +
 //                                "<br> Nous avons bien reçu votre demande sur notre site via l'offerForm. L'identifiant ed votre Offer Form est  " + notice.idBusinessModel() +
@@ -112,12 +98,51 @@ public class CamelRoutes extends RouteBuilder {
 //                                "<br><a href='"+Path+"' c'est qu'il faut cliquer/a>"+
 //                                "<br> Cordialement," +
 //                                "<br> L'équipe Tasvee");
-//                    }
-//                })
+                    }
+                })
+                .to("sjms2:topic:"+jmsPrefix+"-StartUp-BM");
 
-                //.to("sjms2:topic:" + jmsPrefix + "sender");
 
-     ;
+        from("direct:smtp-cj")
+                .autoStartup(isRouteEnabled)
+                .log("///////////////////////")
+                .marshal().json()
+                .log("${body}")
+                //.to("sjms2:topic:"+jmsPrefix+"-StartUp-CJ");
+        //        .unmarshal().json(BusinessModel.class)
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
+
+                        BusinessModel notice = exchange.getMessage().getBody(BusinessModel.class);
+                        exchange.getMessage().setHeaders(new HashMap<>());
+                        exchange.getMessage().setHeader("from",smtpUser);
+                        exchange.getMessage().setHeader("to",smtpUser);
+                        exchange.getMessage().setHeader("contentType", "application/json");
+                        exchange.getMessage().setHeader("subject", "Send CJ");
+//                        String Path ="C://Users/Hugo/L3_MIAGE_operating_systems/drive/Tasvee/data/PDF/bmID-"+notice.idBusinessModel()+".pdf";
+//                        exchange.getMessage().setBody("Cher(e) Client(e)," +
+//                                "<br> Nous avons bien reçu votre demande sur notre site via l'offerForm. L'identifiant ed votre Offer Form est  " + notice.idBusinessModel() +
+//                                "<br> C'est avec grand plaisir que Tasvee annonce notre future collaboration. Nous sommes ravis de vous proposer une levée de fonds à " +
+//                                "<br> Vous trouverez ci-joint un Business Plan détaillé pour votre consultation." +
+//                                "<br> Nous vous remercions pour votre confiance et restons à votre disposition pour toute question." +
+//                                "<br><a href='"+Path+"' c'est qu'il faut cliquer/a>"+
+//                                "<br> Cordialement," +
+//                                "<br> L'équipe Tasvee");
+                    }
+                })
+
+                .to("sjms2:topic:" + jmsPrefix + "sender");
+
+        /////////////////////////////////////
+
+        from("file:data/CJSigné")
+                .log("cjbm recu ${body}")
+                .unmarshal().json(ContratJuridiqueBM.class)
+                .bean(bm,"contratJuridiqueBMSigned")
+                .marshal().json();
+        //////////////////////////////////////////
+
         /////////////////////
         //// Contrat Juridique pièce jointe JSON
         //// besoin de signer
