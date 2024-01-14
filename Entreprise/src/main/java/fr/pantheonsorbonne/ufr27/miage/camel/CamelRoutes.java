@@ -5,6 +5,7 @@ import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBM;
 import fr.pantheonsorbonne.ufr27.miage.service.BusinessModelService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.inject.Named;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
@@ -40,6 +41,7 @@ public class CamelRoutes extends RouteBuilder {
     String smtpPort;
 
     @Inject
+    @Named("businessModelEntrepriseService")
     BusinessModelService bm;
 
     @Override
@@ -63,11 +65,8 @@ public class CamelRoutes extends RouteBuilder {
 
 
         from("sjms2:topic:"+jmsPrefix+"-StartUp-BM")
-                .log(" bm recu en doublon ${body}")
+                .log("bm recu ${body}")
                 .unmarshal().json(BusinessModel.class)
-                .log("///////////////////////")
-                .log("cette queue fonctionne")
-                .log("${body}")
                 .bean(bm,"registerBusinessModel")
                 .marshal().json();
 
@@ -76,7 +75,7 @@ public class CamelRoutes extends RouteBuilder {
         /////////////////////
 
         from("sjms2:topic:"+jmsPrefix+"-StartUp-CJ")
-                .log(" cj recu en doublon ${body}")
+                .log("cjbm recu ${body}")
                 .unmarshal().json(ContratJuridiqueBM.class)
                 .bean(bm,"registerContratJuridiqueBM")
                 .marshal().json();
