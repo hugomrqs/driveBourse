@@ -9,6 +9,7 @@ import jakarta.inject.Named;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.model.dataformat.JsonLibrary;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.util.HashMap;
@@ -83,7 +84,8 @@ public class CamelRoutes extends RouteBuilder {
 //
 //
         from("direct:startup-smtp")
-                .marshal().json()
+                .log("ca passe par ici ${body}")
+                .marshal().json(JsonLibrary.Jackson)
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
@@ -93,8 +95,7 @@ public class CamelRoutes extends RouteBuilder {
                         exchange.getMessage().setHeader("to",smtpUser);
                         exchange.getMessage().setHeader("contentType", "application/JSON");
                         exchange.getMessage().setHeader("subject", "Send BM signé");
-                        exchange.getMessage().setBody("Cher(e) Client(e)," +
-                                "\n\n L'équipe Tasvee");
+                        exchange.getMessage().setBody("Le body du message");
                     }
                 })
                 .to("sjms2:topic:"+jmsPrefix+"sender");

@@ -69,9 +69,9 @@ public class CamelRoutes extends RouteBuilder {
 //                .when(header("subject").in("BM", "CJ", "EF", "EJ", "CJOPBM"))
 //                .toD("sjms2:topic:" + jmsPrefix + "-Tasvee-${in.headers.subject}");
 
-//        from("sjms2:topic:" + jmsPrefix + "sender")
-//                .throttle(1).timePeriodMillis(5000) // 1 message toutes les 10 secondes
-//                .to(destinaire);
+        from("sjms2:topic:" + jmsPrefix + "sender")
+                .throttle(1).timePeriodMillis(5000) // 1 message toutes les 10 secondes
+                .to(destinaire);
 
 
         /////////////////////
