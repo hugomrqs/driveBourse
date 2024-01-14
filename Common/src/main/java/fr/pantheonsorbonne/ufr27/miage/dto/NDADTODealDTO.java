@@ -3,8 +3,8 @@ package fr.pantheonsorbonne.ufr27.miage.dto;
 public class NDADTODealDTO extends NDADTO<BusinessModelDTO> {
     private boolean signatureEntreprise;
 
-    public NDADTODealDTO(BusinessModelDTO businessModelDTO, boolean signatureTasvee, boolean signatureEntreprise) {
-        super(businessModelDTO, signatureTasvee);
+    public NDADTODealDTO(int numeroContrat, BusinessModelDTO businessModelDTO, int siretTasvee,boolean signatureTasvee, boolean signatureEntreprise) {
+        super(numeroContrat, businessModelDTO, siretTasvee, signatureTasvee);
         this.signatureEntreprise = signatureEntreprise;
     }
     public boolean isSignatureEntreprise() {

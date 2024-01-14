@@ -1,8 +1,10 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
+import fr.pantheonsorbonne.ufr27.miage.dto.NDADTOProductionDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.OnePagerInteret;
 import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueOnePagerPourBP;
+import fr.pantheonsorbonne.ufr27.miage.service.ContratJuridiqueOnePagerPourBPService;
 import fr.pantheonsorbonne.ufr27.miage.service.OnePagerInteretService;
 import fr.pantheonsorbonne.ufr27.miage.service.PropositionService;
 import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptableDTO;
@@ -37,6 +39,8 @@ public class CamelRoutes extends RouteBuilder {
     PropositionService propositionService;
     @Inject
     FundsInterestedGateway fundsInterestedGateway;
+    @Inject
+    ContratJuridiqueOnePagerPourBPService contratJuridiqueOnePagerPourBPService;
 
 
     @Inject
@@ -48,15 +52,8 @@ public class CamelRoutes extends RouteBuilder {
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.user")
     String smtpUser;
 
-    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.imap.host")
-    String imapHost;
-
-    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.imap.port")
-    String imapPort;
-
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.password")
     String smtpPassword;
-
 
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.host")
     String smtpHost;
@@ -72,31 +69,46 @@ public class CamelRoutes extends RouteBuilder {
                 .log("OnePager : Secteur = ${in.headers}")
                 .marshal().json()
                 .choice()
-                    .when(header("Secteur").in("T", "S", "I", "F", "E"))
-                        .toD("sjms2:topic:" + jmsPrefix + "${in.headers.Secteur}")
-                        .log("sjms2:topic:" + jmsPrefix + "${in.headers.Secteur}")
-                    .otherwise()
-                        .log("Domaine non pris en charge");
+                .when(header("Secteur").in("T", "S", "I", "F", "E"))
+                .toD("sjms2:topic:" + jmsPrefix + "${in.headers.Secteur}")
+                .log("sjms2:topic:" + jmsPrefix + "${in.headers.Secteur}")
+                .otherwise()
+                .log("Domaine non pris en charge");
 
-//        from("sjms2:topic:"+ jmsPrefix +"Tech") route que fond utilise
+//        from("sjms2:topic:"+ jmsPrefix +"T") route que fond utilise
 //                .log("OnePager: ${in.headers} ${in.body}");
 
         from("sjms2:" + jmsPrefix + "queue:interestedIn")
                 .filter(header("IsInterested").isEqualTo(true))
-                .unmarshal().json(OnePagerInteret.class)
+                .unmarshal()
+                .json(OnePagerInteret.class)
+                .log("${in.headers.idOnePager}")
                 .aggregate(header("idOnePager"), new InteretAgregationStrategy())
                 .completionSize(2)
                 .completionTimeout(10000)
+                .log("voici la liste des fonds intéressés par l'offre : ${in.body}")
                 .to("direct:processInteretOnePager");
 
-//  @TODO      from("direct:processInteretOnePager")
-//                // Créer le contrat en base de données
-//                .bean(contratJuridiqueService, "createContratJuridiqueOnePagerPourBPDatabase")
-//                // Créer le DTO
-//               contratJuridiqueService, "createContratJuridiqueOnePagerPourBPDTO")
-//                // Envelopper le DTO dans un message Camel et préparer pour l'envoi
-//                .bean(ContratJuridiqueGateway, "sendContratJuridiqueOnePagerPourBP()");
-//                "contratJuridiqueService,"createContratJuridiqueOnePagerPourBPDTO\""
+        from("direct:processInteretOnePager")
+                .split(body())
+                .log("pour l'interet : ${in.body}")
+                .bean(contratJuridiqueOnePagerPourBPService, "CreateContratJuridiqueOnePagerPourBP(${in.body})")
+                .log("le contrat numero : ${in.body} a bien été crée")
+                .bean(contratJuridiqueOnePagerPourBPService, "SendContratJuridiqueOnePagerPourBP(${in.body})")
+                .log("le contrat numero : ${in.body} a bien été envoyé")
+                .end();
+
+        from("sjms2:" + jmsPrefix + "queue:ContratJuridiqueOnePagerPourBP")//ici file/pdf
+                .unmarshal().json(NDADTOProductionDTO.class)
+                .bean(contratJuridiqueOnePagerPourBPService, "UpdateContratJuridiqueOnePagerPourBPSigne(${in.body})")
+                .marshal().json()
+                .log("le contrat : ${in.body} signé a bien été reçu et enregistré");
+
+        from("direct:smtp")
+                .marshal().json()
+                .log(",,,,,,,,,,,,,,,,,,,,,ddznkbhdjjjjjjjjjjjj")
+                .log("${in.body}")
+                .to("sjms2:" + jmsPrefix + "queue:test");//@TODO broker smtp
 
 
         from("sjms2:topic:" + jmsPrefix + "proposalForTasvee")
@@ -165,14 +177,13 @@ public class CamelRoutes extends RouteBuilder {
                         StatutDTO notice = exchange.getMessage().getBody(StatutDTO.class);
                         exchange.getMessage().setBody("Bonjour," +
                                 "\n\n Nous osuhaitons  :  " + notice.nombrePart() + " de parts" +
-                                "\n\n Le prix des parts actuel est de  " +  notice.prixPartActuel() +
+                                "\n\n Le prix des parts actuel est de  " + notice.prixPartActuel() +
                                 " \n\n La stratégie que nous voulons aborder est " + notice.strategieEntrepreneur() +
                                 "\n\n En vous remerciant par avance" +
                                 "\n\n Tasvee");
                     }
                 })
                 .to("sjms2:topic:" + jmsPrefix + "sender");
-
 
 
         /////////////////////
@@ -189,14 +200,13 @@ public class CamelRoutes extends RouteBuilder {
 
                         BilanComptableDTO notice = exchange.getMessage().getBody(BilanComptableDTO.class);
                         exchange.getMessage().setBody("Bonjour," +
-                                "\n\n :  " + notice.emplois() + notice.ressources()+
+                                "\n\n :  " + notice.emplois() + notice.ressources() +
 
                                 "\n\n Tasvee");
 
                     }
                 })
                 .to("sjms2:topic:" + jmsPrefix + "sender");
-
 
 
         /////////////////////
@@ -207,7 +217,7 @@ public class CamelRoutes extends RouteBuilder {
         from("sjms2:topic:" + jmsPrefix + "EF")
                 .autoStartup(isRouteEnabled)
                 .unmarshal().json(ExpertiseJuridiqueDTO.class)
-                .bean(prestaFinancierService,"registerFinancialExpertise")
+                .bean(prestaFinancierService, "registerFinancialExpertise")
                 .marshal().json()
                 .end();
 
@@ -217,12 +227,12 @@ public class CamelRoutes extends RouteBuilder {
         /// traite reply
         /////////////////////
 
-            from("sjms2:topic:" + jmsPrefix + "EJ")
-                    .autoStartup(isRouteEnabled)
-                    .unmarshal().json(ExpertiseJuridiqueDTO.class)
-                    .bean(prestaJuridiqueService,"registerLegalExpertise")
-                    .marshal().json()
-                    .end();
+        from("sjms2:topic:" + jmsPrefix + "EJ")
+                .autoStartup(isRouteEnabled)
+                .unmarshal().json(ExpertiseJuridiqueDTO.class)
+                .bean(prestaJuridiqueService, "registerLegalExpertise")
+                .marshal().json()
+                .end();
 
 
         /////////////////////
@@ -235,15 +245,14 @@ public class CamelRoutes extends RouteBuilder {
                     @Override
                     public void process(Exchange exchange) throws Exception {
                         exchange.getMessage().setHeaders(new HashMap<>());
-                        exchange.getMessage().setHeader("from",smtpUser);
-                        exchange.getMessage().setHeader("to",smtpUser);
-                        exchange.getMessage().setHeader("cc",smtpUser);
-                        exchange.getMessage().setHeader("subject","JSON");
+                        exchange.getMessage().setHeader("from", smtpUser);
+                        exchange.getMessage().setHeader("to", smtpUser);
+                        exchange.getMessage().setHeader("cc", smtpUser);
+                        exchange.getMessage().setHeader("subject", "JSON");
                         exchange.getMessage().setHeader("contentType", "application/JSON");
                     }
                 })
-                .to("sjms2:topic:" + jmsPrefix + "sender" );
+                .to("sjms2:topic:" + jmsPrefix + "sender");
 
-
-    }
+    };
 }

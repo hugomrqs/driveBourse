@@ -28,7 +28,7 @@ VALUES (20,20, 98765);
 
 -- Inserting into StartUp (assuming IDBilanComptable, IDCVDirigeant, IDStatut are 1)
 INSERT INTO StartUp (IDBilanComptable, IDCVDirigeant, IDStatut, argentLevee, nombreDePersonne, numeroDeLevee, partCede, dateOfferForm, IBAN, SiretStartUP, lienSiteWeb, mail, secteur)
-VALUES (1, 1, 1, 200000, 15, 1, 30, NOW(), 'FR7630001007941234567890185', 1234567890, 'https://www.startupexample.com', 'contact@startupexample.com', 'Tech');
+VALUES (1, 1, 1, 200000, 15, 1, 30, NOW(), 'FR7630001007941234567890185', 1234567890, 'https://www.startupexample.com', 'contact@startupexample.com', 'T');
 
 -- Inserting into BusinessModel
 INSERT INTO BusinessModel (argentLeveeXpTasvee, partCedeeXpTasvee, SiretStartUP)

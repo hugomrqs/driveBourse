@@ -13,10 +13,7 @@ import fr.pantheonsorbonne.ufr27.miage.service.PropositionService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.camel.CamelContext;
-import jakarta.inject.Inject;
 import org.apache.camel.builder.RouteBuilder;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
-
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 @ApplicationScoped
@@ -42,25 +39,30 @@ public class CamelRoutes extends RouteBuilder {
 
     @Inject
     PaymentService paymentService;
-
     @Inject
     CamelContext camelContext;
-
     @Inject
     ResponseOnePagerGateway responseOnePagerGateway;
+    @Inject
+    TraitementOnePagerService traitementOnePagerService;
     @Inject
     Helper helper;
     @Override
     public void configure() throws Exception {
+
         //ecouter les topics contenus dans le Helper de paramétrage
         for (String topic : helper.topicsToListen) {
             from("sjms2:topic:" + jmsPrefix + topic)
                     .log("${in.body}")
                     .unmarshal().json(OnePager.class)
-                    .bean(responseOnePagerGateway, "SendResponse(${body},${in.headers.ReplyTo})");
+                    .bean(responseOnePagerGateway, "SendResponse(${in.body},${in.headers.ReplyTo})");
         }
+        from("direct:cool")
+                .log("${in.body}") //test
+                .marshal().json()
+                .to("sjms2:" + jmsPrefix + "queue:interestedIn");
 
-        from("sjms2:topic:" + jmsPrefix + "businessPlanForFond")
+        from("sjms2:topic:" + jmsPrefix + "businessPlanForFond" + helper.siret)
                 .autoStartup(isRouteEnabled)
                 .log("BusinessPlan de Tasvee  reçu")
                 .unmarshal().json(BusinessPlanDTO.class)

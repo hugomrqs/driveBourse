@@ -7,7 +7,7 @@ public class Helper {
     public final int siret;
     public final String[] topicsToListen;
     public Helper() {
-        this.siret = 1234567121;
+        this.siret = 234567890;
 //  les topics exitants sont : {"T", "S", "I", "F", "E"}
         this.topicsToListen=new String[]{"T", "E"};
 

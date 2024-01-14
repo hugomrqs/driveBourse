@@ -12,4 +12,5 @@ public interface OnePagerDAO {
                         ExpertiseJuridique expertiseJuridique,
                         ExpertiseFinanciere expertiseFinanciere);
     OnePager selectOnePagerByIdStartUp(int siretStartUp) throws OnePagerNotFoundException;
+    OnePager selectOnePagerById(int idOnePager);
 }
