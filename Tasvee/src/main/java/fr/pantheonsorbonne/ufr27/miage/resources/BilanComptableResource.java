@@ -13,7 +13,7 @@ public class BilanComptableResource {
     BilanComptableService bilanComptableService;
 
 
-    @Path("{idBilanComptable}")
+    @Path("/{idBilanComptable}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public BilanComptable getBilanComptable(@PathParam("idBilanComptable") int idBilanComptable) {

@@ -6,6 +6,7 @@ import fr.pantheonsorbonne.ufr27.miage.model.PrestataireJuridique;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class ExpertiseJuridiqueDAOImpl implements ExpertiseJuridiqueDAO {
@@ -14,6 +15,7 @@ public class ExpertiseJuridiqueDAOImpl implements ExpertiseJuridiqueDAO {
     EntityManager em;
 
     @Override
+    @Transactional
     public void registerExpertiseJuridique(ExpertiseJuridique expertiseJuridique){
         ExpertiseJuridiqueEntity expertiseJuridiqueEntity = new ExpertiseJuridiqueEntity() ;
         expertiseJuridiqueEntity.setPrestataireJuridique(em.find(PrestataireJuridique.class, expertiseJuridique.siretPrestataireJuridique()));

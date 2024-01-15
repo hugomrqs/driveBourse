@@ -6,6 +6,7 @@ import fr.pantheonsorbonne.ufr27.miage.model.PrestataireFinancier;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class ExpertiseFinanciereDAOImpl implements ExpertiseFinanciereDAO{
@@ -13,6 +14,7 @@ public class ExpertiseFinanciereDAOImpl implements ExpertiseFinanciereDAO{
     EntityManager em;
 
     @Override
+    @Transactional
     public void registerExpertiseFinanciere(ExpertiseFinanciere expertiseFinanciere) {
         ExpertiseFinanciereEntity expertiseFinanciereEntity = new ExpertiseFinanciereEntity() ;
         expertiseFinanciereEntity.setPrestataireFinancier(em.find(PrestataireFinancier.class, expertiseFinanciere.siretPrestataireFinancier()));

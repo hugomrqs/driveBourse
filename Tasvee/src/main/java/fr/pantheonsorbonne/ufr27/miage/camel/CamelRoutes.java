@@ -44,6 +44,11 @@ public class CamelRoutes extends RouteBuilder {
     String smtpPort;
 
     @Inject
+    PrestaFinancierService pf;
+    @Inject
+    PrestaJuridiqueService pj;
+
+    @Inject
     BusinessModelService bm;
 
     @Override
@@ -56,14 +61,14 @@ public class CamelRoutes extends RouteBuilder {
         String destinaire = "smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword;
         //recois du smtp gateway
 
-//        from("direct:smtp-bm")
-//                .autoStartup(isRouteEnabled)
-//                .marshal().json()
-//                .log("SMTP entrée///////////////////////")
-//                .log("${body}")
-//                .choice()
-//                .when(header("subject").in("BM", "CJ", "EF", "EJ", "CJOPBM"))
-//                .toD("sjms2:topic:" + jmsPrefix + "-Tasvee-${in.headers.subject}");
+        from("direct:smtp")
+                .autoStartup(isRouteEnabled)
+                .marshal().json()
+                .log("SMTP entrée///////////////////////")
+                .log("${body}")
+                .choice()
+                .when(header("subject").in("BM", "CJ", "EF", "EJ", "CJOPBM"))
+                .toD("sjms2:topic:" + jmsPrefix + "-Tasvee-${in.headers.subject}");
 
         from("sjms2:topic:" + jmsPrefix + "sender")
                 .throttle(1).timePeriodMillis(5000) // 1 message toutes les 10 secondes
@@ -74,10 +79,9 @@ public class CamelRoutes extends RouteBuilder {
         //// Business Model PDF de préférence sinon message
         /////////////////////
 //OP
-        from("direct:smtp-bm")
+        from("sjms2:topic:" + jmsPrefix + "-Tasvee-BM")
                 .autoStartup(isRouteEnabled)
-                .marshal().json()
-                .log("///////////////////////")
+                .log("////////////BM///////////")
                 .log("${body}")
                 .process(new Processor() {
                     @Override
@@ -100,16 +104,15 @@ public class CamelRoutes extends RouteBuilder {
 //                                "<br> L'équipe Tasvee");
                     }
                 })
-                .to("sjms2:topic:"+jmsPrefix+"-StartUp-BM");
+                .to("sjms2:topic:"+jmsPrefix+"sender");
 
 
-        from("direct:smtp-cj")
+        from("sjms2:topic:" + jmsPrefix + "-Tasvee-CJ")
                 .autoStartup(isRouteEnabled)
-                .log("///////////////////////")
-                .marshal().json()
+                .log("//////////CJ/////////////")
                 .log("${body}")
                 //.to("sjms2:topic:"+jmsPrefix+"-StartUp-CJ");
-        //        .unmarshal().json(BusinessModel.class)
+                //        .unmarshal().json(BusinessModel.class)
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
@@ -136,11 +139,7 @@ public class CamelRoutes extends RouteBuilder {
 
         /////////////////////////////////////
 
-        from("file:data/CJSigné")
-                .log("cjbm recu ${body}")
-                .unmarshal().json(ContratJuridiqueBM.class)
-                .bean(bm,"contratJuridiqueBMSigned")
-                .marshal().json();
+
         //////////////////////////////////////////
 
         /////////////////////
@@ -163,8 +162,14 @@ public class CamelRoutes extends RouteBuilder {
 //                    }
 //                })
 //                .to("sjms2:topic:"+jmsPrefix+"-StartUp-CJ");
-                //.to("sjms2:topic:" + jmsPrefix + "sender");
+        //.to("sjms2:topic:" + jmsPrefix + "sender");
 
+        /////TRAITE CJBM SIGNE
+        from("file:data/CJSigné")
+                .log("cjbm recu ${body}")
+                .unmarshal().json(ContratJuridiqueBM.class)
+                .bean(bm,"contratJuridiqueBMSigned")
+                .marshal().json();
 
         /////////////////////
         //// Tasvee --> Presta Juridique message
@@ -173,46 +178,63 @@ public class CamelRoutes extends RouteBuilder {
 
         from("sjms2:topic:" + jmsPrefix + "-Tasvee-EJ")
                 .autoStartup(isRouteEnabled)
-                .unmarshal().json(Statut.class)
+                .unmarshal().json(String.class)
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
 
-                        Statut notice = exchange.getMessage().getBody(Statut.class);
-                        exchange.getMessage().setBody("Bonjour," +
-                                "\n\n Nous osuhaitons  :  " + notice.nombrePart() + " de parts" +
-                                "\n\n Le prix des parts actuel est de  " +  notice.prixPartActuel() +
-                                " \n\n La stratégie que nous voulons aborder est " + notice.strategieEntrepreneur() +
-                                "\n\n En vous remerciant par avance" +
-                                "\n\n Tasvee");
+                        //Statut notice = exchange.getMessage().getBody(Statut.class);
+                        exchange.getMessage().setHeaders(new HashMap<>());
+                        exchange.getMessage().setHeader("from",smtpUser);
+                        exchange.getMessage().setHeader("to",smtpUser);
+                        exchange.getMessage().setHeader("contentType", "text/html");
+                        exchange.getMessage().setHeader("subject", "Send EJ");
                     }
                 })
                 .to("sjms2:topic:" + jmsPrefix + "sender");
 
 
+        from("file:data/EJ")
+                .log("EJ recu ${body}")
+                .unmarshal().json(ExpertiseJuridique.class)
+                .bean(pj,"registerLegalExpertise")
+                .marshal().json();
 
         /////////////////////
         //// Tasvee --> Presta Financier message
         //// Ask
         /////////////////////
 
-//        from("sjms2:topic:" + jmsPrefix + "-Tasvee-EF")
-//                .autoStartup(isRouteEnabled)
-//                .unmarshal().json(BilanComptable.class)
-//                .process(new Processor() {
-//                    @Override
-//                    public void process(Exchange exchange) throws Exception {
-//
+        from("sjms2:topic:" + jmsPrefix + "-Tasvee-EF")
+                .autoStartup(isRouteEnabled)
+                .log("/////////////////////////////")
+                .log("${body}")
+                .log("/////////////////////////////")
+                .unmarshal().json(String.class)
+                .process(new Processor() {
+                    @Override
+                    public void process(Exchange exchange) throws Exception {
+
+                        exchange.getMessage().setHeaders(new HashMap<>());
+                        exchange.getMessage().setHeader("from",smtpUser);
+                        exchange.getMessage().setHeader("to",smtpUser);
+                        exchange.getMessage().setHeader("contentType", "text/html");
+                        exchange.getMessage().setHeader("subject", "Send EF");
 //                        BilanComptable notice = exchange.getMessage().getBody(BilanComptable.class);
 //                        exchange.getMessage().setBody("Bonjour," +
 //                                "\n\n :  " + notice.emplois() + notice.ressources()+
 //
 //                                "\n\n Tasvee");
-//
-//                    }
-//                })
-//                .to("sjms2:topic:" + jmsPrefix + "sender");
-//
+
+                    }
+                })
+                .to("sjms2:topic:" + jmsPrefix + "sender");
+
+        from("file:data/EF")
+                .log("EF recu ${body}")
+                .unmarshal().json(ExpertiseFinanciere.class)
+                .bean(pf,"registerFinancialExpertise")
+                .marshal().json();
 
 
         /////////////////////
@@ -259,6 +281,9 @@ public class CamelRoutes extends RouteBuilder {
 //                    }
 //                })
 //                .to("sjms2:topic:" + jmsPrefix + "sender" );
+
+
+
 //
 
     }

@@ -28,7 +28,8 @@ public class SmtpGateway {
     /////////////////////
     public void sendBusinessModelToStartUp(BusinessModel bm) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBody(  "direct:smtp-bm" , bm);
+            producerTemplate.sendBodyAndHeaders(  "direct:smtp" , bm,       Map.of("subject","CJ",
+                    "ID",bm.idBusinessModel()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -36,7 +37,9 @@ public class SmtpGateway {
 
     public void sendContratJuridiqueBMtoStartUp(ContratJuridiqueBM contratJuridiqueBM) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBody("direct:smtp-cj",contratJuridiqueBM);
+            producerTemplate.sendBodyAndHeaders("direct:smtp",contratJuridiqueBM,
+                    Map.of("subject","CJ",
+                    "ID",contratJuridiqueBM.contratJuridiqueBM()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -47,15 +50,14 @@ public class SmtpGateway {
     /////////////////////
 
     public void askExpertFin(Integer idBilanComptable) {
-//        try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-//            producerTemplate.sendBodyAndHeaders("direct:smtp", idBilanComptable,
-//                    Map.of("subject","EF",
-//                            "ID",idBilanComptable,
-//                            "Endpoint url", "http://localhost:8080/bilan-comptable/"+idBilanComptable));
-//
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
+            producerTemplate.sendBodyAndHeaders("direct:smtp", "http://localhost:8080/bilan-comptable/"+idBilanComptable,
+                    Map.of("subject","EF",
+                            "ID",idBilanComptable));
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /////////////////////
@@ -63,14 +65,13 @@ public class SmtpGateway {
     /////////////////////
 
     public void askExpertJur(Integer idStatut) {
-//        try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-//            producerTemplate.sendBodyAndHeaders("direct:smtp", idStatut,
-//                    Map.of("subject","EJ",
-//                    "ID",idStatut,
-//                    "Endpoint url", "http://localhost:8080/statut/"+idStatut));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
+            producerTemplate.sendBodyAndHeaders("direct:smtp", "http://localhost:8080/bilan-comptable/"+idStatut,
+                    Map.of("subject","EJ",
+                    "ID",idStatut));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }
