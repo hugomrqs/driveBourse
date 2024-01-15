@@ -1,45 +1,23 @@
 ## Objectifs du système à modéliser
 
-On propose de modéliser un système de réservation (master) de tickets pouvant supporter plusieurs vendeurs (vendor). Le système master gère les salles, les concerts, les différents artistes se produisant dans les concerts et la réservation des tickets alors que les vendeurs assurent la vente de billets. Chaque vendeur a un quota pour un concert donné, qui peut évoluer avec le temps.
-En cas d'annulation de concert, le système de réservation informe les vendors qui doivent contacter les clients (customers). Le master propose des services de validation de l'authenticité des tickets à l'entrée des concerts.
+On propose de modéliser un **système d'intermédiaire financier** (Tasvee) pour effectuer des **levées de fonds d'entrepreneurs** (StartUp) à travers plusieurs fonds d'investissement (Fonds). Le système d'intermédiaire financier gère **la documentation et la négociation** tout au long du processus et en fonction des différents parties prenantes.
 
-Lors de la réservation de ticket, on a 2 phases:
-- le booking (réservation des places)
-- le ticketing (émission de billets sécurisés avec clé.)
+- Sur le plan **administratif**, il coordonne et synthétise les activités d'audit des conseillers juridiques (PrestataireJuridique), financiers (PrestataireFinancier) au sujet de l'entrepreneur (StartUp). Il coordonne également la sélection du Financeur(Fonds). Chaque acteur produit de la documention en fonction de la documentation d’autres(voir le schéma relationnel).
+- Sur un **plan business**, (Tasvee) se met d'accord avec l'entrepreneur (StartUp) sur les attentes puis négocie avec les fonds d'investissement (Fonds) pour lever un maximum de fonds et obtenir les meilleures clauses possibles pour l'entrepreneur (StartUp).
 
-Le vendor va demander au master via une API rest les concerts pour lesquels il possède un quota. Seuls ces concerts seront proposés à la vente au client.
-Le client spécifie ensuite le nombre de places assises et le nombre de places debout qu'il souhaite acheter. Le vendor interroge le master sur la disponibilité. Celui-ci va lui renvoyer des tickets transitionnels valables 10 minutes en cas de disponibilité de places.
-Le vendeur va ensuite renseigner les informations du client et les transmettre au master pour l'émission finale des tickets avec clé sécurisée qui sera transmise au client pour qu'il puisse entrer dans la salle.
-En cas d'annulation du concert, le master prévient les vendors (avec les informations des tickets à annuler et les emails des clients) le vendeur doit envoyer un email au client pour chaque ticket annulé.
+Lors de la levée de fonds d'un entrepreneur(StartUp), il y a **4 phases principales** avec des acteurs différents à chaque.
 
+- **Deal** ((StartUp) - (Tasvee)) : vérification d'un intérêt mutuel et cadrage du contrat souhaité [ContratJuridiqueBM].
+- **Production** ((Tasvee) - (PrestataireFinancier)  et (Tasvee) - (PrestataireJuridique)) : production de la documentation sur l'entreprise pour obtenir les fonds. Les documents [ExpertiseJuridique] et [ExpertiseFinancière] sont produits par le (PrestataireFinancier) et le (PrestataireJuridique).
+- **Négociation** ((Tasvee) - (Fonds)) : L'intermédiaire financier interagit avec les Fonds pour négocier et trouver l'offre la plus intéressante en fonction du contrat souhaité par l'entrepreneur(StartUp). C’est réalisé à travers un [OnePager] qui sert de flyer puis un [BusinessPlan] qui sert de détails du [OnePager].
+- **Commercialisation** ((StartUp) - (Tasvee) - (Fonds)) : Signature finale de la [PropositionFinale] entre les 3 acteurs, coordonnée par l'intermédiaire financier (TASVEE).
+
+La startup envoie ses informations, y compris l'objectif de fonds à lever et le nombre de parts que l'entrepreneur est prêt à céder, via un formulaire à Tasvee. Tasvee effectue une première analyse de ces informations et propose des termes pour accompagner l'entreprise via un contrat juridique.
+Suite à cette signature, Tasvee engage des prestataires financiers et juridiques pour conduire des recherches approfondies sur les aspects juridiques et financiers en fonction des informations de la startup.
+Ensuite, Tasvee présente un premier document synthétique pour voir si des investisseurs sont intéressés. Si c'est le cas, les investisseurs signent un contrat qui les oblige à passer par Tasvee pour investir dans cette startup. Tasvee envoie alors un document avec toutes les informations. Les fonds, en fonction de leur stratégie, et Tasvee, en fonction de son objectif, négocient via plusieurs propositions et contre-propositions jusqu'à ce qu'ils parviennent à un accord.
+Une fois l'accord conclu, ils signent un contrat juridique. Suite à cela, l'argent est versé à l'entrepreneur et à Tasvee en fonction de sa commission relative.
 ## Interfaces
 
-```
-artist->master: POST venue
-vendor->master: GET Gigs
-master->vendor: Collection<Gigs>
-
-Customer->vendor: cli:gig selection
-
-vendor->master: jms:booking
-alt booking successfull
-    master->vendor: transitional tickets
-    vendor->Customer: ticket purshase ok
-    Customer->vendor: cli:customer informations
-    
-    vendor->master: jms:ticketing
-    master->vendor: tickets
-
-else booking unsuccessfull
-    master->vendor: no quota for gigs
-end
-
-opt venue cancellation
-    artist->master: DELETE venue
-    master->vendor: jms:topic:cancellation
-    vendor->Customer: smtp:cancellation email
-end
-```
 ![](seqDiagram.png)
 
 ## Schéma relationnel
@@ -48,14 +26,21 @@ end
 
 ## Exigences fonctionnelles
 
-* le vendor NE DOIT proposer que les concerts pour lesquels il a un quota disponible, transmis par le master.
-* le vendor DOIT pouvoir effectuer les opérations de booking et ticketing
-* le master DOIT permettre à l'artiste d'annuler son concert.
-* le master DOIT informer le vendor en cas d'annulation de concert
-* le vendor DOIT informer les clients de l'annulation du concert par mail
-* le master DOIT proposer un service de validation de la clé du ticket, pour les contrôles aux entées.
+* L'intermédiaire (Tasvee) DOIT recevoir la demande de l'entrepreneur (StartUp). 
+* L'intermédiaire (Tasvee) DOIT se mettre d'accord avec l'entrepreneur (StartUp) sur ses attentes. 
+* Chaque investisseur (Fonds) DOIT avoir une stratégie de sélection et formuler des offres en fonction de son intérêt. 
+* L’intermédiaire (Tasvee) DOIT demander la production de documentation sur l'entrepreneur (StartUp) par les conseillers financiers et juridiques pour obtenir les fonds. 
+* L’intermédiaire (Tasvee) DOIT récupérer la production de documentation sur l'entrepreneur (StarUp) par les conseillers financiers et juridiques (Prestataires). 
+* L'intermédiaire (Tasvee) DOIT diffuser les documents généraux pour les investisseurs(Fonds). 
+* L'investisseur (Fonds) intéressé DOIT contacter l'intermédiaire (Tasvee). 
+* L'intermédiaire (Tasvee) DOIT diffuser les documents spécifiques pour les investisseurs(Fonds). 
+* L’intermédiaire (Tasvee) DOIT négocier avec les investisseurs (Fonds) pour lever un maximum de fonds et obtenir les meilleures clauses possibles pour l'entrepreneur (StartUp). 
+* L’intermédiaire (Tasvee) DOIT enregistrer les informations finales (montant, transaction, parts, interet, etc.). 
+* Le Fonds (Fonds) DOIT verser l'argent à l'intermédiaire (TASVEE) et à l'entrepreneur (StartUp).
+
 
 ## Exigences non fonctionnelles
 
-* le booking et le ticketing, bien qu'étant des opérations synchrones, DOIVENT être fiables et donc utiliser le messaging
-* Lors de l'annulation de tickets, le master DOIT informer tous les vendors de l'annulation, de façon fiable.
+* Les communications et échanges de données DOIVENT être fiables et utiliser le messaging.
+* Aucune donnée ne DOIT passer par un destinataire non souhaité ou externe.
+* La négociation menée par l’intermédiaire (Tasvee) avec les fonds d'investissement DOIT être rapide et efficace pour obtenir l'offre la plus intéressante pour l'entreprise.

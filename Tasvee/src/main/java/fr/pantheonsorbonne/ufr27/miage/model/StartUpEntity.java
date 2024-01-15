@@ -57,13 +57,6 @@ public class StartUpEntity {
     @JoinColumn(name = "IDOnePager", referencedColumnName = "IDOnePager")
     private OnePagerEntity idOnePagerEntity;
 
-    @OneToOne
-    @JoinColumn(name = "expertiseFinanciere", referencedColumnName = "expertiseFinanciere")
-    private ExpertiseFinanciereEntity expertiseFinanciere;
-
-    @OneToOne
-    @JoinColumn(name = "expertiseJuridique", referencedColumnName = "expertiseJuridique")
-    private ExpertiseJuridiqueEntity expertiseJuridique;
 
     public StartUpEntity() {
     }
@@ -223,19 +216,4 @@ public class StartUpEntity {
         this.idOnePagerEntity = idOnePagerEntity;
     }
 
-    public ExpertiseFinanciereEntity getExpertiseFinanciere() {
-        return expertiseFinanciere;
-    }
-
-    public void setExpertiseFinanciere(ExpertiseFinanciereEntity expertiseFinanciere) {
-        this.expertiseFinanciere = expertiseFinanciere;
-    }
-
-    public ExpertiseJuridiqueEntity getExpertiseJuridique() {
-        return expertiseJuridique;
-    }
-
-    public void setExpertiseJuridique(ExpertiseJuridiqueEntity expertiseJuridique) {
-        this.expertiseJuridique = expertiseJuridique;
-    }
 }

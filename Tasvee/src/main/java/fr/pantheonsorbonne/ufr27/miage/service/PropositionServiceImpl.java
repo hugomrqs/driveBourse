@@ -5,6 +5,7 @@ import fr.pantheonsorbonne.ufr27.miage.dao.ContratDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.PropositionDAO;
 import fr.pantheonsorbonne.ufr27.miage.dto.NDADTOCommercialisationDTO;
 import fr.pantheonsorbonne.ufr27.miage.dto.PropositionDTO;
+import fr.pantheonsorbonne.ufr27.miage.exception.StartUpNotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -76,7 +77,7 @@ public class PropositionServiceImpl implements PropositionService{
                 pg.sendContratTripartite(nda);
             }
 
-        }catch (Exception e){
+        }catch (Exception | StartUpNotFoundException e){
             System.out.println(e);
         }
     };

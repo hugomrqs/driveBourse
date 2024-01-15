@@ -20,7 +20,7 @@ public class ContratTripartiteFinalEntity {
     private Boolean startUp;
 
     @ManyToOne
-    @JoinColumn(name = "IdPropositionFinale", referencedColumnName = "IdPropositionFinale")
+    @JoinColumn(name = "PropositionFinaleId", referencedColumnName = "IdPropositionFinale")
     private PropositionEntity propositionEntity;
 
     // Constructeur

@@ -3,6 +3,7 @@ package fr.pantheonsorbonne.ufr27.miage.dao;
 import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciereDTO;
 import fr.pantheonsorbonne.ufr27.miage.exception.StartUpNotFoundException;
 import fr.pantheonsorbonne.ufr27.miage.model.ExpertiseFinanciereEntity;
+import fr.pantheonsorbonne.ufr27.miage.model.ExpertiseJuridiqueEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.PrestataireFinancierEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.StartUpEntity;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -19,7 +20,14 @@ public class ExpertiseFinanciereDAOImpl implements ExpertiseFinanciereDAO {
 
     @Override
     public ExpertiseFinanciereEntity selectExpertiseFinanicereFromSiret(int siretStartup) throws StartUpNotFoundException {
-        return em.find(StartUpEntity.class,siretStartup).getExpertiseFinanciere();
+        StartUpEntity startUpEntity = em.find(StartUpEntity.class,siretStartup);
+        ExpertiseFinanciereEntity expertiseJuridiqueEntity = (ExpertiseFinanciereEntity)
+                em.createQuery(
+                        "SELECT c FROM ExpertiseFinanciereEntity c " +
+                                "WHERE c.siretStartUp = :startUpEntity")
+                        .setParameter("startUpEntity", startUpEntity)
+                        .getSingleResult();
+        return expertiseJuridiqueEntity;
     }
 
     @Override

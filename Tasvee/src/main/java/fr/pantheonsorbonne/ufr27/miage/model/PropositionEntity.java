@@ -7,14 +7,16 @@ public class PropositionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IDProposition", nullable = false)
+    @Column(name = "IdPropositionFinale", nullable = false)
     private Integer IDProposition;
 
-    @JoinColumn(name = "siretFond", nullable = false)
-    private Integer siretFond;
+    @ManyToOne
+    @JoinColumn(name = "SiretFonds", nullable = false)
+    private FondEntity siretFond;
 
-    @JoinColumn(name = "siretStartUp", nullable = false)
-    private Integer siretStartUp;
+    @ManyToOne
+    @JoinColumn(name = "SiretStartUp", nullable = false)
+    private StartUpEntity siretStartUp;
 
     @Column (name = "leveeDeFonds", nullable = false)
     private Integer leveeDeFonds;
@@ -26,7 +28,7 @@ public class PropositionEntity {
     private boolean etatProposition;
 
     // Constructeur
-    public PropositionEntity(Integer siretFond, Integer siretStartUp, Integer leveeDeFonds, Integer pourcentagePart, boolean etatProposition) {
+    public PropositionEntity(FondEntity siretFond, StartUpEntity siretStartUp, Integer leveeDeFonds, Integer pourcentagePart, boolean etatProposition) {
         this.siretFond = siretFond;
         this.siretStartUp = siretStartUp;
         this.leveeDeFonds = leveeDeFonds;
@@ -46,17 +48,17 @@ public class PropositionEntity {
         this.IDProposition = IDProposition;
     }
 
-    public Integer getSiretFond() {
+    public FondEntity getSiretFond() {
         return siretFond;
     }
 
-    public void setSiretFonds(Integer SiretFond) {
+    public void setSiretFonds(FondEntity SiretFond) {
         this.siretFond = SiretFond;
     }
 
-    public Integer getSiretStartUp() {return siretStartUp;}
+    public StartUpEntity getSiretStartUp() {return siretStartUp;}
 
-    public void setSiretStartUp(Integer siretStartUp) {this.siretStartUp = siretStartUp;}
+    public void setSiretStartUp(StartUpEntity siretStartUp) {this.siretStartUp = siretStartUp;}
 
     public Integer getLeveeDeFonds() {
         return leveeDeFonds;

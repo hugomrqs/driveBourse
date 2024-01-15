@@ -16,7 +16,14 @@ public class ExpertiseJuridiqueDAOImpl implements ExpertiseJuridiqueDAO {
     EntityManager em;
     @Override
     public ExpertiseJuridiqueEntity selectExpertiseJuridiqueFromSiret(int siretStartup) throws StartUpNotFoundException {
-        return em.find(StartUpEntity.class,siretStartup).getExpertiseJuridique();
+        StartUpEntity startUpEntity = em.find(StartUpEntity.class,siretStartup);
+        ExpertiseJuridiqueEntity expertiseJuridiqueEntity = (ExpertiseJuridiqueEntity)
+                em.createQuery(
+                        "SELECT c FROM ExpertiseJuridiqueEntity c " +
+                                "WHERE c.siretStartUp = :startUpEntity")
+                        .setParameter("startUpEntity", startUpEntity)
+                        .getSingleResult();
+        return expertiseJuridiqueEntity;
     }
     @Override
     public ExpertiseJuridiqueEntity findById(Integer id) {

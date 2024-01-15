@@ -20,8 +20,8 @@ public class ExpertiseJuridiqueEntity {
     @JoinColumn(name = "SiretPrestataireJuridique", referencedColumnName = "SiretPrestataireJuridique")
     private PrestataireJuridiqueEntity prestataireJuridiqueEntity;
 
-    @OneToOne
-    @JoinColumn(name = "siretStartUp", referencedColumnName = "siretStartUp")
+    @ManyToOne
+    @JoinColumn(name = "SiretStartUp", referencedColumnName = "SiretStartUp")
     private StartUpEntity siretStartUp;
 
 
