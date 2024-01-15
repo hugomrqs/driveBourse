@@ -18,7 +18,7 @@ public class OfferFormServiceImpl implements OfferFormService {
         // Logique métier pour déterminer si l'offre est acceptée ou non
         // Exemple de logique : Si le montant de la levée est supérieur à un certain seuil, elle est acceptée
         System.out.println("vérification de l'offerForm en cours.");
-        return offerForm.objectLevee() >= 0;
+        return offerForm.objectLevee() >= 100000;
     }
 
     @Override
