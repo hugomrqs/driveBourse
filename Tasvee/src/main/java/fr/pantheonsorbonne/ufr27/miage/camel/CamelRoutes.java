@@ -1,20 +1,13 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.*;
-import fr.pantheonsorbonne.ufr27.miage.service.BusinessModelService;
-import fr.pantheonsorbonne.ufr27.miage.dto.*;
-import fr.pantheonsorbonne.ufr27.miage.service.ContratJuridiqueOnePagerPourBPService;
-import fr.pantheonsorbonne.ufr27.miage.service.OnePagerInteretService;
-import fr.pantheonsorbonne.ufr27.miage.service.PropositionService;
-import fr.pantheonsorbonne.ufr27.miage.service.PrestaFinancierService;
-import fr.pantheonsorbonne.ufr27.miage.service.PrestaJuridiqueService;
+import fr.pantheonsorbonne.ufr27.miage.service.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
-
 
 import java.util.HashMap;
 
@@ -45,12 +38,6 @@ public class CamelRoutes extends RouteBuilder {
 
     @Inject
     ContratJuridiqueOnePagerPourBPService contratJuridiqueOnePagerPourBPService;
-
-    @Inject
-    PrestaJuridiqueService prestaJuridiqueService ;
-
-    @Inject
-    PrestaFinancierService prestaFinancierService ;
 
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.user")
     String smtpUser;
@@ -155,7 +142,7 @@ public class CamelRoutes extends RouteBuilder {
                     @Override
                     public void process(Exchange exchange) throws Exception {
 
-                        BusinessModel notice = exchange.getMessage().getBody(BusinessModel.class);
+                        BusinessModelDTO notice = exchange.getMessage().getBody(BusinessModelDTO.class);
                         exchange.getMessage().setHeaders(new HashMap<>());
                         exchange.getMessage().setHeader("from",smtpUser);
                         exchange.getMessage().setHeader("to",smtpUser);
@@ -205,7 +192,7 @@ public class CamelRoutes extends RouteBuilder {
         /////TRAITE CJBM SIGNE
         from("file:data/CJSigné")
                 .log("cjbm recu ${body}")
-                .unmarshal().json(ContratJuridiqueBM.class)
+                .unmarshal().json(ContratJuridiqueBMDTO.class)
                 .bean(bm,"contratJuridiqueBMSigned")
                 .marshal().json();
 
@@ -234,7 +221,7 @@ public class CamelRoutes extends RouteBuilder {
 
         from("file:data/EJ")
                 .log("EJ recu ${body}")
-                .unmarshal().json(ExpertiseJuridique.class)
+                .unmarshal().json(ExpertiseJuridiqueDTO.class)
                 .bean(pj,"registerLegalExpertise")
                 .marshal().json();
 
@@ -270,7 +257,7 @@ public class CamelRoutes extends RouteBuilder {
 
         from("file:data/EF")
                 .log("EF recu ${body}")
-                .unmarshal().json(ExpertiseFinanciere.class)
+                .unmarshal().json(ExpertiseFinanciereDTO.class)
                 .bean(pf,"registerFinancialExpertise")
                 .marshal().json();
 

@@ -1,6 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBM;
+import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBMDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModelEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueBMEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.StartUpEntity;
@@ -32,7 +32,7 @@ public class BusinessModelDAOImpl implements BusinessModelDAO{
 
     @Override
     @Transactional
-    public ContratJuridiqueBMEntity addSignature(ContratJuridiqueBM contratJuridiqueBM) {
+    public ContratJuridiqueBMEntity addSignature(ContratJuridiqueBMDTO contratJuridiqueBM) {
         ContratJuridiqueBMEntity existing = em.find(ContratJuridiqueBMEntity.class, contratJuridiqueBM.contratJuridiqueBM());
         existing.setStartUp(true);
         em.merge(existing);

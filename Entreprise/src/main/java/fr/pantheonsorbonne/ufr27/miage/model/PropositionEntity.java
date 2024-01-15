@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 
 @Entity
+@Table(name = "Proposition")
 public class PropositionEntity {
 
     @Id

@@ -1,8 +1,8 @@
 package fr.pantheonsorbonne.ufr27.miage.cli;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
-import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeant;
-import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
+import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptableDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeantDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.StatutDTO;
 import fr.pantheonsorbonne.ufr27.miage.service.OfferFormEntrepriseService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -36,7 +36,7 @@ public class OfferFormManager {
                     int venteDeMarchandise = readIntWithPrompt(" 3. Entrez la valeur pour venteDeMarchandise : ", scanner);
                     int coutDeMarchandise = readIntWithPrompt(" 4. Entrez la valeur pour coutDeMarchandise : ", scanner);
 
-                    BilanComptable bilanComptable = new BilanComptable(emplois, ressources, venteDeMarchandise, coutDeMarchandise);
+                    BilanComptableDTO bilanComptable = new BilanComptableDTO(emplois, ressources, venteDeMarchandise, coutDeMarchandise);
 
                     // DTO statut
                     System.out.println("Composition du Statut : ");
@@ -45,7 +45,7 @@ public class OfferFormManager {
                     int prixPartActuel = readIntWithPrompt(" 2. Entrez la valeur pour prixPartActuel : ", scanner);
                     int strategieEntrepreneur = readIntWithPrompt(" 3. Entrez la valeur pour strategieEntrepreneur : ", scanner);
 
-                    Statut statut = new Statut(nombrePart, prixPartActuel, strategieEntrepreneur);
+                    StatutDTO statut = new StatutDTO(nombrePart, prixPartActuel, strategieEntrepreneur);
 
                     // DTO cvDirigeant
                     System.out.println("Composition du CVDirigeant : ");
@@ -55,7 +55,7 @@ public class OfferFormManager {
                     String lienLinkedin = readStringWithPrompt(" 3. Entrez la valeur pour lienLinkedin : ", scanner);
                     boolean engagementRSE = readBooleanWithPrompt(" 4. Entrez la valeur pour engagementRSE : ", scanner);
 
-                    CvDirigeant cvDirigeant = new CvDirigeant(ecole, mainExperience, lienLinkedin, engagementRSE);
+                    CvDirigeantDTO cvDirigeant = new CvDirigeantDTO(ecole, mainExperience, lienLinkedin, engagementRSE);
 
                     // Attributs simples de l'offerForm
                     System.out.println("Composition des informations générales : ");

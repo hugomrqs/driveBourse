@@ -68,7 +68,7 @@ public class BusinessModelServiceImpl implements BusinessModelService{
     }
 
     @Override
-    public void contratJuridiqueBMSigned(ContratJuridiqueBM contratJuridiqueBM) {
+    public void contratJuridiqueBMSigned(ContratJuridiqueBMDTO contratJuridiqueBM) {
         ContratJuridiqueBMEntity contratJuridiqueBMEntity = businessModelDAO.addSignature(contratJuridiqueBM) ;
         System.out.println("Le contrat juridique " + contratJuridiqueBM.contratJuridiqueBM() + " du business model signé à été receptionné, sa signature à été enregistrée avec succès en DB.");
         prestaFinancierService.requestForFinanceExpertise(contratJuridiqueBMEntity.getSiretStartUp().getIdBilanComptable().getIdBilanComptable()) ;
