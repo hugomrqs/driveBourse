@@ -7,6 +7,6 @@ public record ContratJuridiqueBMDTO(
         Boolean startUp,
         Integer pourcentageComissionTasvee,
         Integer siretTasvee,
-        BusinessModelDTO BusinessModel) {
+        BusinessModelDTO businessModel) {
 }
 

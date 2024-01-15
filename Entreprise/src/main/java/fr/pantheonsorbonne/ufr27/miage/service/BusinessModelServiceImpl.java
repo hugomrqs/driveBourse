@@ -28,15 +28,15 @@ public class BusinessModelServiceImpl implements BusinessModelService {
 
     @Override
     public void registerBusinessModel(BusinessModelDTO businessModel) {
-        businessModelDAO.registerBusinessModel(businessModel) ;
+        businessModelDAO.registerBusinessModelInBDD(businessModel) ;        System.out.println("le business model " + businessModel.idBusinessModel() + " à été enregistré en DB avec succès");
         System.out.println("le business model " + businessModel.idBusinessModel() + " à été enregistré en DB avec succès");
     }
 
     @Override
     public void registerContratJuridiqueBM(ContratJuridiqueBMDTO contratJuridiqueBMDTO) {
-        CJBMEntity CJBMEntity = contratJuridiqueDAO.registerContratJuridiqueBM(contratJuridiqueBMDTO) ;
+        CJBMEntity cjbmEntity = contratJuridiqueDAO.registerContratJuridiqueBMInDB(contratJuridiqueBMDTO) ;
         System.out.println("Le contrat juridique " + contratJuridiqueBMDTO.contratJuridiqueBM() + " du business model à été reçu et enregistré en DB avec succès.") ;
-        signAndReply(CJBMEntity) ;
+        signAndReply(cjbmEntity) ;
     }
 
     private void signAndReply(CJBMEntity CJBMEntity) {
@@ -48,12 +48,13 @@ public class BusinessModelServiceImpl implements BusinessModelService {
             CJBMEntity updateEntity = contratJuridiqueDAO.sign(CJBMEntity);
             System.out.println("Le contrat juridique " + updateEntity.getContratJuridiqueBM() + " du business model à été signé, un champs à été modifier en DB avec succès.");
             smtp.sendSignedCJ(CJentityToDTO(updateEntity)) ;
-            System.out.println("Le contrat juridique " + updateEntity.getContratJuridiqueBM() + " du business model signé à été renvoyé à Tasvee avec succès.");
+            System.out.println("Le contrat juridique " + updateEntity.getContratJuridiqueBM() + " du business model [signé] à été renvoyé à Tasvee avec succès.");
+            System.out.println("Le contrat juridique signé doit maintenant être déposée dans le dossier Tasvee/data/CJSigné");
         }
     }
 
-    private ContratJuridiqueBMDTO CJentityToDTO(CJBMEntity CJBMEntity) {
-        ContratJuridiqueBMDTO contratJuridiqueBMDTO = new ContratJuridiqueBMDTO(CJBMEntity.getContratJuridiqueBM(), CJBMEntity.getTasvee(), CJBMEntity.getStartUp(), CJBMEntity.getPourcentageComissionTasvee(), CJBMEntity.getSiretTasvee(), BMentityToDTO(CJBMEntity.getIdBusinessModel()));
+    private ContratJuridiqueBMDTO CJentityToDTO(CJBMEntity cjbmEntity) {
+        ContratJuridiqueBMDTO contratJuridiqueBMDTO = new ContratJuridiqueBMDTO(cjbmEntity.getContratJuridiqueBM(), cjbmEntity.getTasvee(), cjbmEntity.getStartUp(), cjbmEntity.getPourcentageComissionTasvee(), cjbmEntity.getSiretTasvee(), BMentityToDTO(cjbmEntity.getIdBusinessModel()));
         return contratJuridiqueBMDTO;
     }
 

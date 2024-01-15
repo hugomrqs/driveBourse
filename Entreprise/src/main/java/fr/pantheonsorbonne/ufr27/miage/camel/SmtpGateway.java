@@ -8,7 +8,6 @@ import org.apache.camel.ProducerTemplate;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.io.IOException;
-import java.util.Map;
 
 @ApplicationScoped
 public class SmtpGateway {
@@ -24,11 +23,10 @@ public class SmtpGateway {
     /////////////////////
     ////Start UP
     /////////////////////
-    public void sendSignedCJ(ContratJuridiqueBMDTO contratJuridiqueBMDTO) {
+    public void sendSignedCJ(ContratJuridiqueBMDTO contratJuridiqueBM) {
+        System.out.println("Ca passe dans sendDignedCJ");
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBodyAndHeaders(  "direct:startup-smtp" , contratJuridiqueBMDTO,
-                    Map.of("subject","Contrat juridique BM signé",
-                            "CJBMID", contratJuridiqueBMDTO.contratJuridiqueBM()));
+            producerTemplate.sendBody(  "direct:startup-smtp" ,contratJuridiqueBM); ;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

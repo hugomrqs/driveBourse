@@ -2,7 +2,6 @@ package fr.pantheonsorbonne.ufr27.miage.camel;
 
 import fr.pantheonsorbonne.ufr27.miage.dto.*;
 import fr.pantheonsorbonne.ufr27.miage.helper.Helper;
-import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueOnePagerPourBPEntity;
 import fr.pantheonsorbonne.ufr27.miage.service.*;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -89,8 +88,7 @@ public class CamelRoutes extends RouteBuilder {
                         exchange.getMessage().setHeader("subject", "ContratJuridiqueOnePagerPourBP");
                     }
                 })
-                .to("smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword);//@TODO broker smtp
-
+                .to("sjms2:topic:" + jmsPrefix + "sender") ;
 
         from("sjms2:topic:" + jmsPrefix + "businessPlanForFond" + helper.siret)
                 .autoStartup(isRouteEnabled)

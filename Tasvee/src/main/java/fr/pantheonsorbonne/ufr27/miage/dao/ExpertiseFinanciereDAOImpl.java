@@ -10,6 +10,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 
 
 @ApplicationScoped
@@ -23,8 +24,8 @@ public class ExpertiseFinanciereDAOImpl implements ExpertiseFinanciereDAO {
         StartUpEntity startUpEntity = em.find(StartUpEntity.class,siretStartup);
         ExpertiseFinanciereEntity expertiseJuridiqueEntity = (ExpertiseFinanciereEntity)
                 em.createQuery(
-                        "SELECT c FROM ExpertiseFinanciereEntity c " +
-                                "WHERE c.siretStartUp = :startUpEntity")
+                                "SELECT c FROM ExpertiseFinanciereEntity c " +
+                                        "WHERE c.siretStartUp = :startUpEntity")
                         .setParameter("startUpEntity", startUpEntity)
                         .getSingleResult();
         return expertiseJuridiqueEntity;
@@ -36,6 +37,7 @@ public class ExpertiseFinanciereDAOImpl implements ExpertiseFinanciereDAO {
     }
 
     @Override
+    @Transactional
     public void registerExpertiseFinanciere(ExpertiseFinanciereDTO expertiseFinanciere) {
         ExpertiseFinanciereEntity expertiseFinanciereEntity = new ExpertiseFinanciereEntity() ;
         expertiseFinanciereEntity.setPrestataireFinancier(em.find(PrestataireFinancierEntity.class, expertiseFinanciere.siretPrestataireFinancier()));

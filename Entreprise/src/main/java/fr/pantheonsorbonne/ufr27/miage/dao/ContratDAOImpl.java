@@ -4,10 +4,12 @@ import fr.pantheonsorbonne.ufr27.miage.dto.NDADTOCommercialisationDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.ContratTripartiteFinalEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.PropositionEntity;
 import fr.pantheonsorbonne.ufr27.miage.helper.Helper;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 
 
+@ApplicationScoped
 public class ContratDAOImpl implements ContratDAO{
 
     @Inject

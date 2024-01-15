@@ -48,7 +48,8 @@ public class BusinessModelServiceImpl implements BusinessModelService{
 
     private void SendBusinessModel(BusinessModelDTO businessModel, Integer siretStartup) {
         smtp.sendBusinessModelToStartUp(businessModel);
-        System.out.println("Le business model de la startup " + siretStartup + " à été envoyé par mail avec succès") ;
+        System.out.println("Le business model de la startup " + siretStartup + " à été envoyé par mail avec succès.") ;
+        System.out.println("Le destinataire du mail doit maintenant déposer le BM contenu dans le mail --> dans le dossier Entreprise/data/BM");
     }
 
     private BusinessModelDTO convertBMEntityToDTO(BusinessModelEntity entity) {
@@ -58,6 +59,7 @@ public class BusinessModelServiceImpl implements BusinessModelService{
     private void SendContratJuridiqueBM(ContratJuridiqueBMDTO contratJuridiqueBMDTO, Integer siretStartup) {
         smtp.sendContratJuridiqueBMtoStartUp(contratJuridiqueBMDTO);
         System.out.println("Le contrat juridique pour le Business Model de la startup " + siretStartup + " à été envoyé par mail avec succès") ;
+        System.out.println("Le destinataire du mail doit maintenant déposer le CJ contenu dans le mail --> dans le dossier Entreprise/data/CJ");
     }
 
     private ContratJuridiqueBMDTO convertCJEntityToDTO(ContratJuridiqueBMEntity entity) {
@@ -66,10 +68,10 @@ public class BusinessModelServiceImpl implements BusinessModelService{
     }
 
     @Override
-    public void contratJuridiqueBMSigned(ContratJuridiqueBMEntity contratJuridiqueBMEntity) {
-        businessModelDAO.addSignature(contratJuridiqueBMEntity) ;
-        System.out.println("Le contrat juridique " + contratJuridiqueBMEntity.getContratJuridiqueBM() + " du business model signé à été receptionné, la signature à été enregistrée avec succès en DB.");
-        prestaFinancierService.requestForFinanceExpertise(contratJuridiqueBMEntity.getSiretStartUp().getIdBilanComptable().getIdBilanComptable()) ; // est-ce ok ou bien passage par dao ?
+    public void contratJuridiqueBMSigned(ContratJuridiqueBMDTO contratJuridiqueBM) {
+        ContratJuridiqueBMEntity contratJuridiqueBMEntity = businessModelDAO.addSignature(contratJuridiqueBM) ;
+        System.out.println("Le contrat juridique " + contratJuridiqueBM.contratJuridiqueBM() + " du business model signé à été receptionné, sa signature à été enregistrée avec succès en DB.");
+        prestaFinancierService.requestForFinanceExpertise(contratJuridiqueBMEntity.getSiretStartUp().getIdBilanComptable().getIdBilanComptable()) ;
         prestaJuridiqueService.requestForLegalExpertise(contratJuridiqueBMEntity.getSiretStartUp().getIdStatuts().getIdStatut()) ;
     }
 

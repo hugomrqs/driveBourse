@@ -3,6 +3,7 @@ package fr.pantheonsorbonne.ufr27.miage.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "ContratTripartiteFinal")
 public class ContratTripartiteFinalEntity {
 
     @Id

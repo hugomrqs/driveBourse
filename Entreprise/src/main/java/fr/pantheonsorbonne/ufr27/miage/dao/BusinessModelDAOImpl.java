@@ -14,11 +14,8 @@ public class BusinessModelDAOImpl implements BusinessModelDAO{
 
     @Override
     @Transactional
-    public void registerBusinessModel(BusinessModelDTO businessModel) {
-        BMEntity BMEntity = new BMEntity() ;
-        BMEntity.setIdBusinessModel(businessModel.idBusinessModel());
-        BMEntity.setArgentLeveeXpTasvee(businessModel.argentLeveeXpTasvee());
-        BMEntity.setPartCedeeXpTasvee(businessModel.partCedeeXpTasvee());
-        em.persist(BMEntity);
+    public void registerBusinessModelInBDD(BusinessModelDTO businessModel) {
+        BMEntity bmentity = new BMEntity(businessModel.argentLeveeXpTasvee(),businessModel.partCedeeXpTasvee());
+        em.persist(bmentity);
     }
 }

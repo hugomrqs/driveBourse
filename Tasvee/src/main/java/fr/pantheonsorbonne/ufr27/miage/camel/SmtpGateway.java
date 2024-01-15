@@ -29,9 +29,8 @@ public class SmtpGateway {
     /////////////////////
     public void sendBusinessModelToStartUp(BusinessModelDTO bm) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBodyAndHeaders(  "direct:smtp" , bm,
-                    Map.of("subject","BM",
-                            "ID",bm.idBusinessModel()));
+            producerTemplate.sendBodyAndHeaders(  "direct:smtp" , bm,       Map.of("subject","BM",
+                    "ID",bm.idBusinessModel()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -53,10 +52,9 @@ public class SmtpGateway {
 
     public void askExpertFin(Integer idBilanComptable) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBodyAndHeaders("direct:smtp", idBilanComptable,
+            producerTemplate.sendBodyAndHeaders("direct:smtp", "http://localhost:8080/bilan-comptable/"+idBilanComptable,
                     Map.of("subject","EF",
-                            "ID",idBilanComptable,
-                            "Endpoint url", "http://localhost:8080/bilan-comptable/"+idBilanComptable));
+                            "ID",idBilanComptable));
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -69,10 +67,9 @@ public class SmtpGateway {
 
     public void askExpertJur(Integer idStatut) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBodyAndHeaders("direct:smtp", idStatut,
+            producerTemplate.sendBodyAndHeaders("direct:smtp", "http://localhost:8080/bilan-comptable/"+idStatut,
                     Map.of("subject","EJ",
-                    "ID",idStatut,
-                    "Endpoint url", "http://localhost:8080/statut/"+idStatut));
+                    "ID",idStatut));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
