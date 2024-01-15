@@ -1,7 +1,8 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModel;
-import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBM;
+import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBMDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.NDADTOProductionDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import org.apache.camel.CamelContext;
@@ -26,7 +27,7 @@ public class SmtpGateway {
     /////////////////////
     ////Start UP
     /////////////////////
-    public void sendBusinessModelToStartUp(BusinessModel bm) {
+    public void sendBusinessModelToStartUp(BusinessModelDTO bm) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             producerTemplate.sendBodyAndHeaders(  "direct:smtp" , bm,       Map.of("subject","BM",
                     "ID",bm.idBusinessModel()));
@@ -35,11 +36,11 @@ public class SmtpGateway {
         }
     }
 
-    public void sendContratJuridiqueBMtoStartUp(ContratJuridiqueBM contratJuridiqueBM) {
+    public void sendContratJuridiqueBMtoStartUp(ContratJuridiqueBMDTO contratJuridiqueBMDTO) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBodyAndHeaders("direct:smtp",contratJuridiqueBM,
+            producerTemplate.sendBodyAndHeaders("direct:smtp", contratJuridiqueBMDTO,
                     Map.of("subject","CJ",
-                    "ID",contratJuridiqueBM.contratJuridiqueBM()));
+                            "ID", contratJuridiqueBMDTO.contratJuridiqueBM()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -69,6 +70,16 @@ public class SmtpGateway {
             producerTemplate.sendBodyAndHeaders("direct:smtp", "http://localhost:8080/bilan-comptable/"+idStatut,
                     Map.of("subject","EJ",
                     "ID",idStatut));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendCJOPBP(NDADTOProductionDTO cjopbp) {
+        try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
+            producerTemplate.sendBodyAndHeaders(  "direct:smtp" ,cjopbp,
+                    Map.of("subject","BM",
+                            "ID","test"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

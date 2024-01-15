@@ -2,7 +2,7 @@ package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.camel.SmtpGateway;
 import fr.pantheonsorbonne.ufr27.miage.dao.ExpertiseJuridiqueDAO;
-import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridique;
+import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridiqueDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -22,9 +22,9 @@ public class PrestaJuridiqueServiceImpl implements PrestaJuridiqueService{
     }
 
     @Override
-    public void registerLegalExpertise(ExpertiseJuridique expertiseJuridique) {
-        expertiseJuridiqueDAO.registerExpertiseJuridique(expertiseJuridique) ;
-        System.out.println("L'expertise juridique du prestataire " + expertiseJuridique.siretPrestataireJuridique() + " à bien été enregistrée avec succès en DB");
+    public void registerLegalExpertise(ExpertiseJuridiqueDTO expertiseJuridiqueDTO) {
+        expertiseJuridiqueDAO.registerExpertiseJuridique(expertiseJuridiqueDTO) ;
+        System.out.println("L'expertise juridique du prestataire " + expertiseJuridiqueDTO.siretPrestataireJuridique() + " à bien été enregistrée avec succès en DB");
 
     }
 }

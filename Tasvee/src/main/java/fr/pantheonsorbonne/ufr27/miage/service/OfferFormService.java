@@ -1,9 +1,9 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.OfferForm;
+import fr.pantheonsorbonne.ufr27.miage.dto.OfferFormDTO;
 
 public interface OfferFormService {
-    boolean isOfferAccepted(OfferForm offerForm) ;
+    boolean isOfferAccepted(OfferFormDTO offerForm) ;
 
-    void saveOfferForm(OfferForm offerForm);
+    void saveOfferForm(OfferFormDTO offerForm);
 }

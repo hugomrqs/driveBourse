@@ -53,9 +53,10 @@ public class StartUpEntity {
     @JoinColumn(name = "IDBusinessModel", referencedColumnName = "IDBusinessModel")
     private BusinessModelEntity idBusinessModel;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "IDOnePager", referencedColumnName = "IDOnePager")
-    private OnePager idOnePager;
+    private OnePagerEntity idOnePagerEntity;
+
 
     public StartUpEntity() {
     }
@@ -74,7 +75,7 @@ public class StartUpEntity {
                          StatutEntity idStatut,
                          CVDirigeantEntity idCVDirigeant,
                          BusinessModelEntity idBusinessModel,
-                         OnePager idOnePager) {
+                         OnePagerEntity idOnePagerEntity) {
 
         this.siretStartUp = siretStartUp;
         this.nombreDePersonne = nombreDePersonne;
@@ -90,7 +91,7 @@ public class StartUpEntity {
         this.idStatut = idStatut;
         this.idCVDirigeant = idCVDirigeant;
         this.idBusinessModel = idBusinessModel;
-        this.idOnePager = idOnePager;
+        this.idOnePagerEntity = idOnePagerEntity;
     }
 
     // Getters
@@ -150,8 +151,8 @@ public class StartUpEntity {
         return idBusinessModel;
     }
 
-    public OnePager getIdOnePager() {
-        return idOnePager;
+    public OnePagerEntity getIdOnePager() {
+        return idOnePagerEntity;
     }
 
     // Setters
@@ -211,7 +212,8 @@ public class StartUpEntity {
         this.idBusinessModel = idBusinessModel;
     }
 
-    public void setIdOnePager(OnePager idOnePager) {
-        this.idOnePager = idOnePager;
+    public void setIdOnePager(OnePagerEntity idOnePagerEntity) {
+        this.idOnePagerEntity = idOnePagerEntity;
     }
+
 }

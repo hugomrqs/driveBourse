@@ -1,10 +1,10 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
-import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeant;
-import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
+import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptableDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeantDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.StatutDTO;
 
 public interface OfferFormEntrepriseService {
-    void createAndSendOfferForm(BilanComptable bilanComptable, Statut statut, int objectLevee, Integer siretStartup,
-                                     int organigramme, CvDirigeant cvDirigeant, String siteWeb, String mail, String secteur);
+    void createAndSendOfferForm(BilanComptableDTO bilanComptable, StatutDTO statut, int objectLevee, Integer siretStartup,
+                                     int organigramme, CvDirigeantDTO cvDirigeant, String siteWeb, String mail, String secteur);
 }

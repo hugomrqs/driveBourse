@@ -3,8 +3,8 @@ package fr.pantheonsorbonne.ufr27.miage.service;
 import fr.pantheonsorbonne.ufr27.miage.camel.SmtpGateway;
 import fr.pantheonsorbonne.ufr27.miage.dao.BusinessModelDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.ContratJuridiqueBMDAO;
-import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModel;
-import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBM;
+import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBMDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.BusinessModelEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.ContratJuridiqueBMEntity;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -46,25 +46,24 @@ public class BusinessModelServiceImpl implements BusinessModelService{
         return 80 ;
     }
 
-    private void SendBusinessModel(BusinessModel businessModel, Integer siretStartup) {
+    private void SendBusinessModel(BusinessModelDTO businessModel, Integer siretStartup) {
         smtp.sendBusinessModelToStartUp(businessModel);
         System.out.println("Le business model de la startup " + siretStartup + " à été envoyé par mail avec succès.") ;
         System.out.println("Le destinataire du mail doit maintenant déposer le BM contenu dans le mail --> dans le dossier Entreprise/data/BM");
     }
 
-    private BusinessModel convertBMEntityToDTO(BusinessModelEntity entity) {
-        BusinessModel dto = new BusinessModel(entity.getIdBusinessModel(), entity.getArgentLeveeXpTasvee(), entity.getPartCedeeXpTasvee());
-        return dto;
+    private BusinessModelDTO convertBMEntityToDTO(BusinessModelEntity entity) {
+        return new BusinessModelDTO(entity.getIdBusinessModel(), entity.getArgentLeveeXpTasvee(), entity.getPartCedeeXpTasvee());
     }
 
-    private void SendContratJuridiqueBM(ContratJuridiqueBM contratJuridiqueBM, Integer siretStartup) {
-        smtp.sendContratJuridiqueBMtoStartUp(contratJuridiqueBM);
+    private void SendContratJuridiqueBM(ContratJuridiqueBMDTO contratJuridiqueBMDTO, Integer siretStartup) {
+        smtp.sendContratJuridiqueBMtoStartUp(contratJuridiqueBMDTO);
         System.out.println("Le contrat juridique pour le Business Model de la startup " + siretStartup + " à été envoyé par mail avec succès") ;
         System.out.println("Le destinataire du mail doit maintenant déposer le CJ contenu dans le mail --> dans le dossier Entreprise/data/CJ");
     }
 
-    private ContratJuridiqueBM convertCJEntityToDTO(ContratJuridiqueBMEntity entity) {
-        ContratJuridiqueBM dto = new ContratJuridiqueBM(entity.getContratJuridiqueBM(), entity.getTasvee(), entity.getStartUp(), entity.getPourcentageComissionTasvee(), entity.getSiretTasvee(), convertBMEntityToDTO(entity.getIdBusinessModel()));
+    private ContratJuridiqueBMDTO convertCJEntityToDTO(ContratJuridiqueBMEntity entity) {
+        ContratJuridiqueBMDTO dto = new ContratJuridiqueBMDTO(entity.getContratJuridiqueBM(), entity.getTasvee(), entity.getStartUp(), entity.getPourcentageComissionTasvee(), entity.getSiretTasvee(), convertBMEntityToDTO(entity.getIdBusinessModel()));
         return dto;
     }
 

@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
 import fr.pantheonsorbonne.ufr27.miage.dao.StatutDAO;
-import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
+import fr.pantheonsorbonne.ufr27.miage.dto.StatutDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.StatutEntity;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -13,13 +13,13 @@ public class StatutServiceImpl implements StatutService {
     StatutDAO statutDAO ;
 
     @Override
-    public Statut getStatut(int idStatut) {
+    public StatutDTO getStatut(int idStatut) {
         System.out.println("Récupération du Statut " + idStatut + " en cours.");
         return convertToDTO(statutDAO.getStatut(idStatut)) ;
     }
 
-    private Statut convertToDTO(StatutEntity entity) {
-        Statut dto = new Statut(entity.getNombrePart(), entity.getPrixPartActuel(), entity.getStrategieEntrepreneur());
+    private StatutDTO convertToDTO(StatutEntity entity) {
+        StatutDTO dto = new StatutDTO(entity.getNombrePart(), entity.getPrixPartActuel(), entity.getStrategieEntrepreneur());
         return dto;
     }
 }

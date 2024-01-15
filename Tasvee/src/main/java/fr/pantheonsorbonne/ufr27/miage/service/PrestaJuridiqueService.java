@@ -1,9 +1,9 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridique;
+import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridiqueDTO;
 
 public interface PrestaJuridiqueService {
     void requestForLegalExpertise(Integer idStatut);
 
-    void registerLegalExpertise(ExpertiseJuridique expertiseJuridique);
+    void registerLegalExpertise(ExpertiseJuridiqueDTO expertiseJuridiqueDTO);
 }

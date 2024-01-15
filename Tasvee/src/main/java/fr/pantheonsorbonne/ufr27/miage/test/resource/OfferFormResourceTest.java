@@ -2,11 +2,10 @@ package fr.pantheonsorbonne.ufr27.miage.test.resource;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
-
-import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
-import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeant;
-import fr.pantheonsorbonne.ufr27.miage.dto.OfferForm;
-import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
+import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptableDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.CvDirigeantDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.OfferFormDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.StatutDTO;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.h2.H2DatabaseTestResource;
 import io.quarkus.test.junit.QuarkusTest;
@@ -39,7 +38,7 @@ public class OfferFormResourceTest {
 
     @Test
     public void testReceiveNewOfferAccepted() {
-        OfferForm offerForm = createAcceptedTestOfferForm();
+        OfferFormDTO offerForm = createAcceptedTestOfferForm();
 
         given()
                 .contentType("application/json")
@@ -53,7 +52,7 @@ public class OfferFormResourceTest {
 
     @Test
     public void testReceiveNewOfferRejected() {
-        OfferForm offerForm = createRejectedTestOfferForm();
+        OfferFormDTO offerForm = createRejectedTestOfferForm();
 
         given()
                 .contentType("application/json")
@@ -65,19 +64,19 @@ public class OfferFormResourceTest {
                 .body(is("L'offre a été reçue, cependant elle est refusée."));
     }
 
-    private OfferForm createRejectedTestOfferForm() {
-        BilanComptable b = new BilanComptable(testData.bilanComptable().getEmplois(), testData.bilanComptable().getRessources(), testData.bilanComptable().getVenteDeMarchandise(),testData.bilanComptable().getCoutDeMarchandise()) ;
-        Statut s = new Statut(testData.statut().getNombrePart(), testData.statut().getPrixPartActuel(), testData.statut().getStrategieEntrepreneur()) ;
-        CvDirigeant c = new CvDirigeant(testData.cvDirigeant().getEcole(), testData.cvDirigeant().getMainExperience(), testData.cvDirigeant().getLienLinkedin(),testData.cvDirigeant().getEngagement()) ;
-        return new OfferForm(b, s, 10, 123, 25,
+    private OfferFormDTO createRejectedTestOfferForm() {
+        BilanComptableDTO b = new BilanComptableDTO(testData.bilanComptable().getEmplois(), testData.bilanComptable().getRessources(), testData.bilanComptable().getVenteDeMarchandise(),testData.bilanComptable().getCoutDeMarchandise()) ;
+        StatutDTO s = new StatutDTO(testData.statut().getNombrePart(), testData.statut().getPrixPartActuel(), testData.statut().getStrategieEntrepreneur()) ;
+        CvDirigeantDTO c = new CvDirigeantDTO(testData.cvDirigeant().getEcole(), testData.cvDirigeant().getMainExperience(), testData.cvDirigeant().getLienLinkedin(),testData.cvDirigeant().getEngagement()) ;
+        return new OfferFormDTO(b, s, 10, 123, 25,
                 c, "lydia.com", "lydia@gmail.com", "tech") ;
     }
 
-    private OfferForm createAcceptedTestOfferForm() {
-        BilanComptable b = new BilanComptable(testData.bilanComptable().getEmplois(), testData.bilanComptable().getRessources(), testData.bilanComptable().getVenteDeMarchandise(),testData.bilanComptable().getCoutDeMarchandise()) ;
-        Statut s = new Statut(testData.statut().getNombrePart(), testData.statut().getPrixPartActuel(), testData.statut().getStrategieEntrepreneur()) ;
-        CvDirigeant c = new CvDirigeant(testData.cvDirigeant().getEcole(), testData.cvDirigeant().getMainExperience(), testData.cvDirigeant().getLienLinkedin(),testData.cvDirigeant().getEngagement()) ;
-        return new OfferForm(b, s, 900000, 123, 25,
+    private OfferFormDTO createAcceptedTestOfferForm() {
+        BilanComptableDTO b = new BilanComptableDTO(testData.bilanComptable().getEmplois(), testData.bilanComptable().getRessources(), testData.bilanComptable().getVenteDeMarchandise(),testData.bilanComptable().getCoutDeMarchandise()) ;
+        StatutDTO s = new StatutDTO(testData.statut().getNombrePart(), testData.statut().getPrixPartActuel(), testData.statut().getStrategieEntrepreneur()) ;
+        CvDirigeantDTO c = new CvDirigeantDTO(testData.cvDirigeant().getEcole(), testData.cvDirigeant().getMainExperience(), testData.cvDirigeant().getLienLinkedin(),testData.cvDirigeant().getEngagement()) ;
+        return new OfferFormDTO(b, s, 900000, 123, 25,
             c, "lydia.com", "lydia@gmail.com", "tech") ;
     }
 }

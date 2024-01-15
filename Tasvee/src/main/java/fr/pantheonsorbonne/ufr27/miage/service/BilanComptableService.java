@@ -1,6 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
-import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptable;
+import fr.pantheonsorbonne.ufr27.miage.dto.BilanComptableDTO;
 
 public interface BilanComptableService {
-    BilanComptable getBilanComptable(int idBilanComptable) ;
+    BilanComptableDTO getBilanComptable(int idBilanComptable) ;
 }

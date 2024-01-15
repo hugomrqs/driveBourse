@@ -18,14 +18,21 @@ public class ExpertiseJuridiqueEntity {
 
     @ManyToOne
     @JoinColumn(name = "SiretPrestataireJuridique", referencedColumnName = "SiretPrestataireJuridique")
-    private PrestataireJuridique prestataireJuridique;
+    private PrestataireJuridiqueEntity prestataireJuridiqueEntity;
 
-    public ExpertiseJuridiqueEntity() {
+    @ManyToOne
+    @JoinColumn(name = "SiretStartUp", referencedColumnName = "SiretStartUp")
+    private StartUpEntity siretStartUp;
+
+
+    public ExpertiseJuridiqueEntity(Integer nombrePartExpertise, PrestataireJuridiqueEntity prestataireJuridiqueEntity, Integer prixActuelPartExpertise) {
+        this.nombrePartExpertise = nombrePartExpertise;
+        this.prixActuelPartExpertise = prixActuelPartExpertise;
+        this.prestataireJuridiqueEntity = prestataireJuridiqueEntity;
     }
 
-    public ExpertiseJuridiqueEntity(Integer nombrePartExpertise, PrestataireJuridique prestataireJuridique) {
-        this.nombrePartExpertise = nombrePartExpertise;
-        this.prestataireJuridique = prestataireJuridique;
+    public ExpertiseJuridiqueEntity() {
+
     }
 
     // Getters et Setters
@@ -54,11 +61,19 @@ public class ExpertiseJuridiqueEntity {
         this.prixActuelPartExpertise = prixActuelPartExpertise;
     }
 
-    public PrestataireJuridique getPrestataireJuridique() {
-        return prestataireJuridique;
+    public PrestataireJuridiqueEntity getPrestataireJuridique() {
+        return prestataireJuridiqueEntity;
     }
 
-    public void setPrestataireJuridique(PrestataireJuridique prestataireJuridique) {
-        this.prestataireJuridique = prestataireJuridique;
+    public void setPrestataireJuridique(PrestataireJuridiqueEntity prestataireJuridiqueEntity) {
+        this.prestataireJuridiqueEntity = prestataireJuridiqueEntity;
+    }
+
+    public StartUpEntity getSiretStartUp() {
+        return siretStartUp;
+    }
+
+    public void setSiretStartUp(StartUpEntity siretStartUp) {
+        this.siretStartUp = siretStartUp;
     }
 }

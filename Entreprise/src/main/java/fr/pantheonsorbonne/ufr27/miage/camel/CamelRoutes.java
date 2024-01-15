@@ -1,9 +1,11 @@
 package fr.pantheonsorbonne.ufr27.miage.camel;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModel;
-import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBM;
+import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBMDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.NDADTOCommercialisationDTO;
 import fr.pantheonsorbonne.ufr27.miage.service.BusinessModelService;
 import jakarta.enterprise.context.ApplicationScoped;
+import fr.pantheonsorbonne.ufr27.miage.service.ContratService;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import org.apache.camel.Exchange;
@@ -45,6 +47,9 @@ public class CamelRoutes extends RouteBuilder {
     @Named("businessModelEntrepriseService")
     BusinessModelService bm;
 
+    @Inject
+    ContratService contratService;
+
     @Override
     public void configure() throws Exception {
 
@@ -52,12 +57,12 @@ public class CamelRoutes extends RouteBuilder {
         //// endpoint si pas de imap
         /////////////////////
 
-//        from("sjms2:topic:" + jmsPrefix + "-StartUp-SMTP")
-//                .autoStartup(isRouteEnabled)
-//                .choice()
-//                //oriente selon le header
-//                .when(header("subject").in("BM", "CJ", "CJOPBP"))
-//                .toD( "sjms2:topic:"+ jmsPrefix + "-StartUp-${in.headers.subject}");
+        from("sjms2:topic:" + jmsPrefix + "-StartUp-SMTP")
+                .autoStartup(isRouteEnabled)
+                .choice()
+                //oriente selon le header
+                .when(header("subject").in("BM", "CJ", "CJOPBP"))
+                .toD( "sjms2:topic:"+ jmsPrefix + "-StartUp-${in.headers.subject}");
 
 
         /////////////////////
@@ -98,5 +103,19 @@ public class CamelRoutes extends RouteBuilder {
                     }
                 })
                 .to("sjms2:topic:" + jmsPrefix + "sender");
+
+
+        from("sjms2:topic:" + jmsPrefix + "NDACommercialForEntrepreneur")
+                .autoStartup(isRouteEnabled)
+                .log("proposition Envoyé")
+                .unmarshal().json(NDADTOCommercialisationDTO.class)
+                .bean(contratService, "signNDA").marshal().json();
+
+        from("direct:sendNDA")
+                .autoStartup(isRouteEnabled)
+                .log("nda sign for tasvee")
+                .marshal().json()
+                .to("sjms2:topic:" + jmsPrefix + "signedNDAForTasvee");
+
     }
 }

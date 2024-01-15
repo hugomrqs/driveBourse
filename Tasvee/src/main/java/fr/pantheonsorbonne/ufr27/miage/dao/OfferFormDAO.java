@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.OfferForm;
+import fr.pantheonsorbonne.ufr27.miage.dto.OfferFormDTO;
 
 public interface OfferFormDAO {
-    void registerStartUpEntity(OfferForm offerForm) ;
+    void registerStartUpEntity(OfferFormDTO offerForm) ;
 }

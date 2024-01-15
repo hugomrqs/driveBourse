@@ -1,6 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.service;
-import fr.pantheonsorbonne.ufr27.miage.dto.Statut;
+import fr.pantheonsorbonne.ufr27.miage.dto.StatutDTO;
 
 public interface StatutService {
-    Statut getStatut(int idStatus) ;
+    StatutDTO getStatut(int idStatus) ;
 }

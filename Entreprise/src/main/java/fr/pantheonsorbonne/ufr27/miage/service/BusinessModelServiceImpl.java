@@ -3,8 +3,8 @@ package fr.pantheonsorbonne.ufr27.miage.service;
 import fr.pantheonsorbonne.ufr27.miage.camel.SmtpGateway;
 import fr.pantheonsorbonne.ufr27.miage.dao.BusinessModelDAO;
 import fr.pantheonsorbonne.ufr27.miage.dao.ContratJuridiqueDAO;
-import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModel;
-import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBM;
+import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBMDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.BMEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.CJBMEntity;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -27,15 +27,15 @@ public class BusinessModelServiceImpl implements BusinessModelService {
     SmtpGateway smtp;
 
     @Override
-    public void registerBusinessModel(BusinessModel businessModel) {
-        businessModelDAO.registerBusinessModelInBDD(businessModel) ;
+    public void registerBusinessModel(BusinessModelDTO businessModel) {
+        businessModelDAO.registerBusinessModelInBDD(businessModel) ;        System.out.println("le business model " + businessModel.idBusinessModel() + " à été enregistré en DB avec succès");
         System.out.println("le business model " + businessModel.idBusinessModel() + " à été enregistré en DB avec succès");
     }
 
     @Override
-    public void registerContratJuridiqueBM(ContratJuridiqueBM contratJuridiqueBM) {
-        CJBMEntity cjbmEntity = contratJuridiqueDAO.registerContratJuridiqueBMInDB(contratJuridiqueBM) ;
-        System.out.println("Le contrat juridique " + contratJuridiqueBM.contratJuridiqueBM() + " du business model " + contratJuridiqueBM.businessModel().idBusinessModel() + " à été reçu et enregistré en DB avec succès.") ;
+    public void registerContratJuridiqueBM(ContratJuridiqueBMDTO contratJuridiqueBMDTO) {
+        CJBMEntity cjbmEntity = contratJuridiqueDAO.registerContratJuridiqueBM(contratJuridiqueBMDTO) ;
+        System.out.println("Le contrat juridique " + contratJuridiqueBMDTO.contratJuridiqueBM() + " du business model à été reçu et enregistré en DB avec succès.") ;
         signAndReply(cjbmEntity) ;
     }
 
@@ -53,13 +53,13 @@ public class BusinessModelServiceImpl implements BusinessModelService {
         }
     }
 
-    private ContratJuridiqueBM CJentityToDTO(CJBMEntity CJBMEntity) {
-        ContratJuridiqueBM contratJuridiqueBM = new ContratJuridiqueBM(CJBMEntity.getContratJuridiqueBM(), CJBMEntity.getTasvee(), CJBMEntity.getStartUp(), CJBMEntity.getPourcentageComissionTasvee(), CJBMEntity.getSiretTasvee(), BMentityToDTO(CJBMEntity.getIdBusinessModel()));
-        return contratJuridiqueBM ;
+    private ContratJuridiqueBMDTO CJentityToDTO(CJBMEntity cjbmEntity) {
+        ContratJuridiqueBMDTO contratJuridiqueBMDTO = new ContratJuridiqueBMDTO(cjbmEntity.getContratJuridiqueBM(), cjbmEntity.getTasvee(), cjbmEntity.getStartUp(), cjbmEntity.getPourcentageComissionTasvee(), cjbmEntity.getSiretTasvee(), BMentityToDTO(cjbmEntity.getIdBusinessModel()));
+        return contratJuridiqueBMDTO;
     }
 
-    private BusinessModel BMentityToDTO(BMEntity BMEntity) {
-        BusinessModel businessModel = new BusinessModel(BMEntity.getIdBusinessModel(), BMEntity.getArgentLeveeXpTasvee(), BMEntity.getPartCedeeXpTasvee());
+    private BusinessModelDTO BMentityToDTO(BMEntity BMEntity) {
+        BusinessModelDTO businessModel = new BusinessModelDTO(BMEntity.getIdBusinessModel(), BMEntity.getArgentLeveeXpTasvee(), BMEntity.getPartCedeeXpTasvee());
         return businessModel ;
     }
 

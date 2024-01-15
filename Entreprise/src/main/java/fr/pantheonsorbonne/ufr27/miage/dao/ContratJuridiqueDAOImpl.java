@@ -1,7 +1,7 @@
 package fr.pantheonsorbonne.ufr27.miage.dao;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModel;
-import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBM;
+import fr.pantheonsorbonne.ufr27.miage.dto.BusinessModelDTO;
+import fr.pantheonsorbonne.ufr27.miage.dto.ContratJuridiqueBMDTO;
 import fr.pantheonsorbonne.ufr27.miage.model.BMEntity;
 import fr.pantheonsorbonne.ufr27.miage.model.CJBMEntity;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -16,7 +16,7 @@ public class ContratJuridiqueDAOImpl implements ContratJuridiqueDAO{
     EntityManager em;
     @Override
     @Transactional
-    public CJBMEntity registerContratJuridiqueBMInDB(ContratJuridiqueBM contratJuridiqueBM) {
+    public CJBMEntity registerContratJuridiqueBMInDB(ContratJuridiqueBMDTO contratJuridiqueBM) {
         CJBMEntity cjbmEntity = new CJBMEntity(contratJuridiqueBM.tasvee(), contratJuridiqueBM.startUp(), contratJuridiqueBM.pourcentageComissionTasvee(), contratJuridiqueBM.siretTasvee(), getBusinessModel(contratJuridiqueBM.businessModel())) ;
         em.persist(cjbmEntity);
         return cjbmEntity;
@@ -31,7 +31,7 @@ public class ContratJuridiqueDAOImpl implements ContratJuridiqueDAO{
         return existingEntity ;
     }
 
-    private BMEntity getBusinessModel(BusinessModel businessModel){
+    private BMEntity getBusinessModel(BusinessModelDTO businessModel){
         BMEntity existingEntity = em.find(BMEntity.class, businessModel.idBusinessModel());
         return existingEntity ;
     }

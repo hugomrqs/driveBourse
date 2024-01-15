@@ -1,6 +1,6 @@
 package fr.pantheonsorbonne.ufr27.miage.resources;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.OfferForm;
+import fr.pantheonsorbonne.ufr27.miage.dto.OfferFormDTO;
 import fr.pantheonsorbonne.ufr27.miage.service.BusinessModelService;
 import fr.pantheonsorbonne.ufr27.miage.service.OfferFormService;
 import jakarta.inject.Inject;
@@ -24,7 +24,7 @@ public class OfferFormResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response receiveNewOffer(OfferForm offerForm) {
+    public Response receiveNewOffer(OfferFormDTO offerForm) {
 
         System.out.println("OfferForm reçu : " + offerForm);
         boolean isAccepted = offerFormService.isOfferAccepted(offerForm);
