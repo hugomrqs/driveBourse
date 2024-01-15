@@ -61,7 +61,12 @@ Une fois l'accord conclu, ils signent un contrat juridique. Suite à cela, l'arg
 - Une queue comprenant un topic va proposer aux Fonds ce topic pour envestir et ils répondront si ils sont interessés (les secteurs possibles étant "T", "S", "I", "F" et "E").  
 - Lorsque le fond est interessé il va récupérer l'OfferForm, l'étudier et Tasvee va agréger les OfferForm pour les envoyer à Tasvee.
 - Tasvee va alors envoyer un SMTP (mail) contenant le ContratJuridiqueOnePagerPourBP afin que le Fond prenne connaissance ce contrat et le renvoyer signé par SMTP.
-- Lorsque 
+- Lorsque Le fond reçoit le BusinessPlan, il va l'étudier et créer une proposition qui constituera son intêret/ses revenus/ses parts de l'entreprise et l'envoyer à Tasvee.
+- Tasvee va récupérer la Proposition, la prendre en compte et négocier avec le Fond, jusuqu'à ce que Tasvee et Fond trouvent un accord.
+- Lorsque l'un des deux acteurs accepent la proposition, il le signale à l'autre acteur.
+- Tasvee va alors établir un NDATripartiteFinal  qu'il enverra à Fond pour qu'il le signe puis à l'Entrepreneur pour qu'il le signe également.
+- Tasvee signe également le NDATripartiteFinal qui constitue l'accord entre les 3 acteurs.
+- Il va ensuite envoyer le RIB au Fond afin qu'il envoie l'argent convenu à Tasvee et à l'Entrepreneur.
 
 
 
