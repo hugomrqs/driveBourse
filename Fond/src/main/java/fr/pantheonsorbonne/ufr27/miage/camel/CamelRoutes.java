@@ -49,15 +49,6 @@ public class CamelRoutes extends RouteBuilder {
     @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.user")
     String smtpUser;
 
-    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.password")
-    String smtpPassword;
-
-    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.host")
-    String smtpHost;
-
-    @ConfigProperty(name = "fr.pantheonsorbonne.ufr27.miage.smtp.port")
-    String smtpPort;
-
     @Override
     public void configure() throws Exception {
 

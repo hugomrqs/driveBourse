@@ -15,12 +15,6 @@ import java.util.HashMap;
 @ApplicationScoped
 public class CamelRoutes extends RouteBuilder {
 
-    @Inject
-    PrestaJuridiqueService prestaJuridiqueService ;
-
-    @Inject
-    PrestaFinancierService prestaFinancierService ;
-
     @ConfigProperty(name = "camel.routes.enabled", defaultValue = "true")
     boolean isRouteEnabled;
 
@@ -325,7 +319,7 @@ public class CamelRoutes extends RouteBuilder {
 //
 
         //envoie Contrat
-        from("direct:smtp")
+        from("sjms2:topic:" + jmsPrefix + "-Tasvee-CJOPBM")
                 .marshal().json()
                 .log("${in.body}")
                 .process(new Processor() {
