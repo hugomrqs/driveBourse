@@ -46,15 +46,51 @@ Une fois l'accord conclu, ils signent un contrat juridique. Suite à cela, l'arg
 * La négociation menée par l’intermédiaire (Tasvee) avec les fonds d'investissement DOIT être rapide et efficace pour obtenir l'offre la plus intéressante pour l'entreprise.
  
 ## Comment utiliser l'application
-* Il suffit de suivre les instructions suivantes ainsi que le diragrame des éxigences fonctionnelles:
-- Éxecuter Entreprise, le Main va alors se lancer et vous demandez des informations nécessaires au démarrage de l'application (le BilanComptable, le Statut juridique, le CV dirigeant pour créer l'OfferForm) et enverra l'OfferForm
-- Appeler la resource offer-form/new-offer qui est un @Post qui va prendre en paramètre un OfferForm. On vérifie si L'offerForm est valide et on envoie en SMTP le BusinessModel de l'entrepreneur ainsi que que sont contrat Juridique (contratJuridiqueBM).
-- L'entrepreneur glisser dans le fichier data/CJSigné pour l'enrengistrer et le signer.
-- Cette fonction va 
--
--
--  
--
+* Suivre les instructions qui vous sont affiché dans la console (en gardant l'oeil sur le diragrame dde séquence) :
+- Éxecuter Entreprise
+- Éxecuter Tasvee
+- Éxecuter Fonds
+
+PART 1
+- Dans la console de Entreprise :
+   - le Main se lance et vous demande de remplir un OfferForm (le BilanComptable, le Statut juridique, le CV dirigeant, etc).
+   - Après remplissage, cliquer "y" pour que l'OfferForm soit envoyer sur le endpoint (Post) de Tasvee.
+   - La resource offer-form/new-offer (@Post) du SI Tasvee prend en paramètre un OfferForm (DTO).
+- Dans la console Tasvee :
+   - L'offerForm est reçu :
+     - Tasvee vérifie si L'offerForm est valide (objectLevee>=100000)
+     - Le Business Model de l'entreprise (startup) est construit à partir de l'offerForm. Puis le BM est stocké en DB.
+     - Le Business Model est envoyer par smtp à l'entreprise concernée.
+     - Le Contrat juridique du Business Model de l'entreprise (startup) est construit à partir des informations stocké (OfferForm + BM). Puis le Contrat Juridiquedu BM est stocké en DB.
+     - Le Contrat juridique du Business Model est envoyer par smtp à l'entreprise concernée.
+- Dans la console Entreprise :
+  - Le Business Model est reçu (smtp) :
+     - Le Busines Model doit être téléchargé depuis le mail reçu, puis déposer dans le dossier Entreprise/data/BM
+     - Le Business Model est enregistré en DB
+  - Le Contrat Juridique du Business Model est reçu (smtp) :
+     - Le Contrat Juridique du Busines Model doit être téléchargeé depuis le mail reçu, puis déposer dans le dossier Entreprise/data/CJ
+     - Le Contrat Juridique du Business Model est enregistré en DB
+     - La console (Entreprise) demande la signature signature du contrat jurisique du business model reçu, en en tapant "y" dans la console.
+     - Le Contrat Juridique du Business Model [signé] est update en DB avec la signature (startup = true).
+     - Le Contrat Juridique du Business Model [signé] est renvoyé à Tasvee par smtp.
+- Dans la console Tasvee :
+  - Le Contrat Juridique du Business Model [signé] par l'entreprise est reçu par smtp :
+     - Le Contrat Juridique du Business Model [signé] par l'entreprise doit être téléchargé depuis le mail reçu, puis déposer dans le dossier Tasvee/data/CJSigné
+     - Le Contrat Juridique du Business Model [signé] par l'entreprise est update en DB.
+  - Tasvee envoi par smtp une demande d'expertise au prestataire Financier, en lui fournissant (par mail) l'ID du Bilan comptable et l'url endpoint (@GET) pour que la prestataire puisse le récupérer.
+  - Tasvee envoi par smtp une demande d'expertise au prestataire Juridique, en lui fournissant (par mail) l'ID du Statut et l'url endpoint (@GET) pour que la prestataire puisse le récupérer.
+- Le prestataire Financier recoit par mail la demande d'expertise :
+  - C'est une acteur humain, il envoi par retour de mail à Tasvee son expertise Financière.
+  - Tasvee receptionne le mail avec l'expertise Financière (Json en pièce jointe)
+  - L'Expertise Financiere doit être téléchargeé depuis le mail reçu, puis déposer dans le dossier Tasvee/data/EF
+    - Console Tasvee : L'expertise Financière est enregistrée en Db.
+- Le prestataire Juridique recoit par mail la demande d'expertise :
+  - C'est une acteur humain, il envoi par retour de mail à Tasvee son expertise Juridique.
+  - Tasvee receptionne le mail avec l'expertise Juridique (Json en pièce jointe)
+  - L'Expertise Juridique doit être téléchargeé depuis le mail reçu, puis déposer dans le dossier Tasvee/data/EF
+    - Console Tasvee : L'expertise juridique est enregistrée en Db.
+   
+PART 2
 - Appeler la resource /OnePager/create qui vous demandera des options afin de créer le OnePager
 - Il faudra ensuite appeler /OnePager/sendOnePager qui enverra le OnePager correspondant au siret que vous aurez entré
 - Il suffira ensuite d'appeler la resource business-plan/bp/{siretEntr}/{siretFond} pour créer le business plan de l'entreprise.
