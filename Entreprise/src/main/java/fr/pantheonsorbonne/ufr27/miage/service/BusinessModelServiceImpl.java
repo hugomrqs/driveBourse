@@ -48,7 +48,8 @@ public class BusinessModelServiceImpl implements BusinessModelService {
             CJBMEntity updateEntity = contratJuridiqueDAO.sign(CJBMEntity);
             System.out.println("Le contrat juridique " + updateEntity.getContratJuridiqueBM() + " du business model à été signé, un champs à été modifier en DB avec succès.");
             smtp.sendSignedCJ(CJentityToDTO(updateEntity)) ;
-            System.out.println("Le contrat juridique " + updateEntity.getContratJuridiqueBM() + " du business model signé à été renvoyé à Tasvee avec succès.");
+            System.out.println("Le contrat juridique " + updateEntity.getContratJuridiqueBM() + " du business model [signé] à été renvoyé à Tasvee avec succès.");
+            System.out.println("Le contrat juridique signé doit maintenant être déposée dans le dossier Tasvee/data/CJSigné");
         }
     }
 

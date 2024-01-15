@@ -18,6 +18,7 @@ public class PrestaJuridiqueServiceImpl implements PrestaJuridiqueService{
     public void requestForLegalExpertise(Integer idStatut) {
         smtp.askExpertJur(idStatut); //appel route smtp pour envoyer la demandeExpertiseJuridique smtp avec l'idStatut dedans + url endpoint à get http://localhost:8080/statut/{idStatut}
         System.out.println("La demande d'expertise juridique pour le statut " + idStatut + " à bien été envoyé par smtp");
+        System.out.println("L'expertise juridique devra être déposée dans le dossier Tasvee/data/EJ");
     }
 
     @Override

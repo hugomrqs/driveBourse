@@ -28,7 +28,7 @@ public class SmtpGateway {
     /////////////////////
     public void sendBusinessModelToStartUp(BusinessModel bm) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
-            producerTemplate.sendBodyAndHeaders(  "direct:smtp" , bm,       Map.of("subject","CJ",
+            producerTemplate.sendBodyAndHeaders(  "direct:smtp" , bm,       Map.of("subject","BM",
                     "ID",bm.idBusinessModel()));
         } catch (IOException e) {
             throw new RuntimeException(e);
