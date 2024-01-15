@@ -18,11 +18,11 @@ Ensuite, Tasvee présente un premier document synthétique pour voir si des inve
 Une fois l'accord conclu, ils signent un contrat juridique. Suite à cela, l'argent est versé à l'entrepreneur et à Tasvee en fonction de sa commission relative.
 ## Interfaces
 
-![](FinalTasvee.drawio.png)
+![](seqDiagram.png)
 
 ## Schéma relationnel
 
-![](schemaer.png)
+![](EER.png)
 
 ## Exigences fonctionnelles
 
@@ -44,3 +44,26 @@ Une fois l'accord conclu, ils signent un contrat juridique. Suite à cela, l'arg
 * Les communications et échanges de données DOIVENT être fiables et utiliser le messaging.
 * Aucune donnée ne DOIT passer par un destinataire non souhaité ou externe.
 * La négociation menée par l’intermédiaire (Tasvee) avec les fonds d'investissement DOIT être rapide et efficace pour obtenir l'offre la plus intéressante pour l'entreprise.
+ 
+## Comment utiliser l'application
+* Il suffit de suivre les instructions suivantes ainsi que le diragrame des éxigences fonctionnelles:
+- Éxecuter Entreprise, le Main va alors se lancer et vous demandez des informations nécessaires au démarrage de l'application (le BilanComptable, le Statut juridique, le CV dirigeant pour créer l'OfferForm) et enverra l'OfferForm
+- Appeler la resource offer-form/new-offer qui est un @Post qui va prendre en paramètre un OfferForm. On vérifie si L'offerForm est valide et on envoie en SMTP le BusinessModel de l'entrepreneur ainsi que que sont contrat Juridique (contratJuridiqueBM).
+- L'entrepreneur glisser dans le fichier data/CJSigné pour l'enrengistrer et le signer.
+- Cette fonction va 
+-
+-
+-  
+-
+- Appeler la resource /OnePager/create qui vous demandera des options afin de créer le OnePager
+- Il faudra ensuite appeler /OnePager/sendOnePager qui enverra le OnePager correspondant au siret que vous aurez entré
+- Il suffira ensuite d'appeler la resource business-plan/bp/{siretEntr}/{siretFond} pour créer le business plan de l'entreprise.
+- Une queue comprenant un topic va proposer aux Fonds ce topic pour envestir et ils répondront si ils sont interessés (les secteurs possibles étant "T", "S", "I", "F" et "E").  
+- Lorsque le fond est interessé il va récupérer l'OfferForm, l'étudier et Tasvee va agréger les OfferForm pour les envoyer à Tasvee.
+- Tasvee va alors envoyer un SMTP (mail) contenant le ContratJuridiqueOnePagerPourBP afin que le Fond prenne connaissance ce contrat et le renvoyer signé par SMTP.
+- Lorsque Le fond reçoit le BusinessPlan, il va l'étudier et créer une proposition qui constituera son intêret/ses revenus/ses parts de l'entreprise et l'envoyer à Tasvee.
+- Tasvee va récupérer la Proposition, la prendre en compte et négocier avec le Fond, jusuqu'à ce que Tasvee et Fond trouvent un accord.
+- Lorsque l'un des deux acteurs accepent la proposition, il le signale à l'autre acteur.
+- Tasvee va alors établir un NDATripartiteFinal  qu'il enverra à Fond pour qu'il le signe puis à l'Entrepreneur pour qu'il le signe également.
+- Tasvee signe également le NDATripartiteFinal qui constitue l'accord entre les 3 acteurs.
+- Il va ensuite envoyer le RIB au Fond afin qu'il envoie l'argent convenu à Tasvee et à l'Entrepreneur.
