@@ -66,7 +66,7 @@ public class CamelRoutes extends RouteBuilder {
 
         from("file:ContratJuridiqueOnePagerPourBP")
                 .unmarshal().json(NDADTOProductionDTO.class)
-                .bean(contratJuridiqueOnePagerPourBP, "ContratJuridiqueOnePagerPourBPServiceImpl")
+                .bean(contratJuridiqueOnePagerPourBP, "Signer")
                 .marshal().json()
                 .log("Le NDA ${in.body} va être envoyé")
                 .process(new Processor() {

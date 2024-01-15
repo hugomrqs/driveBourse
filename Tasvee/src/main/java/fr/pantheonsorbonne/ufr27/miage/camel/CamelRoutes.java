@@ -262,12 +262,6 @@ public class CamelRoutes extends RouteBuilder {
                 })
                 .to("sjms2:topic:" + jmsPrefix + "sender");
 
-        from("file:data/EF")
-                .log("EF recu ${body}")
-                .unmarshal().json(ExpertiseFinanciereDTO.class)
-                .bean(pf,"registerFinancialExpertise")
-                .marshal().json();
-
 
         /////////////////////
         //// Presta Fiancier --> Tasvee
@@ -315,24 +309,8 @@ public class CamelRoutes extends RouteBuilder {
 //                .to("sjms2:topic:" + jmsPrefix + "sender" );
 
 
-
-        from("direct:OnePager")
-                .autoStartup(isRouteEnabled)
-                .log("OnePager : Secteur = ${in.headers}")
-                .marshal().json()
-                .choice()
-                .when(header("Secteur").in("T", "S", "I", "F", "E"))
-                .toD("sjms2:topic:" + jmsPrefix + "${in.headers.Secteur}")
-                .log("sjms2:topic:" + jmsPrefix + "${in.headers.Secteur}")
-                .otherwise()
-                .log("Domaine non pris en charge");
-
-//        from("sjms2:topic:"+ jmsPrefix +"T") route que fond utilise
-//                .log("OnePager: ${in.headers} ${in.body}");
-//
-
         //envoie Contrat
-        from("direct:smtp")
+        from("sjms2:" + jmsPrefix + "-Tasvee-CJOPBM")
                 .marshal().json()
                 .log("${in.body}")
                 .process(new Processor() {
@@ -444,22 +422,11 @@ public class CamelRoutes extends RouteBuilder {
         //// Ask
         /////////////////////
 
-        from("sjms2:topic:" + jmsPrefix + "-Tasvee-EF")
-                .autoStartup(isRouteEnabled)
-                .unmarshal().json(BilanComptableDTO.class)
-                .process(new Processor() {
-                    @Override
-                    public void process(Exchange exchange) throws Exception {
-
-                        BilanComptableDTO notice = exchange.getMessage().getBody(BilanComptableDTO.class);
-                        exchange.getMessage().setBody("Bonjour," +
-                                "\n\n :  " + notice.emplois() + notice.ressources() +
-
-                                "\n\n Tasvee");
-
-                    }
-                })
-                .to("sjms2:topic:" + jmsPrefix + "sender");
+        from("file:data/EF")
+                .log("EF recu ${body}")
+                .unmarshal().json(ExpertiseFinanciereDTO.class)
+                .bean(pf,"registerFinancialExpertise")
+                .marshal().json();
 
 
         /////////////////////
