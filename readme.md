@@ -18,7 +18,7 @@ Ensuite, Tasvee présente un premier document synthétique pour voir si des inve
 Une fois l'accord conclu, ils signent un contrat juridique. Suite à cela, l'argent est versé à l'entrepreneur et à Tasvee en fonction de sa commission relative.
 ## Interfaces
 
-![](seqDiagram.png)
+![](FinalTasvee.drawio.png)
 
 ## Schéma relationnel
 
