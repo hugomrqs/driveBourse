@@ -22,7 +22,7 @@ Une fois l'accord conclu, ils signent un contrat juridique. Suite à cela, l'arg
 
 ## Schéma relationnel
 
-![](EER.png)
+![](schemaer.png)
 
 ## Exigences fonctionnelles
 
