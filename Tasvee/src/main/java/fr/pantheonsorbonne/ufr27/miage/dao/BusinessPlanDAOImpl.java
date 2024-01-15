@@ -26,7 +26,7 @@ public class BusinessPlanDAOImpl implements BusinessPlanDAO{
     public BusinessPlanEntity selectBusinessPlan(int siretStartup) throws BusinessPlanNotFoundException {
         try {
             BusinessPlanEntity businessPlanEntity = (BusinessPlanEntity) em.createQuery(
-                            "SELECT c FROM BusinessPlanEntity c WHERE c.SiretStartUp = :siretStartup")
+                            "SELECT c FROM BusinessPlanEntity c WHERE c.siretStartUp.siretStartUp = :siretStartup")
                     .setParameter("siretStartup",siretStartup)
                     .getSingleResult();
             return businessPlanEntity;

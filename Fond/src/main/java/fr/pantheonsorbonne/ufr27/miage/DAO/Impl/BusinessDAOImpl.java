@@ -19,10 +19,9 @@ public class BusinessDAOImpl implements BusinessDAO {
     public void createNewBusinessPlan(BusinessPlanDTO bm) {
         BusinessPlanEntity businessPlanEntity = new BusinessPlanEntity();
         businessPlanEntity.setSiretStartUp(bm.siretEntreprise());
-
         ExpertiseFinanciereEntity ef = new ExpertiseFinanciereEntity();
-            ef.setBFRExpert((int) bm.expertiseFinanciere().bfrExpert());
-            ef.setMargeBrutExpert((int) bm.expertiseFinanciere().margeBrutExpert());
+            ef.setBFRExpert(bm.expertiseFinanciere().bfrExpert().intValue());
+            ef.setMargeBrutExpert(bm.expertiseFinanciere().margeBrutExpert().intValue());
 
         ExpertiseJuridiqueEntity ej = new ExpertiseJuridiqueEntity();
             ej.setNombrePartExpertise(bm.expertiseJuridique().nombrePartExpertise());

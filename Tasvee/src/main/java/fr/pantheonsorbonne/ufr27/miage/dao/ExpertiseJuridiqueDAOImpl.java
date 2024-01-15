@@ -41,6 +41,7 @@ public class ExpertiseJuridiqueDAOImpl implements ExpertiseJuridiqueDAO {
         expertiseJuridiqueEntity.setPrestataireJuridique(em.find(PrestataireJuridiqueEntity.class, expertiseJuridique.siretPrestataireJuridique()));
         expertiseJuridiqueEntity.setNombrePartExpertise(expertiseJuridique.nombrePartExpertise());
         expertiseJuridiqueEntity.setPrixActuelPartExpertise(expertiseJuridique.prixActuelPartExpertise());
+        expertiseJuridiqueEntity.setSiretStartUp(em.find(StartUpEntity.class, expertiseJuridique.SiretStartUp()));
         em.persist(expertiseJuridiqueEntity);
     }
 }

@@ -25,7 +25,8 @@ public class ResponseOnePagerGateway {
     Helper helper;
 
     public void SendResponse(OnePagerDTO onePagerDTO, String replyTo) {
-        OnePagerInteret onePagerInteret = new OnePagerInteret(helper.siret, onePagerDTO.idOnePager(), traitementOnePagerService.OnePagerResponse(onePagerDTO));
+        OnePagerInteret onePagerInteret = new OnePagerInteret(helper.siret, onePagerDTO.idOnePager(),
+                traitementOnePagerService.OnePagerResponse(onePagerDTO));
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             Map<String, Object> headers = new HashMap<>();
             headers.put("IsInterested", onePagerInteret.isInterested());

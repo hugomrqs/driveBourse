@@ -64,22 +64,26 @@ public class CamelRoutes extends RouteBuilder {
                 .marshal().json()
                 .to("sjms2:" + jmsPrefix + "queue:interestedIn");
 
-        from("file:ContratJuridiqueOnePagerPourBP")
+        from("file:data/ContratJuridiqueOnePagerPourBP")
                 .unmarshal().json(NDADTOProductionDTO.class)
+                .log("Nous allons traiter le ContratJuridiqueOnePagerPourBP ${in.body}")
                 .bean(contratJuridiqueOnePagerPourBP, "Signer")
+                .log("${in.body}")
                 .marshal().json()
                 .log("Le NDA ${in.body} va être envoyé")
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
+
+                        //Statut notice = exchange.getMessage().getBody(Statut.class);
                         exchange.getMessage().setHeaders(new HashMap<>());
                         exchange.getMessage().setHeader("from",smtpUser);
                         exchange.getMessage().setHeader("to",smtpUser);
-                        exchange.getMessage().setHeader("contentType", "application/JSON");
-                        exchange.getMessage().setHeader("subject", "ContratJuridiqueOnePagerPourBP");
+                        exchange.getMessage().setHeader("contentType", "application/json");
+                        exchange.getMessage().setHeader("subject", "Send NDA Signé");
                     }
                 })
-                .to("sjms2:topic:" + jmsPrefix + "sender") ;
+                .to("sjms2:topic:" + jmsPrefix + "sender");
 
         from("sjms2:topic:" + jmsPrefix + "businessPlanForFond" + helper.siret)
                 .autoStartup(isRouteEnabled)
@@ -101,7 +105,6 @@ public class CamelRoutes extends RouteBuilder {
                 .unmarshal().json(PropositionDTO.class)
                 .bean(propositionService, "challengeProposal").marshal().json()
                 .end();
-
 
         from("direct:sendProposal")
                 .autoStartup(isRouteEnabled)

@@ -64,8 +64,7 @@ public class BusinessPlanServiceImpl implements BusinessPlanService {
 
         ExpertiseFinanciereDTO expertiseFinanciereDTO =
                 new ExpertiseFinanciereDTO(
-                        expertiseFinanciereEntityModel.getPrestataireFinancier().getSiretPrestataireFinancier(),
-                        expertiseFinanciereEntityModel.getBFRExpert(),
+0,                        expertiseFinanciereEntityModel.getBFRExpert(),
                         expertiseFinanciereEntityModel.getMargeBrutExpert(),
                         expertiseFinanciereEntityModel.getSiretStartUp().getSiretStartUp()
                 );
@@ -74,7 +73,7 @@ public class BusinessPlanServiceImpl implements BusinessPlanService {
 
         ExpertiseJuridiqueDTO expertiseJuridiqueDTO =
                 new ExpertiseJuridiqueDTO(
-                        expertiseFinanciereEntityModel.getPrestataireFinancier().getSiretPrestataireFinancier(),
+0,
                         expertiseJuridiqueEntityModel.getNombrePartExpertise(),
                         expertiseJuridiqueEntityModel.getPrixActuelPartExpertise(),
                         expertiseFinanciereEntityModel.getSiretStartUp().getSiretStartUp()

@@ -102,6 +102,15 @@ public class CamelRoutes extends RouteBuilder {
                 .log("voici la liste des fonds intéressés par l'offre : ${in.body}")
                 .to("direct:processInteretOnePager");
 
+        from("direct:processInteretOnePager")
+                .split(body())
+                .log("pour l'interet : ${in.body}")
+                .bean(contratJuridiqueOnePagerPourBPService, "CreateContratJuridiqueOnePagerPourBP(${in.body})")
+                .log("le contrat numero : ${in.body} a bien été crée")
+                .bean(contratJuridiqueOnePagerPourBPService, "SendContratJuridiqueOnePagerPourBP(${in.body})")
+                .log("le contrat numero : ${in.body} a bien été envoyé")
+                .end();
+
         /////////////////////
         //// Business Model PDF de préférence sinon message
         /////////////////////
@@ -219,7 +228,7 @@ public class CamelRoutes extends RouteBuilder {
                         exchange.getMessage().setHeaders(new HashMap<>());
                         exchange.getMessage().setHeader("from",smtpUser);
                         exchange.getMessage().setHeader("to",smtpUser);
-                        exchange.getMessage().setHeader("contentType", "text/html");
+                        exchange.getMessage().setHeader("contentType", "application/json");
                         exchange.getMessage().setHeader("subject", "Send EJ");
                     }
                 })
@@ -311,7 +320,6 @@ public class CamelRoutes extends RouteBuilder {
 
         //envoie Contrat
         from("sjms2:" + jmsPrefix + "-Tasvee-CJOPBM")
-                .marshal().json()
                 .log("${in.body}")
                 .process(new Processor() {
                     @Override
@@ -323,7 +331,7 @@ public class CamelRoutes extends RouteBuilder {
                         exchange.getMessage().setHeader("subject", "ContratJuridiqueOnePagerPourBP");
                     }
                 })
-                .to("smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword);//@TODO broker smtp
+                .to("smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword);
 
 
         //receive NDA
@@ -333,7 +341,7 @@ public class CamelRoutes extends RouteBuilder {
 //                .marshal().json()
 //                .log("le contrat : ${in.body} signé a bien été reçu et enregistré");
 
-        from("file:ContratJuridiqueOnePagerPourBP")
+        from("file:data/ContratJuridiqueOnePagerPourBP")
                 .unmarshal().json(NDADTOProductionDTO.class)
                 .bean(contratJuridiqueOnePagerPourBPService, "UpdateContratJuridiqueOnePagerPourBPSigne(${in.body})")
                 .marshal().json()
@@ -407,7 +415,7 @@ public class CamelRoutes extends RouteBuilder {
 
                         StatutDTO notice = exchange.getMessage().getBody(StatutDTO.class);
                         exchange.getMessage().setBody("Bonjour," +
-                                "\n\n Nous osuhaitons  :  " + notice.nombrePart() + " de parts" +
+                                "\n\n Nous souhaitons  :  " + notice.nombrePart() + " de parts" +
                                 "\n\n Le prix des parts actuel est de  " + notice.prixPartActuel() +
                                 " \n\n La stratégie que nous voulons aborder est " + notice.strategieEntrepreneur() +
                                 "\n\n En vous remerciant par avance" +
@@ -461,6 +469,7 @@ public class CamelRoutes extends RouteBuilder {
 
         from("sjms2:topic:" + jmsPrefix + "-Tasvee-CJOPBP")
                 .autoStartup(isRouteEnabled)
+                .marshal().json()
                 .process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {

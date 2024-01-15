@@ -1,7 +1,5 @@
 package fr.pantheonsorbonne.ufr27.miage.model;
 
-import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciereDTO;
-import fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseJuridiqueDTO;
 import jakarta.persistence.*;
 
 @Entity

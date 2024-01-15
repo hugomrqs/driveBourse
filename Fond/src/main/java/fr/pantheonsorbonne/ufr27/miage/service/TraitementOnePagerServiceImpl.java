@@ -18,7 +18,7 @@ public class TraitementOnePagerServiceImpl implements TraitementOnePagerService 
     public static double calculateInterestLevel(OnePagerDTO onePagerDTO) {
         double normalizedPartExpertise = (double) onePagerDTO.expertiseJuridique().nombrePartExpertise() / MAX_PART_EXPERTISE;
         double normalizedPrixPart = (double) onePagerDTO.expertiseJuridique().prixActuelPartExpertise() / MAX_PRIX_PAR_PART;
-        double normalizedBFR = 1.0 - (onePagerDTO.expertiseFinanciere().bfrExpert() / MAX_BFR); // Inverse as lower is better
+        double normalizedBFR = 1.0 - (onePagerDTO.expertiseFinanciere().bfrExpert() / MAX_BFR);
         double normalizedMargeBrut = onePagerDTO.expertiseFinanciere().margeBrutExpert() / MAX_MARGE_BRUT;
 
         return (normalizedPartExpertise * WEIGHT_PART_EXPERTISE +

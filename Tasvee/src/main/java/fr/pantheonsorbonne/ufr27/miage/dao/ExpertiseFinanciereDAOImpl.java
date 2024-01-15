@@ -43,6 +43,7 @@ public class ExpertiseFinanciereDAOImpl implements ExpertiseFinanciereDAO {
         expertiseFinanciereEntity.setPrestataireFinancier(em.find(PrestataireFinancierEntity.class, expertiseFinanciere.siretPrestataireFinancier()));
         expertiseFinanciereEntity.setBFRExpert(expertiseFinanciere.bfrExpert());
         expertiseFinanciereEntity.setMargeBrutExpert(expertiseFinanciere.margeBrutExpert());
+        expertiseFinanciereEntity.setSiretStartUp(em.find(StartUpEntity.class, expertiseFinanciere.SiretStartUp()));
         em.persist(expertiseFinanciereEntity);
     }
 }
