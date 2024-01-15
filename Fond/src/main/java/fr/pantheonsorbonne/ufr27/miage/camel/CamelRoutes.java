@@ -65,7 +65,7 @@ public class CamelRoutes extends RouteBuilder {
         //ecouter les topics contenus dans le Helper de paramétrage
         for (String topic : helper.topicsToListen) {
             from("sjms2:topic:" + jmsPrefix + topic)
-                    .log("${in.body}")
+                    .log("Je suis un fond interessé et j'ai récupérer le OnePager : ${in.body}")
                     .unmarshal().json(OnePagerDTO.class)
                     .bean(responseOnePagerGateway, "SendResponse(${in.body},${in.headers.ReplyTo})");
         }
@@ -94,7 +94,7 @@ public class CamelRoutes extends RouteBuilder {
 
         from("sjms2:topic:" + jmsPrefix + "businessPlanForFond" + helper.siret)
                 .autoStartup(isRouteEnabled)
-                .log("BusinessPlan de Tasvee  reçu")
+                .log("le BusinessPlan envoyé par Tasvee a été reçu")
                 .unmarshal().json(BusinessPlanDTO.class)
                 .bean(businessService, "createPropfromBP").marshal().json();
 
@@ -105,10 +105,10 @@ public class CamelRoutes extends RouteBuilder {
                 .log("Proposition  de Tasvee  reçu")
                 .choice()
                 .when(simple("${header.etatProp} == true"))
-                .log("Proposition  de Tasvee  reçu accepté")
+                .log("La proposition de Tasvee a été reçu et est accepté")
                 .bean(propositionService, "addLastProposal")
                 .when(simple("${header.etatProp} == false"))
-                .log("Proposition de Tasvee  reçu refusé")
+                .log("La proposition de Tasvee a été reçu et est refusé")
                 .unmarshal().json(PropositionDTO.class)
                 .bean(propositionService, "challengeProposal").marshal().json()
                 .end();
@@ -116,34 +116,34 @@ public class CamelRoutes extends RouteBuilder {
 
         from("direct:sendProposal")
                 .autoStartup(isRouteEnabled)
-                .log("proposition Envoyé")
+                .log("proposition envoyé")
                 .marshal().json()
                 .to("sjms2:topic:" + jmsPrefix + "proposalForTasvee");
 
 
         from("sjms2:topic:" + jmsPrefix + "NDACommercialForFond")
                 .autoStartup(isRouteEnabled)
-                .log("NDA commercialisation reçu par Fond")
+                .log("Le contrat a été reçu par Fond")
                 .marshal().json(NDADTOCommercialisationDTO.class)
                 .bean(paymentService, "signNDACom").marshal().json();
 
 
         from("direct:signedNDA")
                 .autoStartup(isRouteEnabled)
-                .log("NDA commercialisation signed")
+                .log("Le contrat signé par Fond est envoyé à Tasvee")
                 .marshal().json()
                 .to("sjms2:topic:" + jmsPrefix + "signedNDAForTasvee");
 
         from("sjms2:topic:" + jmsPrefix + "ribOfEntrepreneur")
                 .autoStartup(isRouteEnabled)
-                .log("rib de entrepreneur recupérer")
+                .log("Le RIB de Entrepreneur a été récupérer")
                 .unmarshal().json(RIBDTO.class)
                 .bean(paymentService, "sendMoneyToEntrepreneur")
                 .marshal().json();
 
         from("sjms2:topic:" + jmsPrefix + "ribOfTasvee")
                 .autoStartup(isRouteEnabled)
-                .log("rib de Tasvee recupérer")
+                .log("Le RIB de Tasvee a été récupérer")
                 .unmarshal().json(RIBDTO.class)
                 .bean(paymentService, "sendMoneyToTasvee")
                 .marshal().json();

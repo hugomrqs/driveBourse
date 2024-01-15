@@ -93,14 +93,14 @@ public class CamelRoutes extends RouteBuilder {
                         exchange.getMessage().setHeader("contentType", "application/JSON");
                         exchange.getMessage().setHeader("subject", "Send BM signé");
                         exchange.getMessage().setBody("Cher(e) Client(e)," +
-                                "\n\n L'équipe Tasvee");
+                                "\n L'équipe Tasvee");
                     }
                 })
                 .to("sjms2:topic:"+jmsPrefix+"sender");
 
         from("sjms2:topic:" + jmsPrefix + "NDACommercialForEntrepreneur")
                 .autoStartup(isRouteEnabled)
-                .log("proposition Envoyé")
+                .log("Le contrat envoyé par Tasvee est reçu Entrepreneur")
                 .unmarshal().json(NDADTOCommercialisationDTO.class)
                 .bean(contratService, "signNDA").marshal().json();
 
@@ -109,9 +109,6 @@ public class CamelRoutes extends RouteBuilder {
                 .log("nda sign for tasvee")
                 .marshal().json()
                 .to("sjms2:topic:" + jmsPrefix + "signedNDAForTasvee");
-
-
-
 
     }
 }

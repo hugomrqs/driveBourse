@@ -23,7 +23,7 @@ public class PropositionServiceImpl implements PropositionService {
     public void challengeProposal(PropositionDTO prop){
         try {
             if(prop.pourcentagePartFinale() < 5 || prop.leveeDeFondsFinale() > 100000){
-                System.out.println("PROPOSITION REFUSÉ");
+                System.out.println("La proposition a été refusé par Fond");
                 Integer newLeveeDeFond = Double.valueOf((int)prop.leveeDeFondsFinale()*1.3).intValue();
                 Integer newPourcPart = Double.valueOf((int)prop.pourcentagePartFinale()*1.2).intValue();
                 PropositionDTO response = new PropositionDTO(prop.idProposition(),
@@ -35,7 +35,7 @@ public class PropositionServiceImpl implements PropositionService {
                 propositionDao.createProposition(prop);
                 mg.sendProposal(response);
             }else{
-                System.out.println("PROPOSITION ACCEPTÉ");
+                System.out.println("La proposition a été accepté par Fond");
                 PropositionDTO response = new PropositionDTO(prop.idProposition(),
                         prop.leveeDeFondsFinale(),
                         prop.pourcentagePartFinale(),
@@ -54,7 +54,6 @@ public class PropositionServiceImpl implements PropositionService {
     public void addLastProposal(PropositionDTO prop){
         try {
             propositionDao.createProposition(prop);
-            System.out.println("PropositionAccepté");
         }catch (Exception e){
             System.out.println(e);
         }

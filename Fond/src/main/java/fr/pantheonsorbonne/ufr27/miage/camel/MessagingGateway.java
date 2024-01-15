@@ -27,6 +27,7 @@ public class MessagingGateway {
     public void sendProposal(PropositionDTO prop) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             producerTemplate.sendBodyAndHeader("direct:sendProposal", prop ,"etatProp",prop.etatProposition());
+            System.out.println("Une proposition a été envoyé à Tasvee");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -36,6 +37,7 @@ public class MessagingGateway {
     public void sendSignedNDACom(NDADTOCommercialisationDTO nda) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             producerTemplate.sendBody("direct:signedNDA", nda );
+            System.out.println("Le contrat a été signé par Fond et va être envoyé à Tasvee");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

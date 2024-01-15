@@ -24,6 +24,7 @@ public class PaymentServiceImpl implements PaymentService {
         String iban = rib.iban();
         int montant = rib.montantAPayer();
         //Faire un virement à entrepreneur
+        System.out.println("Un virement de " + montant + "va être envoyé à l'iban :" + iban);
     }
 
     @Override
@@ -31,6 +32,7 @@ public class PaymentServiceImpl implements PaymentService {
         String iban = rib.iban();
         int montant = rib.montantAPayer();
         //Faire un virement à Tasvee
+        System.out.println("Un virement de " + montant + "va être envoyé à l'iban :" + iban);
     }
 
 }

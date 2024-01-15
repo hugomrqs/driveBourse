@@ -63,7 +63,7 @@ public class BusinessPlanServiceImpl implements BusinessPlanService {
         ExpertiseFinanciereEntity expertiseFinanciereEntityModel = onePagerEntityModel.getIdExpertiseFinanciere();
 
         ExpertiseFinanciereDTO expertiseFinanciereDTO =
-                new fr.pantheonsorbonne.ufr27.miage.dto.ExpertiseFinanciereDTO(
+                new ExpertiseFinanciereDTO(
                         expertiseFinanciereEntityModel.getPrestataireFinancier().getSiretPrestataireFinancier(),
                         expertiseFinanciereEntityModel.getBFRExpert(),
                         expertiseFinanciereEntityModel.getMargeBrutExpert(),

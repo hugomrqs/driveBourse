@@ -26,7 +26,7 @@ public class PropositionServiceImpl implements PropositionService{
     public void challengeProposal(PropositionDTO prop){
         try {
             if(prop.pourcentagePartFinale() > 20 || prop.leveeDeFondsFinale() < 10000){
-                System.out.println("PROPOSITION REFUSÉ");
+                System.out.println("La proposition a été refusé par Tasvee");
                 Integer newLeveeDeFond = Double.valueOf((int)prop.leveeDeFondsFinale()*1.2).intValue();
                 Integer newPourcPart = Double.valueOf((int)prop.pourcentagePartFinale()*1.3).intValue();
                 PropositionDTO response = new PropositionDTO(prop.idProposition(),
@@ -38,7 +38,7 @@ public class PropositionServiceImpl implements PropositionService{
                 propositionDao.createProposition(prop);
                 pg.sendProposal(response);
             }else{
-                System.out.println("PROPOSITION ACCEPTÉ");
+                System.out.println("La proposition a été accepté par Tasvee");
                 PropositionDTO response = new PropositionDTO(prop.idProposition(),
                         prop.leveeDeFondsFinale(),
                         prop.pourcentagePartFinale(),
@@ -60,7 +60,7 @@ public class PropositionServiceImpl implements PropositionService{
     public void addLastProposal(PropositionDTO prop){
         try {
             propositionDao.createProposition(prop);
-            System.out.println("PropositionAccepté");
+            System.out.println("La proposition de Fond a été accepté par Tasvee");
             NDADTOCommercialisationDTO contrTripartite = createNDACom(prop);
             pg.sendContratTripartite(contrTripartite);
         }catch (Exception e){
@@ -72,9 +72,14 @@ public class PropositionServiceImpl implements PropositionService{
     public void insertNDA(NDADTOCommercialisationDTO nda){
         try {
             if(nda.isSignatureEntreprise() && nda.isSignatureFonds()){
+                System.out.println("Le contrat a été signé par Fond et Entreprise, il va donc être enrengistré en BDD");
                 contratDAO.insertContratTripartiteFinal(nda);
             }else{
-                pg.sendContratTripartite(nda);
+                if(nda.isSignatureEntreprise()){
+                    pg.sendContratTripartite(nda);
+                }else if(nda.isSignatureFonds()){
+                    pg.sendContratTripartiteToEntreprise(nda);
+                }
             }
 
         }catch (Exception | StartUpNotFoundException e){

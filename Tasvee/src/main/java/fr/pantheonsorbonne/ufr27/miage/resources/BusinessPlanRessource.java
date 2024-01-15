@@ -17,10 +17,10 @@ public class BusinessPlanRessource {
     @Inject
     BusinessPlanService businessPlanService;
     @GET
-    @Path("/bp/{param1}/{param2}")
-    public Response testMethod(@PathParam("param1") int siretEntreprise, @PathParam("param2") int siretFond) throws StartUpNotFoundException, OnePagerNotFoundException, BusinessPlanNotFoundException, ContractNotSignedException {
+    @Path("/bp/{siretEntr}/{siretFond}")
+    public Response businessPlan(@PathParam("siretEntr") int siretEntreprise, @PathParam("siretFond") int siretFond) throws StartUpNotFoundException, OnePagerNotFoundException, BusinessPlanNotFoundException, ContractNotSignedException {
         businessPlanService.sendBusinessPlan(siretEntreprise, siretFond);
-        String output = "Paramètre reçu : startup" + siretEntreprise + "fund"+siretFond;
+        String output = "Paramètre reçu : siret de l'entreprise :" + siretEntreprise + " siret de Fond : "+siretFond;
         return Response.status(200).entity(output).build();
     }
 }

@@ -20,6 +20,7 @@ public class BusinessPlanGatewayImpl implements BusinessPlanGateway {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             String responseDestination = "sjms2:topic:" + jmsPrefix + "businessPlanForFond" + toFondSiretQueue;
             producerTemplate.sendBodyAndHeader(responseDestination, businessPlanDTO, "SiretStartUp", businessPlanDTO.siretEntreprise());
+            System.out.println("Le business plan est envoyé sur la queue : businessPlanForFond"+toFondSiretQueue);
         } catch (Exception e) {
             throw new RuntimeException("Error sending Business Plan", e);
         }

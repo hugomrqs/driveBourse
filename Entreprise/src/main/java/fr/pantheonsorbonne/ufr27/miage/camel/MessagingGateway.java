@@ -20,6 +20,7 @@ public class MessagingGateway {
 
     public void sendNDA(NDADTOCommercialisationDTO nda) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
+            System.out.println("Le contrat a été signé par Entrepreneur et s'envoie à Tasvee");
             producerTemplate.sendBody("direct:sendNDA", nda);
         } catch (IOException e) {
             throw new RuntimeException(e);

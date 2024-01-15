@@ -60,8 +60,8 @@ public class CamelRoutes extends RouteBuilder {
                 .marshal().json()
                 .choice()
                 .when(header("Secteur").in("T", "S", "I", "F", "E"))
-                .toD("sjms2:topic:" + jmsPrefix + "${in.headers.Secteur}")
-                .log("sjms2:topic:" + jmsPrefix + "${in.headers.Secteur}")
+                .toD("sjms2:topic:" + jmsPrefix + "${in.headers.Secteur}"   )
+                .log("Le OnePager est mis à disposition des Fond intéressé par le topic ${in.headers.Secteur}")
                 .otherwise()
                 .log("Domaine non pris en charge");
 
@@ -76,7 +76,7 @@ public class CamelRoutes extends RouteBuilder {
                 .aggregate(header("idOnePager"), new InteretAgregationStrategy())
                 .completionSize(2)
                 .completionTimeout(10000)
-                .log("voici la liste des fonds intéressés par l'offre : ${in.body}")
+                .log("Voici la liste des fonds intéressés par l'offre : ${in.body}")
                 .to("direct:processInteretOnePager");
 
         from("direct:processInteretOnePager")
@@ -102,6 +102,7 @@ public class CamelRoutes extends RouteBuilder {
                         exchange.getMessage().setHeader("subject", "ContratJuridiqueOnePagerPourBP");
                     }
                 })
+                .log("Le NDA signé est envoyé par mail")
                 .to("smtps:" + smtpHost + ":" + smtpPort + "?username=" + smtpUser + "&password=" + smtpPassword);//@TODO broker smtp
 
         //receive NDA
@@ -140,14 +141,20 @@ public class CamelRoutes extends RouteBuilder {
 
         from("direct:sendContratTrip")
                 .autoStartup(isRouteEnabled)
-                .log("proposition Envoyé à Fond")
+                .log("Le contrat à été envoyé à Fond")
                 .marshal().json()
                 .to("sjms2:topic:" + jmsPrefix + "NDACommercialForFond");
+
+        from("direct:sendContratTripToEntreprise")
+                .autoStartup(isRouteEnabled)
+                .log("Le contrat à été envoyé à Entrepreneur")
+                .marshal().json()
+                .to("sjms2:topic:" + jmsPrefix + "NDACommercialForEntrepreneur");
 
 
         from("sjms2:topic:" + jmsPrefix + "signedNDAForTasvee")
                 .autoStartup(isRouteEnabled)
-                .log("proposition Envoyé")
+                .log("Un contrat avec une signature a été reçu")
                 .unmarshal().json(NDADTOCommercialisationDTO.class)
                 .bean(propositionService, "insertNDA").marshal().json();
 

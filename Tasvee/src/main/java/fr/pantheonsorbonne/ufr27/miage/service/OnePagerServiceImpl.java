@@ -39,6 +39,7 @@ public class OnePagerServiceImpl implements OnePagerService {
         ExpertiseFinanciereEntity expertiseFinanciereEntityModel = expertiseFinanciereDAO.selectExpertiseFinanicereFromSiret(siretEntreprise);
         ExpertiseJuridiqueEntity expertiseJuridiqueEntityModel = expertiseJuridiqueDAO.selectExpertiseJuridiqueFromSiret(siretEntreprise);
         onePagerDAO.createOnePager(startUpModel, expertiseJuridiqueEntityModel, expertiseFinanciereEntityModel);
+        System.out.println("Le OnePage a bien été créer !");
     }
     @Override
     public void sendOnePager(int siretEntreprise) throws OnePagerNotFoundException, StartUpNotFoundException {

@@ -29,6 +29,7 @@ public class PropositionGateway {
     public void sendProposal(PropositionDTO prop) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
             producerTemplate.sendBodyAndHeader("direct:sendProposal", prop ,"etatProp",prop.etatProposition());
+            System.out.println("Une nouvelle proposition a été créer par Tasvee et est envoyé à Fond");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -36,7 +37,17 @@ public class PropositionGateway {
 
     public void sendContratTripartite(NDADTOCommercialisationDTO contr) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
+            System.out.println("Un contrat va être envoyé à Fond");
             producerTemplate.sendBody("direct:sendContratTrip", contr);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendContratTripartiteToEntreprise(NDADTOCommercialisationDTO nda) {
+        try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
+            System.out.println("Un contrat va être envoyé à Entreprise");
+            producerTemplate.sendBody("direct:sendContratTripToEntreprise", nda);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -44,6 +55,7 @@ public class PropositionGateway {
 
     public void sendRIB(RIBDTO ribEntrepreneur, RIBDTO ribTasvee) {
         try (ProducerTemplate producerTemplate = camelContext.createProducerTemplate()) {
+            System.out.println("Les RIB vont être envoyé à Fond");
             producerTemplate.sendBody("direct:ribOfEntrepereneur", ribEntrepreneur);
             producerTemplate.sendBody("direct:ribOfTasvee", ribTasvee);
         } catch (IOException e) {
